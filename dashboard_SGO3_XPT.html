@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Programação SGO3</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e2e8f0;min-height:100vh}
+#header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #00b894;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+#header h1{font-size:1.4rem;font-weight:800;letter-spacing:.5px}
+#header h1 span{color:#00b894}
+.hdr-sub{font-size:.8rem;color:#94a3b8;margin-top:3px}
+.hdr-right{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.badge-data{background:rgba(0,184,148,.15);color:#00b894;border:1px solid rgba(0,184,148,.3);border-radius:20px;padding:4px 13px;font-size:.8rem;font-weight:700}
+.badge-at{font-size:.72rem;color:#64748b}
+
+#tabs-bar{background:#131826;border-bottom:1px solid #1e2a3a;padding:0 28px;display:flex;gap:2px;overflow-x:auto}
+.tab-btn{padding:12px 18px;background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:.86rem;font-weight:600;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:#e2e8f0;background:rgba(255,255,255,.04)}
+.tab-btn.active{color:#00b894;border-bottom-color:#00b894}
+.tab-badge{font-size:.7rem;padding:2px 8px;border-radius:10px;font-weight:700}
+.tab-badge.ok{background:rgba(0,184,148,.15);color:#00b894}
+.tab-badge.wait{background:rgba(245,158,11,.12);color:#f59e0b}
+
+.tab-pane{display:none;padding:20px 28px}
+.tab-pane.active{display:block}
+
+.filter-bar{background:#131826;border:1px solid #1e2a3a;border-radius:10px;padding:10px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.filter-label{font-size:.76rem;color:#94a3b8;font-weight:600;white-space:nowrap}
+.filter-sel{background:#0d1117;border:1px solid #1e2a3a;border-radius:7px;color:#e2e8f0;padding:6px 10px;font-size:.8rem;outline:none;cursor:pointer;min-width:220px;transition:.2s}
+.filter-sel:focus{border-color:#00b894;box-shadow:0 0 0 3px rgba(0,184,148,.1)}
+.filter-sel option{background:#131826}
+.filter-badge{font-size:.7rem;padding:3px 10px;border-radius:10px;background:rgba(0,184,148,.12);color:#00b894;font-weight:700;white-space:nowrap}
+
+.tbl-card{background:#1a2035;border:1px solid #1e2a3a;border-radius:12px;padding:18px}
+.tbl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px}
+.tbl-title{font-size:.88rem;font-weight:700;color:#e2e8f0}
+.tbl-hint{font-size:.68rem;color:#475569;font-weight:400;margin-left:6px}
+.tbl-actions{display:flex;gap:8px;align-items:center}
+input[type=search]{background:#0d1117;border:1px solid #1e2a3a;border-radius:8px;color:#e2e8f0;padding:6px 11px;font-size:.8rem;width:220px;outline:none;transition:.2s}
+input[type=search]:focus{border-color:#00b894;box-shadow:0 0 0 3px rgba(0,184,148,.1)}
+input[type=search]::placeholder{color:#475569}
+.btn-csv{background:rgba(0,184,148,.1);color:#00b894;border:1px solid rgba(0,184,148,.3);border-radius:8px;padding:6px 13px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.btn-csv:hover{background:rgba(0,184,148,.22)}
+
+.tbl-wrap{overflow-x:auto;overflow-y:auto;border-radius:8px;border:1px solid #1e2a3a;max-height:calc(100vh - 240px);min-height:300px}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+thead{position:sticky;top:0;z-index:2}
+th{
+  background:#0d1117;color:#64748b;font-size:.68rem;text-transform:uppercase;
+  letter-spacing:.5px;padding:10px 12px;white-space:nowrap;
+  border-bottom:1px solid #1e2a3a;
+  cursor:pointer;user-select:none;transition:color .15s,background .15s;
+}
+th:hover{color:#c0cfe0;background:#0f1622}
+th::after{content:' ↕';color:#2d3748;font-size:.65rem}
+th[data-sort="asc"]::after{content:' ↑';color:#00b894}
+th[data-sort="desc"]::after{content:' ↓';color:#00b894}
+th[data-sort="asc"],th[data-sort="desc"]{color:#00b894}
+td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:#cbd5e1;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(0,184,148,.06)}
+.tbl-count{font-size:.72rem;color:#475569;margin-top:8px}
+
+.pub-bar{background:#131826;border-top:1px solid #1e2a3a;padding:9px 28px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.15)}}
+.pub-item{font-size:.72rem;color:#64748b;display:flex;align-items:center;gap:6px}
+.pub-item strong{color:#94a3b8}
+.pub-dot{width:6px;height:6px;border-radius:50%;background:#00b894;flex-shrink:0}
+.pub-dot.wait{background:#f59e0b}
+
+.wait-pane{text-align:center;padding:64px 20px}
+.wait-icon{font-size:3rem;margin-bottom:14px}
+.wait-pane h3{font-size:1rem;color:#94a3b8;margin-bottom:6px;font-weight:700}
+.wait-pane p{color:#475569;font-size:.83rem}
+
+@media(max-width:768px){
+  .tab-pane{padding:14px}
+  #header{padding:14px;flex-direction:column;gap:10px;align-items:flex-start}
+  .hdr-right{align-items:flex-start}
+  .pub-bar,.filter-bar{padding:9px 14px}
+  .filter-sel{min-width:160px}
+  .tbl-wrap{max-height:calc(100vh - 200px)}
+}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div>
+    <h1>📦 Programação <span>SGO3</span></h1>
+    <div class="hdr-sub">Controle de expedição diária · Goiânia / GO</div>
+  </div>
+  <div class="hdr-right">
+    <span class="badge-data" id="badge-data"></span>
+    <span class="badge-at"   id="badge-at"></span>
+  </div>
+</div>
+
+<div id="tabs-bar"></div>
+<div id="content"></div>
+<div class="pub-bar" id="pub-bar"></div>
+
+<script>
+
+const CICLOS_RAW = {"XPT":{"dados":{"columns":["ID Planejado","ID Otimizado","Detalhe do roteiro","Tipos de serviços","Quantidade de sacas","Tipo de Veículo","Pacotes estimados"],"rows":[{"ID Planejado":"PM3_50","ID Otimizado":"A1_PM3","Detalhe do roteiro":"EGO11 - Mozarlândia","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"84"},{"ID Planejado":"PM3_49","ID Otimizado":"A2_PM3","Detalhe do roteiro":"EGO11 - Mozarlândia","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"65"},{"ID Planejado":"PM3_9","ID Otimizado":"A3_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"55"},{"ID Planejado":"PM3_10","ID Otimizado":"A4_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"49"},{"ID Planejado":"PM3_68","ID Otimizado":"C1_PM3","Detalhe do roteiro":"EGO12 - Iporá","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"52"},{"ID Planejado":"PM3_26","ID Otimizado":"C2_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"47"},{"ID Planejado":"PM3_25","ID Otimizado":"C3_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"47"},{"ID Planejado":"PM3_67","ID Otimizado":"C4_PM3","Detalhe do roteiro":"EGO12 - Iporá","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"101"},{"ID Planejado":"PM3_65","ID Otimizado":"C5_PM3","Detalhe do roteiro":"EGO12 - Iporá","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"98"},{"ID Planejado":"PM3_66","ID Otimizado":"C6_PM3","Detalhe do roteiro":"EGO12 - Iporá","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"87"},{"ID Planejado":"PM3_24","ID Otimizado":"C7_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"45"},{"ID Planejado":"PM3_77","ID Otimizado":"F1_PM3","Detalhe do roteiro":"EGO19 - Inhumas","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"118"},{"ID Planejado":"PM3_4","ID Otimizado":"F2_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"106"},{"ID Planejado":"PM3_76","ID Otimizado":"F3_PM3","Detalhe do roteiro":"EGO19 - Inhumas","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"101"},{"ID Planejado":"PM3_75","ID Otimizado":"F4_PM3","Detalhe do roteiro":"EGO19 - Inhumas","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"92"},{"ID Planejado":"PM3_74","ID Otimizado":"F5_PM3","Detalhe do roteiro":"EGO19 - Inhumas","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"78"},{"ID Planejado":"PM3_73","ID Otimizado":"F6_PM3","Detalhe do roteiro":"EGO19 - Inhumas","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"77"},{"ID Planejado":"PM3_5","ID Otimizado":"F7_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"63"},{"ID Planejado":"PM3_3","ID Otimizado":"F8_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"55"},{"ID Planejado":"PM3_81","ID Otimizado":"H1_PM3","Detalhe do roteiro":"EGO20 - S. Luís de Montes Belos","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"86"},{"ID Planejado":"PM3_19","ID Otimizado":"H2_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"43"},{"ID Planejado":"PM3_80","ID Otimizado":"H3_PM3","Detalhe do roteiro":"EGO20 - S. Luís de Montes Belos","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"73"},{"ID Planejado":"PM3_79","ID Otimizado":"H4_PM3","Detalhe do roteiro":"EGO20 - S. Luís de Montes Belos","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"56"},{"ID Planejado":"PM3_18","ID Otimizado":"H5_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"52"},{"ID Planejado":"PM3_78","ID Otimizado":"H6_PM3","Detalhe do roteiro":"EGO20 - S. Luís de Montes Belos","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"50"},{"ID Planejado":"PM3_8","ID Otimizado":"J1_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO21","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"34"},{"ID Planejado":"PM3_7","ID Otimizado":"J2_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO21","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"40"},{"ID Planejado":"PM3_82","ID Otimizado":"J3_PM3","Detalhe do roteiro":"EGO21 - Jussara","Tipos de serviços":"XPT - EGO21","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"61"},{"ID Planejado":"PM3_6","ID Otimizado":"J4_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO21","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"32"},{"ID Planejado":"PM3_60","ID Otimizado":"L10_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"30"},{"ID Planejado":"PM3_63","ID Otimizado":"L11_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"129"},{"ID Planejado":"PM3_58","ID Otimizado":"L12_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"94"},{"ID Planejado":"PM3_51","ID Otimizado":"L13_PM3","Detalhe do roteiro":"EGO3 - Pires do Rio","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"94"},{"ID Planejado":"PM3_61","ID Otimizado":"L14_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"91"},{"ID Planejado":"PM3_57","ID Otimizado":"L15_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"88"},{"ID Planejado":"PM3_17","ID Otimizado":"L16_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"79"},{"ID Planejado":"PM3_56","ID Otimizado":"L17_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"75"},{"ID Planejado":"PM3_16","ID Otimizado":"L18_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"68"},{"ID Planejado":"PM3_20","ID Otimizado":"L19_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"58"},{"ID Planejado":"PM3_64","ID Otimizado":"L1_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"110"},{"ID Planejado":"PM3_52","ID Otimizado":"L20_PM3","Detalhe do roteiro":"EGO3 - Pires do Rio","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"29"},{"ID Planejado":"PM3_62","ID Otimizado":"L2_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"108"},{"ID Planejado":"PM3_59","ID Otimizado":"L3_PM3","Detalhe do roteiro":"EGO3 - Caldas Novas","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"104"},{"ID Planejado":"PM3_23","ID Otimizado":"L4_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"98"},{"ID Planejado":"PM3_53","ID Otimizado":"L5_PM3","Detalhe do roteiro":"EGO3 - Pires do Rio","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"96"},{"ID Planejado":"PM3_54","ID Otimizado":"L6_PM3","Detalhe do roteiro":"EGO3 - Pires do Rio","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"93"},{"ID Planejado":"PM3_15","ID Otimizado":"L7_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"75"},{"ID Planejado":"PM3_22","ID Otimizado":"L8_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"66"},{"ID Planejado":"PM3_21","ID Otimizado":"L9_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"56"},{"ID Planejado":"PM3_55","ID Otimizado":"N10_PM3","Detalhe do roteiro":"EGO4 - Abadiânia","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"59"},{"ID Planejado":"PM3_27","ID Otimizado":"N11_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"34"},{"ID Planejado":"PM3_2","ID Otimizado":"N12_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"163"},{"ID Planejado":"PM3_33","ID Otimizado":"N13_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"108"},{"ID Planejado":"PM3_40","ID Otimizado":"N14_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"105"},{"ID Planejado":"PM3_36","ID Otimizado":"N15_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"89"},{"ID Planejado":"PM3_34","ID Otimizado":"N16_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"89"},{"ID Planejado":"PM3_42","ID Otimizado":"N17_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"87"},{"ID Planejado":"PM3_32","ID Otimizado":"N18_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"85"},{"ID Planejado":"PM3_43","ID Otimizado":"N19_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"82"},{"ID Planejado":"PM3_1","ID Otimizado":"N1_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"102"},{"ID Planejado":"PM3_30","ID Otimizado":"N20_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"80"},{"ID Planejado":"PM3_38","ID Otimizado":"N21_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"80"},{"ID Planejado":"PM3_37","ID Otimizado":"N22_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"80"},{"ID Planejado":"PM3_35","ID Otimizado":"N23_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"79"},{"ID Planejado":"PM3_48","ID Otimizado":"N24_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"75"},{"ID Planejado":"PM3_29","ID Otimizado":"N25_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"72"},{"ID Planejado":"PM3_44","ID Otimizado":"N2_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"97"},{"ID Planejado":"PM3_41","ID Otimizado":"N3_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"96"},{"ID Planejado":"PM3_31","ID Otimizado":"N4_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"96"},{"ID Planejado":"PM3_28","ID Otimizado":"N5_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"95"},{"ID Planejado":"PM3_39","ID Otimizado":"N6_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"82"},{"ID Planejado":"PM3_47","ID Otimizado":"N7_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"81"},{"ID Planejado":"PM3_45","ID Otimizado":"N8_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"80"},{"ID Planejado":"PM3_46","ID Otimizado":"N9_PM3","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"78"},{"ID Planejado":"PM3_69","ID Otimizado":"Q1_PM3","Detalhe do roteiro":"EGO7 - Itaberaí","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"61"},{"ID Planejado":"PM3_70","ID Otimizado":"Q2_PM3","Detalhe do roteiro":"EGO7 - Itaberaí","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"54"},{"ID Planejado":"PM3_11","ID Otimizado":"Q3_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"53"},{"ID Planejado":"PM3_72","ID Otimizado":"Q4_PM3","Detalhe do roteiro":"EGO7 - Itaberaí","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"90"},{"ID Planejado":"PM3_71","ID Otimizado":"Q5_PM3","Detalhe do roteiro":"EGO7 - Itaberaí","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"88"},{"ID Planejado":"PM3_12","ID Otimizado":"Q6_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"84"},{"ID Planejado":"PM3_13","ID Otimizado":"Q7_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"75"},{"ID Planejado":"PM3_14","ID Otimizado":"Q8_PM3","Detalhe do roteiro":"VOL XPT","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"65"},{"ID Planejado":"AM4_6","ID Otimizado":"A10_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"72"},{"ID Planejado":"AM4_5","ID Otimizado":"A11_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"69"},{"ID Planejado":"AM4_4","ID Otimizado":"A12_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"63"},{"ID Planejado":"AM4_8","ID Otimizado":"A1_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"164"},{"ID Planejado":"AM4_14","ID Otimizado":"A2_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Van Média Elétrica","Pacotes estimados":"126"},{"ID Planejado":"AM4_17","ID Otimizado":"A3_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Van Média Elétrica","Pacotes estimados":"117"},{"ID Planejado":"AM4_13","ID Otimizado":"A4_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Van Média Elétrica","Pacotes estimados":"111"},{"ID Planejado":"AM4_3","ID Otimizado":"A5_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"108"},{"ID Planejado":"AM4_9","ID Otimizado":"A6_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"102"},{"ID Planejado":"AM4_2","ID Otimizado":"A7_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"102"},{"ID Planejado":"AM4_1","ID Otimizado":"A8_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"76"},{"ID Planejado":"AM4_7","ID Otimizado":"A9_AM4","Detalhe do roteiro":"vol_EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"74"},{"ID Planejado":"AM4_16","ID Otimizado":"C10_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Van Média Elétrica","Pacotes estimados":"93"},{"ID Planejado":"AM4_10","ID Otimizado":"C11_AM4","Detalhe do roteiro":"EGO4 - Abadiânia","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Veiculo de Passeio Extra 6h","Pacotes estimados":"40"},{"ID Planejado":"AM4_15","ID Otimizado":"C12_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Van Média Elétrica","Pacotes estimados":"23"},{"ID Planejado":"AM4_23","ID Otimizado":"C1_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"129"},{"ID Planejado":"AM4_19","ID Otimizado":"C2_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"125"},{"ID Planejado":"AM4_21","ID Otimizado":"C3_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"123"},{"ID Planejado":"AM4_20","ID Otimizado":"C4_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"115"},{"ID Planejado":"AM4_22","ID Otimizado":"C5_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"113"},{"ID Planejado":"AM4_24","ID Otimizado":"C6_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"106"},{"ID Planejado":"AM4_12","ID Otimizado":"C7_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Van Média Elétrica","Pacotes estimados":"103"},{"ID Planejado":"AM4_11","ID Otimizado":"C8_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Van Média Elétrica","Pacotes estimados":"100"},{"ID Planejado":"AM4_18","ID Otimizado":"C9_AM4","Detalhe do roteiro":"EGO4 - Anápolis | Projetos & Spot","Tipos de serviços":"XPT - EGO4","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"96"}]},"publicadoEm":"28/04/2026 23:48","ciclo":"XPT"},"_mlpName":"XPT"};
+const GERADO_EM  = '28/04/2026 23:48';
+const ABAS_ORDEM = ['AM','PM','SD','XPT'];
+
+
+var filtros   = {};
+var CONFIGS   = {};
+var sortState = {};
+
+function esc(s) {
+  return String(s === null || s === undefined ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+
+function normalizarCiclo(raw) {
+  if (!raw || !raw.dados) return null;
+  var cols    = Array.isArray(raw.dados.columns) ? raw.dados.columns : [];
+  var rawRows = Array.isArray(raw.dados.rows)    ? raw.dados.rows    : [];
+  var rows = rawRows.map(function(obj) {
+    return cols.map(function(c) {
+      var v = obj[c];
+      return (v !== undefined && v !== null) ? v : '';
+    });
+  });
+  return { cols: cols, rows: rows, publicadoEm: raw.publicadoEm || '' };
+}
+
+
+var MLP_NAME = CICLOS_RAW['_mlpName'] || null;
+
+var D = {};
+try {
+  Object.keys(CICLOS_RAW).forEach(function(k) {
+    if (k === '_mlpName') return;
+    var n = normalizarCiclo(CICLOS_RAW[k]);
+    if (n && n.rows.length > 0) D[k] = n;
+  });
+} catch(e) { console.error('normalizar:', e); }
+
+
+function detectarConfig(cols) {
+  function find(candidates) {
+    for (var j = 0; j < candidates.length; j++) {
+      var i = cols.indexOf(candidates[j]);
+      if (i >= 0) return i;
+    }
+    return -1;
+  }
+  var fi = find(['Transportadora','Transportadoras']);
+  if (fi < 0) fi = find(['Tipos de serviços','Tipo de serviço']);
+  if (fi < 0) fi = find(['Tipo de Veículo','Tipo de veiculo','Tipo de Veiculo']);
+  return { fi: fi, fl: fi >= 0 ? cols[fi] : '' };
+}
+
+
+function getRowsFiltradas(id) {
+  if (!D[id] || !CONFIGS[id]) return [];
+  var fi  = CONFIGS[id].fi;
+  var val = filtros[id] || '';
+  return (!val || fi < 0)
+    ? D[id].rows
+    : D[id].rows.filter(function(r) { return r[fi] === val; });
+}
+
+function getRowsOrdenadas(rows, id) {
+  var st = sortState[id];
+  if (!st || st.col < 0) return rows;
+  var col = st.col, dir = st.dir;
+  return rows.slice().sort(function(a, b) {
+    var va = a[col], vb = b[col];
+    var na = parseFloat(va), nb = parseFloat(vb);
+    if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
+    return String(va).localeCompare(String(vb), 'pt-BR', {sensitivity:'base'}) * dir;
+  });
+}
+
+function getRowsVisiveis(id) {
+  var rows = getRowsFiltradas(id);
+  var el   = document.getElementById('busca-' + id);
+  var q    = el ? el.value.toLowerCase() : '';
+  if (q) rows = rows.filter(function(r) {
+    return r.some(function(c) { return String(c).toLowerCase().indexOf(q) >= 0; });
+  });
+  return getRowsOrdenadas(rows, id);
+}
+
+
+function renderTabela(id, rows) {
+  var tbl = document.getElementById('tbl-' + id);
+  if (!tbl) return;
+  var tbody = tbl.querySelector('tbody');
+  if (!tbody) return;
+  tbody.innerHTML = rows.map(function(r) {
+    return '<tr>' + r.map(function(c){ return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>';
+  }).join('');
+  var cnt   = document.getElementById('cnt-' + id);
+  var total = D[id] ? D[id].rows.length : 0;
+  if (cnt) cnt.textContent = rows.length === total
+    ? total + ' rotas'
+    : 'Exibindo ' + rows.length + ' de ' + total + ' rotas';
+}
+
+function atualizarHeadersSort(id) {
+  var tbl = document.getElementById('tbl-' + id);
+  if (!tbl) return;
+  var st = sortState[id];
+  tbl.querySelectorAll('thead th').forEach(function(th, i) {
+    th.removeAttribute('data-sort');
+    if (st && st.col === i) th.setAttribute('data-sort', st.dir === 1 ? 'asc' : 'desc');
+  });
+}
+
+function sortTable(id, colIdx) {
+  if (!sortState[id]) sortState[id] = { col: -1, dir: 1 };
+  if (sortState[id].col === colIdx) {
+    sortState[id].dir *= -1;
+  } else {
+    sortState[id].col = colIdx;
+    sortState[id].dir = 1;
+  }
+  renderTabela(id, getRowsVisiveis(id));
+  atualizarHeadersSort(id);
+}
+
+function atualizarBadge(id) {
+  var badge = document.getElementById('fbadge-' + id);
+  if (!badge) return;
+  var rows = getRowsFiltradas(id);
+  var val  = filtros[id] || '';
+  badge.textContent = val
+    ? rows.length + ' rotas · ' + val
+    : (D[id] ? D[id].rows.length : 0) + ' rotas (todas)';
+}
+
+
+function aplicarFiltro(id) {
+  var sel = document.getElementById('fsel-' + id);
+  filtros[id] = sel ? sel.value : '';
+  var busca = document.getElementById('busca-' + id);
+  if (busca) busca.value = '';
+  if (sortState[id]) sortState[id].col = -1;
+  renderTabela(id, getRowsVisiveis(id));
+  atualizarHeadersSort(id);
+  atualizarBadge(id);
+}
+
+function filtrar(id) {
+  renderTabela(id, getRowsVisiveis(id));
+}
+
+function csvDownload(id) {
+  if (!D[id]) return;
+  var rows = getRowsFiltradas(id);
+  var val  = filtros[id] || '';
+  var suf  = val ? '_' + val.replace(/[^a-zA-Z0-9À-ú]/g,'_').replace(/_+/g,'_') : '';
+  var linhas = [D[id].cols.join(',')].concat(rows.map(function(r) {
+    return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(',');
+  }));
+  var blob = new Blob(['﻿' + linhas.join('\n')], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'SGO3_' + id + suf + '_' + GERADO_EM.replace(/[\/:\s]/g,'') + '.csv';
+  a.click();
+}
+
+function mostrarTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  var pane = document.getElementById('pane-' + id);
+  if (pane) pane.classList.add('active');
+  if (btn)  btn.classList.add('active');
+}
+
+
+function buildUI() {
+  var bdEl = document.getElementById('badge-data');
+  var baEl = document.getElementById('badge-at');
+  if (bdEl) bdEl.textContent = GERADO_EM.split(' ')[0] || GERADO_EM;
+  if (baEl) baEl.textContent = 'Gerado em ' + GERADO_EM;
+
+  
+  if (MLP_NAME) {
+    document.title = 'Programação SGO3 — ' + MLP_NAME;
+    var h1 = document.querySelector('#header h1');
+    if (h1) h1.innerHTML = '📦 Programação <span>SGO3</span> <span style="color:#94a3b8;font-weight:400;font-size:1rem">— ' + esc(MLP_NAME) + '</span>';
+  }
+
+  var primeiraComDados = null;
+  for (var pi = 0; pi < ABAS_ORDEM.length; pi++) {
+    if (D[ABAS_ORDEM[pi]]) { primeiraComDados = ABAS_ORDEM[pi]; break; }
+  }
+
+  var tabs = '', content = '', pub = '';
+
+  ABAS_ORDEM.forEach(function(id, idx) {
+    var ciclo   = D[id];
+    var tem     = !!ciclo;
+    var isFirst = primeiraComDados !== null ? id === primeiraComDados : idx === 0;
+
+    
+    var badge = tem
+      ? '<span class="tab-badge ok">✓ ' + ciclo.rows.length + ' rotas</span>'
+      : '<span class="tab-badge wait">⏳ aguardando</span>';
+    tabs += '<button class="tab-btn' + (isFirst ? ' active' : '') +
+      '" onclick="mostrarTab(\'' + id + '\',this)">' + id + ' ' + badge + '</button>';
+
+    if (tem) {
+      var cfg = detectarConfig(ciclo.cols);
+      CONFIGS[id]   = cfg;
+      filtros[id]   = '';
+      sortState[id] = { col: -1, dir: 1 };
+
+      
+      var opts = '<option value="">Todas</option>';
+      if (cfg.fi >= 0) {
+        var seen = {}, uniq = [];
+        ciclo.rows.forEach(function(r) {
+          var v = r[cfg.fi];
+          if (v && !seen[v]) { seen[v] = 1; uniq.push(v); }
+        });
+        uniq.sort().forEach(function(v) {
+          opts += '<option value="' + esc(v) + '">' + esc(v) + '</option>';
+        });
+      }
+
+      var filterBar = cfg.fi >= 0
+        ? '<div class="filter-bar">' +
+            '<span class="filter-label">🔍 ' + esc(cfg.fl) + ':</span>' +
+            '<select class="filter-sel" id="fsel-' + id +
+              '" onchange="aplicarFiltro(\'' + id + '\')">' + opts + '</select>' +
+            '<span class="filter-badge" id="fbadge-' + id + '">' +
+              ciclo.rows.length + ' rotas (todas)</span>' +
+          '</div>'
+        : '';
+
+      var colHeaders = ciclo.cols.map(function(c, ci) {
+        return '<th onclick="sortTable(\'' + id + '\',' + ci + ')" title="Ordenar por ' +
+          esc(c) + '">' + esc(c) + '</th>';
+      }).join('');
+
+      content +=
+        '<div id="pane-' + id + '" class="tab-pane' + (isFirst ? ' active' : '') + '">' +
+          filterBar +
+          '<div class="tbl-card">' +
+            '<div class="tbl-header">' +
+              '<span class="tbl-title">Rotas — ' + id +
+                '<span class="tbl-hint">clique no cabeçalho para ordenar</span></span>' +
+              '<div class="tbl-actions">' +
+                '<input type="search" id="busca-' + id +
+                  '" placeholder="Buscar…" oninput="filtrar(\'' + id + '\')">' +
+                '<button class="btn-csv" onclick="csvDownload(\'' + id + '\')">⬇ CSV</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="tbl-wrap">' +
+              '<table id="tbl-' + id + '">' +
+                '<thead><tr>' + colHeaders + '</tr></thead>' +
+                '<tbody></tbody>' +
+              '</table>' +
+            '</div>' +
+            '<div class="tbl-count" id="cnt-' + id + '"></div>' +
+          '</div>' +
+        '</div>';
+
+    } else {
+      content +=
+        '<div id="pane-' + id + '" class="tab-pane' + (isFirst ? ' active' : '') + '">' +
+          '<div class="wait-pane">' +
+            '<div class="wait-icon">⏳</div>' +
+            '<h3>Ciclo ' + id + ' ainda não publicado</h3>' +
+            '<p>Aguardando a finalização da distribuição.</p>' +
+          '</div>' +
+        '</div>';
+    }
+
+    var dot = tem ? '<span class="pub-dot"></span>' : '<span class="pub-dot wait"></span>';
+    pub += '<div class="pub-item">' + dot + '<strong>' + id + '</strong> · ' +
+      esc(tem ? ciclo.publicadoEm : 'Aguardando publicação') + '</div>';
+  });
+
+  var tabsEl    = document.getElementById('tabs-bar');
+  var contentEl = document.getElementById('content');
+  var pubEl     = document.getElementById('pub-bar');
+  if (tabsEl)    tabsEl.innerHTML    = tabs;
+  if (contentEl) contentEl.innerHTML = content;
+  if (pubEl)     pubEl.innerHTML     = pub;
+
+  
+  ABAS_ORDEM.forEach(function(id) {
+    if (D[id] && CONFIGS[id]) {
+      try { renderTabela(id, getRowsVisiveis(id)); } catch(e) { console.error('TBL '+id, e); }
+    }
+  });
+}
+
+function buildStandby() {
+  document.getElementById('tabs-bar').innerHTML = '';
+  document.getElementById('content').innerHTML =
+    '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+    'min-height:60vh;gap:18px;text-align:center;padding:40px">' +
+    '<div style="font-size:3.5rem;animation:pulse 2s ease-in-out infinite">⏳</div>' +
+    '<div style="font-size:1.4rem;font-weight:800;color:#e2e8f0">Aguardando Programação</div>' +
+    '<div style="font-size:.9rem;color:#64748b;max-width:380px;line-height:1.6">' +
+    'Nenhuma aba com dados foi encontrada.<br>' +
+    'Preencha as abas da planilha e clique em <strong style="color:#00b894">📤 Publicar</strong>.' +
+    '</div>' +
+    '<div style="font-size:.75rem;color:#334155;margin-top:8px">SGO3 · ' + GERADO_EM + '</div>' +
+    '</div>';
+  document.getElementById('pub-bar').innerHTML = '';
+}
+
+window.addEventListener('load', function() {
+  if (Object.keys(D).length === 0) { buildStandby(); } else { buildUI(); }
+});
+</script>
+</body>
+</html>
