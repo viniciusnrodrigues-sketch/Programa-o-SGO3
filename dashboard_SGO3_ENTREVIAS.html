@@ -104,8 +104,8 @@ tr:hover td{background:rgba(0,184,148,.06)}
 
 <script>
 
-const CICLOS_RAW = {"AM":{"dados":{"columns":["Onda","ID da Rota","Rota otimizada","Rota original","Doca","Transportadora","Placa","Tipo de veículo","Tipo de rota","Tipo de área","SPR","Cluster","Observação"],"rows":[{"Onda":"Onda 5","ID da Rota":"65068099003","Rota otimizada":"D2_AM","Rota original":"AM_15","Doca":"66","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Van Vamos 2025 H2","Tipo de rota":"Híbrida","Tipo de área":"Risco - Distante - Comercial","SPR":"237","Cluster":"SGO1 - Aparecida de Goiânia | Spot","Observação":""},{"Onda":"Onda 5","ID da Rota":"65067860005","Rota otimizada":"D3_AM","Rota original":"AM_12","Doca":"68","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Van Vamos 2025 H2","Tipo de rota":"Híbrida","Tipo de área":"Risco - Comercial","SPR":"177","Cluster":"SGO1 - Goiânia Norte | Rentals & Extra","Observação":""}]},"publicadoEm":"28/04/2026 21:10","ciclo":"AM"},"_mlpName":"ENTREVIAS"};
-const GERADO_EM  = '28/04/2026 21:10';
+const CICLOS_RAW = {"AM":{"dados":{"columns":["Onda","ID da Rota","Rota otimizada","Rota original","Doca","Transportadora","Placa","Tipo de veículo","Tipo de rota","Tipo de área","SPR","Cluster","Observação"],"rows":[{"Onda":"Onda 2","ID da Rota":"65116157004","Rota otimizada":"H9_AM99","Rota original":"AM99_21","Doca":"11","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Vuc","Tipo de rota":"","Tipo de área":"Risco - Comercial","SPR":"94","Cluster":"vol_SGO1 - Goiânia Norte | Rentals & Extra","Observação":""},{"Onda":"Onda 2","ID da Rota":"65115910006","Rota otimizada":"J5_AM99","Rota original":"AM99_16","Doca":"12","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Vuc","Tipo de rota":"","Tipo de área":"Risco - Distante","SPR":"118","Cluster":"vol_SGO1 - Aparecida de Goiânia | Spot","Observação":""},{"Onda":"Onda 2","ID da Rota":"65115907002","Rota otimizada":"L7_AM99","Rota original":"AM99_4","Doca":"13","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Vuc","Tipo de rota":"","Tipo de área":"Risco - Distante","SPR":"119","Cluster":"vol_SGO1 - Trindade | Rentals & Spot","Observação":""},{"Onda":"Onda 2","ID da Rota":"65115910004","Rota otimizada":"H11_AM99","Rota original":"AM99_14","Doca":"14","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Vuc","Tipo de rota":"","Tipo de área":"Risco - Distante","SPR":"92","Cluster":"vol_SGO1 - Aparecida de Goiânia | Spot","Observação":""},{"Onda":"Onda 2","ID da Rota":"65116157003","Rota otimizada":"L1_AM99","Rota original":"AM99_20","Doca":"15","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Vuc","Tipo de rota":"","Tipo de área":"Risco - Comercial","SPR":"138","Cluster":"vol_SGO1 - Goiânia Norte | Rentals & Extra","Observação":""},{"Onda":"Onda 2","ID da Rota":"65116439007","Rota otimizada":"H10_AM99","Rota original":"AM99_52","Doca":"16","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Vuc","Tipo de rota":"","Tipo de área":"Risco - Comercial","SPR":"93","Cluster":"vol_SGO1 - Goiânia Centro | Extra","Observação":""},{"Onda":"Onda 2","ID da Rota":"65116157002","Rota otimizada":"N5_AM99","Rota original":"AM99_19","Doca":"21","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Vuc","Tipo de rota":"","Tipo de área":"Risco","SPR":"118","Cluster":"vol_SGO1 - Goiânia Norte | Rentals & Extra","Observação":""},{"Onda":"Onda 2","ID da Rota":"65115902001","Rota otimizada":"H12_AM99","Rota original":"AM99_6","Doca":"22","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Vuc","Tipo de rota":"","Tipo de área":"Risco - Distante","SPR":"69","Cluster":"vol_SGO1 - Goianápolis | Spot","Observação":""}]},"publicadoEm":"28/04/2026 23:44","ciclo":"AM"},"_mlpName":"ENTREVIAS"};
+const GERADO_EM  = '28/04/2026 23:44';
 const ABAS_ORDEM = ['AM','PM','SD','XPT'];
 
 
@@ -132,9 +132,13 @@ function normalizarCiclo(raw) {
   return { cols: cols, rows: rows, publicadoEm: raw.publicadoEm || '' };
 }
 
+
+var MLP_NAME = CICLOS_RAW['_mlpName'] || null;
+
 var D = {};
 try {
   Object.keys(CICLOS_RAW).forEach(function(k) {
+    if (k === '_mlpName') return;
     var n = normalizarCiclo(CICLOS_RAW[k]);
     if (n && n.rows.length > 0) D[k] = n;
   });
@@ -151,6 +155,7 @@ function detectarConfig(cols) {
   }
   var fi = find(['Transportadora','Transportadoras']);
   if (fi < 0) fi = find(['Tipos de serviços','Tipo de serviço']);
+  if (fi < 0) fi = find(['Tipo de Veículo','Tipo de veiculo','Tipo de Veiculo']);
   return { fi: fi, fl: fi >= 0 ? cols[fi] : '' };
 }
 
@@ -258,7 +263,7 @@ function csvDownload(id) {
   var linhas = [D[id].cols.join(',')].concat(rows.map(function(r) {
     return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(',');
   }));
-  var blob = new Blob(['\uFEFF' + linhas.join('\n')], {type:'text/csv;charset=utf-8;'});
+  var blob = new Blob(['﻿' + linhas.join('\n')], {type:'text/csv;charset=utf-8;'});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'SGO3_' + id + suf + '_' + GERADO_EM.replace(/[\/:\s]/g,'') + '.csv';
@@ -279,6 +284,13 @@ function buildUI() {
   var baEl = document.getElementById('badge-at');
   if (bdEl) bdEl.textContent = GERADO_EM.split(' ')[0] || GERADO_EM;
   if (baEl) baEl.textContent = 'Gerado em ' + GERADO_EM;
+
+  
+  if (MLP_NAME) {
+    document.title = 'Programação SGO3 — ' + MLP_NAME;
+    var h1 = document.querySelector('#header h1');
+    if (h1) h1.innerHTML = '📦 Programação <span>SGO3</span> <span style="color:#94a3b8;font-weight:400;font-size:1rem">— ' + esc(MLP_NAME) + '</span>';
+  }
 
   var primeiraComDados = null;
   for (var pi = 0; pi < ABAS_ORDEM.length; pi++) {
