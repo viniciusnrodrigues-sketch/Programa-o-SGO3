@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XPT — Vagas SGO3</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e2e8f0;min-height:100vh}
+
+ 
+#hdr{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e67e22;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+#hdr h1{font-size:1.3rem;font-weight:800;letter-spacing:.4px}
+#hdr h1 span{color:#e67e22}
+.hdr-sub{font-size:.76rem;color:#94a3b8;margin-top:3px}
+.hdr-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.badge-data{background:rgba(230,126,34,.15);color:#e67e22;border:1px solid rgba(230,126,34,.3);border-radius:20px;padding:4px 12px;font-size:.78rem;font-weight:700}
+.badge-at{font-size:.7rem;color:#64748b}
+
+ 
+#kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 28px}
+.kpi{background:#131826;border:1px solid #1e2a3a;border-radius:10px;padding:12px 16px}
+.kpi-l{font-size:.68rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.kpi-v{font-size:1.6rem;font-weight:800;color:#e2e8f0;line-height:1}
+.kpi-s{font-size:.7rem;color:#475569;margin-top:3px}
+
+ 
+#search-wrap{padding:0 28px 12px}
+.search-inner{background:#131826;border:1px solid #1e2a3a;border-radius:10px;padding:9px 14px;display:flex;align-items:center;gap:10px}
+.search-icon{font-size:.9rem;color:#475569}
+#busca-global{background:transparent;border:none;outline:none;color:#e2e8f0;font-size:.84rem;flex:1;min-width:0}
+#busca-global::placeholder{color:#475569}
+#busca-count{font-size:.7rem;color:#475569;white-space:nowrap}
+
+ 
+#grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 28px 20px}
+
+ 
+.vcard{background:#1a2035;border:1px solid #1e2a3a;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.vcard-hdr{padding:10px 14px;border-bottom:1px solid #1e2a3a;display:flex;align-items:center;justify-content:space-between}
+.vcard-left{}
+.vcard-name{font-size:.88rem;font-weight:700}
+.vcard-svc{font-size:.68rem;margin-top:1px;opacity:.75}
+.vcard-badge{font-size:.7rem;padding:3px 9px;border-radius:12px;font-weight:700;white-space:nowrap;flex-shrink:0}
+
+ 
+.vc0 .vcard-hdr{border-top:3px solid #3498db} .vc0 .vcard-name{color:#7dc3f5} .vc0 .vcard-svc{color:#3498db} .vc0 .vcard-badge{background:rgba(52,152,219,.18);color:#7dc3f5}
+.vc1 .vcard-hdr{border-top:3px solid #00b894} .vc1 .vcard-name{color:#55d9b5} .vc1 .vcard-svc{color:#00b894} .vc1 .vcard-badge{background:rgba(0,184,148,.18);color:#55d9b5}
+.vc2 .vcard-hdr{border-top:3px solid #f39c12} .vc2 .vcard-name{color:#fcc657} .vc2 .vcard-svc{color:#f39c12} .vc2 .vcard-badge{background:rgba(243,156,18,.18);color:#fcc657}
+.vc3 .vcard-hdr{border-top:3px solid #9b59b6} .vc3 .vcard-name{color:#c898e8} .vc3 .vcard-svc{color:#9b59b6} .vc3 .vcard-badge{background:rgba(155,89,182,.18);color:#c898e8}
+.vc4 .vcard-hdr{border-top:3px solid #e74c3c} .vc4 .vcard-name{color:#f5857a} .vc4 .vcard-svc{color:#e74c3c} .vc4 .vcard-badge{background:rgba(231,76,60,.18);color:#f5857a}
+.vc5 .vcard-hdr{border-top:3px solid #1abc9c} .vc5 .vcard-name{color:#5de8ce} .vc5 .vcard-svc{color:#1abc9c} .vc5 .vcard-badge{background:rgba(26,188,156,.18);color:#5de8ce}
+.vc6 .vcard-hdr{border-top:3px solid #e67e22} .vc6 .vcard-name{color:#f5a55a} .vc6 .vcard-svc{color:#e67e22} .vc6 .vcard-badge{background:rgba(230,126,34,.18);color:#f5a55a}
+
+.vcard-tbl-wrap{overflow-y:auto;max-height:260px;flex:1}
+table{width:100%;border-collapse:collapse;font-size:.76rem;table-layout:fixed}
+thead{position:sticky;top:0;z-index:1}
+th{background:#0d1117;color:#64748b;font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;padding:7px 10px;white-space:nowrap;border-bottom:1px solid #1e2a3a;cursor:pointer;user-select:none;transition:color .12s}
+th:hover{color:#c0cfe0}
+th::after{content:' ↕';color:#2d3748;font-size:.58rem}
+th[data-sort="asc"]::after{content:' ↑';color:#e2e8f0}
+th[data-sort="desc"]::after{content:' ↓';color:#e2e8f0}
+td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.035)}
+tr.hidden{display:none}
+mark{background:rgba(255,220,100,.22);color:#ffe066;border-radius:2px;padding:0 1px}
+
+.vcard-foot{padding:7px 12px;border-top:1px solid #1e2a3a;background:#131826;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.vcard-foot-l{font-size:.66rem;color:#475569}
+.vcard-foot-v{font-size:.78rem;font-weight:700;color:#94a3b8}
+
+ 
+.standby{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;gap:16px;text-align:center;padding:40px}
+.standby-icon{font-size:3rem;animation:pulse 2s ease-in-out infinite}
+.standby h2{font-size:1.2rem;font-weight:800;color:#e2e8f0}
+.standby p{color:#64748b;font-size:.84rem;max-width:360px;line-height:1.6}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.12)}}
+
+ 
+#pub-footer{background:#131826;border-top:1px solid #1e2a3a;padding:8px 28px;display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+.pub-item{font-size:.68rem;color:#64748b;display:flex;align-items:center;gap:5px}
+.pub-item strong{color:#94a3b8}
+.pub-dot{width:5px;height:5px;border-radius:50%;background:#e67e22;flex-shrink:0}
+
+ 
+.sem-rotas{padding:24px 14px;text-align:center;color:#475569;font-size:.78rem}
+
+@media(max-width:900px){
+  #grid{grid-template-columns:repeat(2,1fr)}
+  #kpis{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  #grid{grid-template-columns:1fr}
+  #kpis{grid-template-columns:repeat(2,1fr)}
+  #hdr{flex-direction:column;gap:10px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div>
+    <h1>📦 XPT <span>Vagas</span> — SGO3</h1>
+    <div class="hdr-sub">Distribuição por tipo de serviço · Goiânia / GO</div>
+  </div>
+  <div class="hdr-right">
+    <span class="badge-data" id="badge-data">—</span>
+    <span class="badge-at"   id="badge-at"></span>
+  </div>
+</div>
+
+<div id="kpis"></div>
+<div id="search-wrap"></div>
+<div id="grid"></div>
+<div id="pub-footer"></div>
+
+<script>
+
+
+var DADOS_RAW = "%%DADOS_JSON%%";
+var GERADO_EM  = "%%GERADO_EM%%";
+
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+
+function extrairEGO(tipoServico) {
+  var m = String(tipoServico || '').match(/EGO\s*(\d+)/i);
+  return m ? 'EGO' + parseInt(m[1], 10) : String(tipoServico || '').trim();
+}
+
+function numEGO(egoStr) {
+  var m = String(egoStr || '').match(/(\d+)/);
+  return m ? parseInt(m[1], 10) : 9999;
+}
+
+
+function fmt(n) {
+  return Number(n).toLocaleString('pt-BR');
+}
+
+
+function highlight(text, q) {
+  if (!q) return esc(text);
+  var safe = esc(text);
+  var safeQ = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return safe.replace(new RegExp('(' + safeQ + ')', 'gi'), '<mark>$1</mark>');
+}
+
+
+var sortState = {};
+
+function sortTabela(vagaId, colIdx) {
+  if (!sortState[vagaId]) sortState[vagaId] = { col: -1, dir: 1 };
+  var st = sortState[vagaId];
+  if (st.col === colIdx) { st.dir *= -1; } else { st.col = colIdx; st.dir = 1; }
+  renderVagaTabela(vagaId);
+}
+
+function getRowsOrdenadas(rows, vagaId) {
+  var st = sortState[vagaId];
+  if (!st || st.col < 0) return rows;
+  var col = st.col, dir = st.dir;
+  return rows.slice().sort(function(a, b) {
+    var va = a[col] || '', vb = b[col] || '';
+    var na = parseFloat(va), nb = parseFloat(vb);
+    if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
+    return String(va).localeCompare(String(vb), 'pt-BR', { sensitivity: 'base' }) * dir;
+  });
+}
+
+
+var GRUPOS     = {};   
+var EGO_ORDER  = [];   
+var COL_ID     = 'ID Otimizado';
+var COL_VEICULO = 'Tipo de Veículo';
+var COL_PACOTES = 'Pacotes estimados';
+var COL_SERVICO = 'Tipos de serviços';
+
+function processarDados() {
+  var rows = Array.isArray(DADOS_RAW.rows) ? DADOS_RAW.rows : [];
+  GRUPOS = {};
+  rows.forEach(function(row) {
+    var svc = row[COL_SERVICO] || '';
+    var ego = extrairEGO(svc);
+    if (!ego) return;
+    if (!GRUPOS[ego]) GRUPOS[ego] = [];
+    GRUPOS[ego].push(row);
+  });
+  EGO_ORDER = Object.keys(GRUPOS).sort(function(a, b) {
+    return numEGO(a) - numEGO(b);
+  });
+}
+
+
+function renderVagaTabela(vagaId) {
+  var rows  = GRUPOS[vagaId] || [];
+  var q     = (document.getElementById('busca-global') || {}).value || '';
+  var qLow  = q.toLowerCase();
+  var tbody = document.getElementById('tbody-' + vagaId);
+  var tbl   = document.getElementById('tbl-' + vagaId);
+  var foot  = document.getElementById('foot-cnt-' + vagaId);
+  if (!tbody) return;
+
+  
+  var filtradas = qLow
+    ? rows.filter(function(row) {
+        return [COL_ID, COL_VEICULO, COL_PACOTES].some(function(c) {
+          return String(row[c] || '').toLowerCase().indexOf(qLow) >= 0;
+        });
+      })
+    : rows;
+
+  
+  var cols3 = [COL_ID, COL_VEICULO, COL_PACOTES];
+  var rowsArr = filtradas.map(function(row) {
+    return cols3.map(function(c) { return row[c] || ''; });
+  });
+  var sorted = getRowsOrdenadas(rowsArr, vagaId);
+
+  tbody.innerHTML = sorted.map(function(r) {
+    return '<tr>' + r.map(function(c) {
+      return '<td title="' + esc(c) + '">' + highlight(c, q) + '</td>';
+    }).join('') + '</tr>';
+  }).join('');
+
+  
+  if (tbl) {
+    var st = sortState[vagaId];
+    tbl.querySelectorAll('thead th').forEach(function(th, i) {
+      th.removeAttribute('data-sort');
+      if (st && st.col === i) th.setAttribute('data-sort', st.dir === 1 ? 'asc' : 'desc');
+    });
+  }
+
+  
+  var totalFilt = filtradas.reduce(function(s, row) {
+    return s + (parseInt(row[COL_PACOTES], 10) || 0);
+  }, 0);
+  if (foot) {
+    foot.textContent = q
+      ? fmt(totalFilt) + ' pct (' + filtradas.length + '/' + rows.length + ' rotas)'
+      : fmt(totalFilt) + ' pacotes · ' + rows.length + ' rotas';
+  }
+}
+
+
+function buscarGlobal() {
+  var q    = (document.getElementById('busca-global') || {}).value || '';
+  var cnt  = document.getElementById('busca-count');
+  var total = 0, visiveis = 0;
+  EGO_ORDER.forEach(function(ego) {
+    renderVagaTabela(ego);
+    var rows = GRUPOS[ego] || [];
+    var qLow = q.toLowerCase();
+    var n = qLow
+      ? rows.filter(function(r) {
+          return [COL_ID, COL_VEICULO, COL_PACOTES].some(function(c) {
+            return String(r[c] || '').toLowerCase().indexOf(qLow) >= 0;
+          });
+        }).length
+      : rows.length;
+    total    += rows.length;
+    visiveis += n;
+  });
+  if (cnt) {
+    cnt.textContent = q
+      ? visiveis + ' de ' + total + ' rotas'
+      : total + ' rotas';
+  }
+}
+
+
+function buildUI() {
+  var rows  = Array.isArray(DADOS_RAW.rows)    ? DADOS_RAW.rows    : [];
+  var pubEm = DADOS_RAW.publicadoEm || GERADO_EM;
+
+  
+  var bdEl = document.getElementById('badge-data');
+  var baEl = document.getElementById('badge-at');
+  if (bdEl) bdEl.textContent = GERADO_EM.split(' ')[0] || GERADO_EM;
+  if (baEl) baEl.textContent = 'Publicado em ' + pubEm;
+
+  processarDados();
+
+  
+  var totalRotas = rows.length;
+  var totalPacotes = rows.reduce(function(s, r) {
+    return s + (parseInt(r[COL_PACOTES], 10) || 0);
+  }, 0);
+  var veiculosUniq = {};
+  rows.forEach(function(r) { if (r[COL_VEICULO]) veiculosUniq[r[COL_VEICULO]] = 1; });
+
+  var kpisEl = document.getElementById('kpis');
+  if (kpisEl) kpisEl.innerHTML =
+    kpi('Total de rotas',    totalRotas,             'XPT geral') +
+    kpi('Vagas ativas',      EGO_ORDER.length,        'de 7 tipos') +
+    kpi('Pacotes estimados', fmt(totalPacotes),        'total') +
+    kpi('Tipos de veículo',  Object.keys(veiculosUniq).length, 'distintos');
+
+  
+  var swEl = document.getElementById('search-wrap');
+  if (swEl) swEl.innerHTML =
+    '<div class="search-inner">' +
+      '<span class="search-icon">🔍</span>' +
+      '<input type="search" id="busca-global" placeholder="Buscar em todas as vagas (ID, veículo, pacotes)…"' +
+        ' oninput="buscarGlobal()">' +
+      '<span id="busca-count">' + totalRotas + ' rotas</span>' +
+    '</div>';
+
+  
+  var gridEl = document.getElementById('grid');
+  if (!gridEl) return;
+  gridEl.innerHTML = EGO_ORDER.map(function(ego, idx) {
+    var vagaNum = idx + 1;
+    var linhas  = GRUPOS[ego] || [];
+    var total   = linhas.reduce(function(s, r) {
+      return s + (parseInt(r[COL_PACOTES], 10) || 0);
+    }, 0);
+    var colorClass = 'vc' + Math.min(idx, 6);
+
+    var tblHtml = linhas.length > 0
+      ? '<table id="tbl-' + ego + '">' +
+          '<thead><tr>' +
+            ['ID Otimizado','Tipo de Veículo','Pacotes est.'].map(function(h, ci) {
+              return '<th style="width:' + (ci===0?'44%':ci===1?'34%':'22%') + '"' +
+                ' onclick="sortTabela(\'' + ego + '\',' + ci + ')"' +
+                ' title="Ordenar por ' + esc(h) + '">' + esc(h) + '</th>';
+            }).join('') +
+          '</tr></thead>' +
+          '<tbody id="tbody-' + ego + '"></tbody>' +
+        '</table>'
+      : '<div class="sem-rotas">Sem rotas para esta vaga</div>';
+
+    return '<div class="vcard ' + colorClass + '" id="vcard-' + ego + '">' +
+      '<div class="vcard-hdr">' +
+        '<div class="vcard-left">' +
+          '<div class="vcard-name">Vaga ' + vagaNum + ' — ' + esc(ego) + '</div>' +
+          '<div class="vcard-svc">Tipos de serviços · XPT - ' + esc(ego) + '</div>' +
+        '</div>' +
+        '<span class="vcard-badge">' + linhas.length + ' rota' + (linhas.length !== 1 ? 's' : '') + '</span>' +
+      '</div>' +
+      '<div class="vcard-tbl-wrap">' + tblHtml + '</div>' +
+      '<div class="vcard-foot">' +
+        '<span class="vcard-foot-l">Pacotes estimados</span>' +
+        '<span class="vcard-foot-v" id="foot-cnt-' + ego + '">' + fmt(total) + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  
+  EGO_ORDER.forEach(function(ego) { renderVagaTabela(ego); });
+
+  
+  var pubEl = document.getElementById('pub-footer');
+  if (pubEl) pubEl.innerHTML = EGO_ORDER.map(function(ego) {
+    return '<div class="pub-item">' +
+      '<span class="pub-dot"></span>' +
+      '<strong>' + esc(ego) + '</strong> · ' +
+      esc(pubEm) +
+    '</div>';
+  }).join('');
+}
+
+function kpi(label, value, sub) {
+  return '<div class="kpi">' +
+    '<div class="kpi-l">' + esc(label) + '</div>' +
+    '<div class="kpi-v">' + esc(String(value)) + '</div>' +
+    '<div class="kpi-s">' + esc(sub) + '</div>' +
+  '</div>';
+}
+
+
+function buildStandby() {
+  var bdEl = document.getElementById('badge-data');
+  var baEl = document.getElementById('badge-at');
+  if (bdEl) bdEl.textContent = GERADO_EM.split(' ')[0] || '—';
+  if (baEl) baEl.textContent = 'Aguardando publicação';
+
+  document.getElementById('kpis').innerHTML       = '';
+  document.getElementById('search-wrap').innerHTML = '';
+  document.getElementById('pub-footer').innerHTML  = '';
+  document.getElementById('grid').innerHTML =
+    '<div class="standby" style="grid-column:1/-1">' +
+      '<div class="standby-icon">⏳</div>' +
+      '<h2>Aguardando publicação</h2>' +
+      '<p>Nenhuma rota XPT encontrada.<br>' +
+         'Na planilha, use o menu <strong style="color:#e67e22">📋 Publicar XPT por vagas</strong> para atualizar este painel.</p>' +
+      '<div style="font-size:.72rem;color:#334155;margin-top:12px">SGO3 · ' + esc(GERADO_EM) + '</div>' +
+    '</div>';
+}
+
+
+window.addEventListener('load', function() {
+  var rows = Array.isArray(DADOS_RAW.rows) ? DADOS_RAW.rows : [];
+  if (rows.length === 0) { buildStandby(); } else { buildUI(); }
+});
+</script>
+</body>
+</html>
