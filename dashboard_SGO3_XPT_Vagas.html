@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XPT — Vagas SGO3</title>
+<title>XPT — Docas SGO3</title>
 <style>
  
 *{margin:0;padding:0;box-sizing:border-box}
@@ -13,8 +13,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
  
 #hdr{background:linear-gradient(135deg,#1a1a2e,#16213e);
      padding:12px 24px;display:flex;align-items:center;
-     justify-content:space-between;border-bottom:3px solid #e67e22;
-     flex-shrink:0}
+     justify-content:space-between;border-bottom:3px solid #e67e22;flex-shrink:0}
 #hdr h1{font-size:clamp(1.3rem,1.6vw,1.9rem);font-weight:800;color:#fff}
 #hdr h1 span{color:#e67e22}
 .hdr-sub{font-size:clamp(.8rem,.9vw,1rem);color:#94a3b8;margin-top:3px}
@@ -26,8 +25,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
  
 #kpis{display:flex;gap:8px;padding:8px 24px;flex-shrink:0}
 .kpi{background:#fff;border:1px solid #e2e8f0;border-radius:8px;
-     box-shadow:0 1px 3px rgba(0,0,0,.06);
-     padding:8px 18px;flex:1;min-width:0}
+     box-shadow:0 1px 3px rgba(0,0,0,.06);padding:8px 18px;flex:1;min-width:0}
 .kpi-l{font-size:clamp(.72rem,.8vw,.9rem);color:#94a3b8;text-transform:uppercase;
         letter-spacing:.06em;margin-bottom:3px}
 .kpi-v{font-size:clamp(1.5rem,2vw,2.3rem);font-weight:800;color:#1e293b;line-height:1}
@@ -41,6 +39,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
 .leg-dot.pm{background:#3b82f6}
 
  
+#mobile-nav{display:none}
+
+ 
 #grid{display:grid;grid-template-columns:repeat(9,1fr);
       grid-template-rows:1fr;
       gap:8px;padding:0 24px 10px;flex:1;overflow:hidden;min-height:0}
@@ -50,7 +51,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
        box-shadow:0 1px 4px rgba(0,0,0,.07);
        display:flex;flex-direction:column;overflow:hidden;min-height:0}
 
- 
 .vc0{border-top:4px solid #3498db}
 .vc1{border-top:4px solid #00b894}
 .vc2{border-top:4px solid #f39c12}
@@ -77,48 +77,40 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
 
  
 .id-grid{display:grid;grid-template-columns:1fr 1fr;
-         gap:5px;padding:6px;
-         overflow-y:auto;overflow-x:hidden;
+         gap:5px;padding:6px;overflow-y:auto;overflow-x:hidden;
          flex:1;min-height:0;align-content:start;
-         scrollbar-width:thin;
-         scrollbar-color:rgba(0,0,0,.1) transparent}
+         scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.1) transparent}
 .id-grid::-webkit-scrollbar{width:3px}
 .id-grid::-webkit-scrollbar-track{background:transparent}
 .id-grid::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
 
  
-.id-card{border-radius:10px;
-         aspect-ratio:1.1/1;width:100%;
+.id-card{border-radius:10px;aspect-ratio:1.1/1;width:100%;
          display:flex;flex-direction:column;
          align-items:center;justify-content:center;
          gap:4px;min-width:0;cursor:default}
 .id-text{font-size:clamp(.95rem,1.25vw,1.4rem);font-weight:800;text-align:center;
          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-         width:100%;padding:0 6px;letter-spacing:.2px;
-         font-variant-numeric:tabular-nums}
+         width:100%;padding:0 6px;letter-spacing:.2px;font-variant-numeric:tabular-nums}
 .ciclo-tag{font-size:clamp(.6rem,.72vw,.82rem);font-weight:800;border-radius:4px;
            padding:3px 7px;flex-shrink:0;letter-spacing:.06em}
 
- 
  
 .c-AM .id-card{background:#fef3c7;border:2px solid #f59e0b}
 .c-AM .id-card:hover{background:#fde68a}
 .c-AM .id-text{color:#92400e}
 .c-AM .ciclo-tag{background:#f59e0b;color:#fff}
 
- 
 .c-PM .id-card{background:#dbeafe;border:2px solid #3b82f6}
 .c-PM .id-card:hover{background:#bfdbfe}
 .c-PM .id-text{color:#1e40af}
 .c-PM .ciclo-tag{background:#3b82f6;color:#fff}
 
- 
 .c-SD .id-card{background:#d1fae5;border:2px solid #10b981}
 .c-SD .id-card:hover{background:#a7f3d0}
 .c-SD .id-text{color:#065f46}
 .c-SD .ciclo-tag{background:#10b981;color:#fff}
 
- 
 .c-XPT .id-card{background:#ffedd5;border:2px solid #e67e22}
 .c-XPT .id-card:hover{background:#fed7aa}
 .c-XPT .id-text{color:#9a3412}
@@ -130,8 +122,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
                  display:flex;flex-direction:column;overflow:hidden;min-height:0}
 .vcard-bloqueada .vcard-hdr{background:#f1f5f9;border-bottom:1px dashed #e2e8f0}
 .vcard-bloqueada .vcard-name{color:#94a3b8}
-.vcard-bloqueada .vcard-badge{background:#f1f5f9;color:#94a3b8;
-                              border:1px dashed #cbd5e1}
+.vcard-bloqueada .vcard-badge{background:#f1f5f9;color:#94a3b8;border:1px dashed #cbd5e1}
 .bloq-body{flex:1;display:flex;flex-direction:column;align-items:center;
            justify-content:center;gap:6px;padding:12px}
 .bloq-icon{font-size:1.6rem;opacity:.35}
@@ -144,8 +135,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
 
  
 .standby{display:flex;flex-direction:column;align-items:center;
-         justify-content:center;flex:1;gap:12px;text-align:center;
-         grid-column:1 / -1}
+         justify-content:center;flex:1;gap:12px;text-align:center;grid-column:1/-1}
 .standby-icon{font-size:2.5rem;animation:pulse 2s ease-in-out infinite}
 .standby h2{font-size:1.1rem;font-weight:800;color:#1e293b}
 .standby p{color:#94a3b8;font-size:.8rem;max-width:340px;line-height:1.5}
@@ -168,87 +158,79 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
 .btn-print:hover{background:rgba(230,126,34,.22)}
 
  
-@media (max-width:1100px) {
-  #grid{grid-template-columns:repeat(3,1fr)!important;
-        grid-template-rows:none!important}
-  body{height:auto;overflow:auto}
-  #grid{overflow:visible}
-  .vcard,.vcard-bloqueada{min-height:200px}
-  .id-grid{overflow:visible;height:auto;flex:none}
-}
-
- 
 @media (max-width:680px) {
-  body{height:auto;overflow:auto;font-size:14px}
+  body{height:100vh;overflow:hidden}
 
    
-  #hdr{padding:10px 14px;flex-wrap:wrap;gap:8px}
+  #hdr{padding:10px 14px}
   #hdr h1{font-size:1.1rem}
-  .hdr-sub{font-size:.7rem}
-  .badge-data{font-size:.8rem;padding:4px 10px}
-  .badge-at{font-size:.65rem}
-  .btn-print{font-size:.75rem;padding:5px 10px}
+  .hdr-sub{font-size:.68rem}
+  .badge-data{font-size:.8rem;padding:3px 10px}
+  .badge-at{font-size:.62rem}
+  .btn-print{padding:5px 10px;font-size:.75rem}
 
    
-  #kpis{padding:6px 14px;gap:6px;overflow-x:auto;flex-wrap:nowrap}
-  .kpi{padding:6px 12px;min-width:100px;flex-shrink:0}
-  .kpi-l{font-size:.6rem}
-  .kpi-v{font-size:1.2rem}
+  #kpis{padding:5px 14px;gap:5px;overflow-x:auto;flex-wrap:nowrap}
+  .kpi{padding:5px 10px;min-width:90px;flex-shrink:0}
+  .kpi-l{font-size:.58rem}
+  .kpi-v{font-size:1.15rem}
 
    
-  #legenda{padding:0 14px 6px;gap:10px}
+  #legenda{padding:2px 14px 4px;gap:10px}
   .leg-item{font-size:.7rem}
 
    
-  #grid{grid-template-columns:repeat(2,1fr)!important;
-        grid-template-rows:none!important;
-        gap:10px;padding:0 14px 14px;
-        overflow:visible;flex:none;height:auto}
+  #mobile-nav{display:flex;align-items:center;justify-content:space-between;
+              padding:6px 14px;background:#fff;border-bottom:1px solid #e2e8f0;
+              flex-shrink:0;gap:8px}
+  .nav-btn{background:#1e293b;color:#fff;border:none;border-radius:8px;
+           padding:8px 16px;font-size:1.1rem;font-weight:800;cursor:pointer;
+           flex-shrink:0;transition:background .15s}
+  .nav-btn:active{background:#3b82f6}
+  .nav-btn:disabled{background:#e2e8f0;color:#94a3b8;cursor:default}
+  #carousel-info{flex:1;text-align:center}
+  #carousel-doca{font-size:1rem;font-weight:800;color:#1e293b}
+  #carousel-ego{font-size:.72rem;color:#64748b;margin-top:1px}
+  #carousel-dots{display:flex;gap:4px;justify-content:center;margin-top:4px}
+  .cdot{width:6px;height:6px;border-radius:50%;background:#cbd5e1;transition:all .2s}
+  .cdot.active{background:#e67e22;width:14px;border-radius:4px}
+  .cdot.bloq{background:#e2e8f0}
 
    
-  .vcard,.vcard-bloqueada{min-height:0;overflow:visible;border-radius:10px}
-  .vcard-hdr{padding:8px 10px}
-  .vcard-name{font-size:.9rem}
-  .vcard-sub{font-size:.65rem}
-  .vcard-badge{font-size:.68rem;padding:3px 7px}
+  #grid{display:block;padding:8px 14px 10px;flex:1;overflow:hidden;min-height:0}
+  #grid > *{display:none;height:100%;border-radius:10px}
+  #grid > .carousel-active{display:flex}
 
    
-  .id-grid{overflow:visible;height:auto;flex:none;
-           grid-template-columns:1fr 1fr;gap:6px;padding:6px}
+  .vcard.carousel-active,
+  .vcard-bloqueada.carousel-active{height:100%;min-height:0}
 
    
-  .id-card{aspect-ratio:1/1;border-radius:10px}
-  .id-text{font-size:1rem}
-  .ciclo-tag{font-size:.65rem;padding:3px 7px}
+  .id-grid{overflow-y:auto;flex:1;min-height:0}
 
    
-  #pub-footer{padding:6px 14px;gap:8px}
-  .pub-item{font-size:.62rem}
+  .id-card{aspect-ratio:1/1}
+  .id-text{font-size:1.1rem}
+  .ciclo-tag{font-size:.72rem;padding:3px 8px}
+
+   
+  #pub-footer{padding:4px 14px;gap:8px}
+  .pub-item{font-size:.58rem}
 }
 
  
 @media print {
   @page{size:A3 landscape;margin:8mm}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-
   body{height:auto!important;overflow:visible!important;background:#fff!important}
-
-   
-  .btn-print,#pub-footer{display:none!important}
-
-   
+  .btn-print,#pub-footer,#mobile-nav{display:none!important}
   #grid{flex:none!important;height:auto!important;overflow:visible!important;
-        grid-template-columns:repeat(9,1fr)!important;
+        display:grid!important;grid-template-columns:repeat(9,1fr)!important;
         gap:6px!important;padding:4px 16px!important}
-
-   
+  #grid > *{display:flex!important}
   .vcard,.vcard-bloqueada{overflow:visible!important;break-inside:avoid;
          box-shadow:none!important;border:1px solid #e2e8f0!important}
-
-   
   .id-grid{overflow:visible!important;height:auto!important;flex:none!important}
-
-   
   .id-card{aspect-ratio:unset!important;padding:5px 6px!important}
   .id-text{font-size:.72rem!important}
   .ciclo-tag{font-size:.52rem!important;padding:1px 4px!important}
@@ -259,7 +241,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
 
 <div id="hdr">
   <div>
-    <h1>📦 XPT <span>Vagas</span> — SGO3</h1>
+    <h1>📦 XPT <span>Docas</span> — SGO3</h1>
     <div class="hdr-sub">Distribuição por tipo de serviço · Goiânia / GO</div>
   </div>
   <div style="display:flex;align-items:center;gap:14px">
@@ -281,14 +263,25 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#1e293
   <span class="leg-item"><span class="leg-dot pm"></span>PM</span>
 </div>
 
+
+<div id="mobile-nav">
+  <button class="nav-btn" id="nav-prev" onclick="navDoca(-1)">&#8592;</button>
+  <div id="carousel-info">
+    <div id="carousel-doca">—</div>
+    <div id="carousel-ego">—</div>
+    <div id="carousel-dots"></div>
+  </div>
+  <button class="nav-btn" id="nav-next" onclick="navDoca(1)">&#8594;</button>
+</div>
+
 <div id="grid"></div>
 <div id="pub-footer"></div>
 
 <script>
 
 
-var DADOS_RAW = {"columns":["Columna 1","ID Otimizado","Detalhe do roteiro","Tipos de serviços","Quantidade de sacas","Tipo de Veículo","Pacotes estimados"],"rows":[{"Columna 1":"AM1_21","ID Otimizado":"B1_AM1","Detalhe do roteiro":"Caldas Novas - Estância Itanhangá (12),Caldas Novas - Estância Itaguaí (12),Caldas Novas - Jardim Hanashiro (10)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"114"},{"Columna 1":"AM1_24","ID Otimizado":"B2_AM1","Detalhe do roteiro":"Caldas Novas - Centro (13),Corumbaíba - Setor Central (11),Caldas Novas - Santa Efigênia (5)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Van","Pacotes estimados":"97"},{"Columna 1":"AM1_23","ID Otimizado":"B3_AM1","Detalhe do roteiro":"Pontalina - Setor Central (24),Piracanjuba - Centro (3),Pontalina - Outro (3)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"58"},{"Columna 1":"AM1_22","ID Otimizado":"B4_AM1","Detalhe do roteiro":"Morrinhos - Centro (20),Morrinhos - Vila Nova (17),Morrinhos - Setor Aeroporto (8)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"108"},{"Columna 1":"AM1_15","ID Otimizado":"B5_AM1","Detalhe do roteiro":"Orizona - Centro (12),Pires do Rio - Outro (10),Orizona - Campo Formoso (9)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Van","Pacotes estimados":"84"},{"Columna 1":"AM1_20","ID Otimizado":"B6_AM1","Detalhe do roteiro":"Piracanjuba - Centro (10),Caldas Novas - Do Turista 2ª Etapa (4),Rio Quente - Outro (3)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"69"},{"Columna 1":"AM1_14","ID Otimizado":"B7_AM1","Detalhe do roteiro":"Ipameri - Setor Central (16),Pires do Rio - Setor Central (6),Campo Alegre de Goiás - Setor Central (5)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"66"},{"Columna 1":"AM1_7","ID Otimizado":"D1_AM1","Detalhe do roteiro":"Nerópolis - Centro (9),Nova Veneza - Setor Central (5),Nerópolis - Dom Felipe III (3)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"57"},{"Columna 1":"AM1_9","ID Otimizado":"D2_AM1","Detalhe do roteiro":"Inhumas - Centro (16),Caturaí - Centro (5),Inhumas - Jardim Raio de Sol (4)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"89"},{"Columna 1":"AM1_8","ID Otimizado":"D3_AM1","Detalhe do roteiro":"Goianira - Residencial Triunfo (8),Goianira - Residencial Araguaia (3),Goianira - Residencial Triunfo II Etapa (3)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"86"},{"Columna 1":"AM1_2","ID Otimizado":"F1_AM1","Detalhe do roteiro":"Iporá - Centro (18),Montes Claros de Goiás - Setor Central (5),Iporá - Vila Brasília (4)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"65"},{"Columna 1":"AM1_3","ID Otimizado":"F2_AM1","Detalhe do roteiro":"Iporá - Centro (12),Montes Claros de Goiás - Setor Central (4),Piranhas - Recanto da Serra (3)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"48"},{"Columna 1":"AM1_1","ID Otimizado":"F3_AM1","Detalhe do roteiro":"Caiapônia - Setor Central (10),Piranhas - Centro (8),Piranhas - Sul (5)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"63"},{"Columna 1":"AM1_18","ID Otimizado":"G1_AM1","Detalhe do roteiro":"Uruana - Centro (5),Itapuranga - Joaquim Cardoso (4),Uruana - Setor Central (4)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"67"},{"Columna 1":"AM1_17","ID Otimizado":"G2_AM1","Detalhe do roteiro":"Goiás - Setor Central (11),Itaberaí - Jardim Cabral (4),Goiás - Centro (4)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"67"},{"Columna 1":"AM1_16","ID Otimizado":"G3_AM1","Detalhe do roteiro":"Itaberaí - Centro (4),Uruana - centro (4),Itaberaí - Residencial Alto da Boa Vista (3)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"65"},{"Columna 1":"AM1_12","ID Otimizado":"H1_AM1","Detalhe do roteiro":"Anicuns - Setor Central (11),Mossâmedes - Setor Central (5),Anicuns - Outro (4)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"66"},{"Columna 1":"AM1_13","ID Otimizado":"H2_AM1","Detalhe do roteiro":"São Luís de Montes Belos - Setor Inicial (17),São Luís de Montes Belos - Setor Montes Belos (5),São Luís de Montes Belos - Residencial Serra Verde II (4)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"93"},{"Columna 1":"AM1_19","ID Otimizado":"J1_AM1","Detalhe do roteiro":"Jussara - Setor Central (9),Jussara - Goiás (3),Jussara - Guanabara (2)","Tipos de serviços":"XPT - EGO21","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"47"},{"Columna 1":"AM1_10","ID Otimizado":"K1_AM1","Detalhe do roteiro":"Britânia - Centro (11),Aruanã - Setor Central (6),Araguapaz - Centro (3)","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"43"},{"Columna 1":"AM1_11","ID Otimizado":"K2_AM1","Detalhe do roteiro":"Mozarlândia - Centro (22),Araguapaz - Jardim Piauí (5),Mozarlândia - Setor Camões (3)","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"44"},{"Columna 1":"PM101_1","ID Otimizado":"B1_PM101","Detalhe do roteiro":"Mozarlândia - Centro (23),Mozarlândia - Setor Paranoá (4),Mozarlândia - Setor Barcus (3)","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"39"},{"Columna 1":"PM101_2","ID Otimizado":"B2_PM101","Detalhe do roteiro":"Britânia - Centro (13),Aruanã - Setor Central (5),Britânia - Vera Cruz (5)","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"53"},{"Columna 1":"PM101_10","ID Otimizado":"C1_PM101","Detalhe do roteiro":"Itaberaí - Setor Central (10),Itaberaí - Vila Leonor (8),Itaguari - Setor Central (7)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"102"},{"Columna 1":"PM101_11","ID Otimizado":"C2_PM101","Detalhe do roteiro":"Itapuranga - Parque Alvorada (9),Itaguaru - Setor Central (5),Itapuranga - Joaquim Cardoso (5)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"91"},{"Columna 1":"PM101_9","ID Otimizado":"C3_PM101","Detalhe do roteiro":"Goiás - Setor Central (14),Goiás - Outro (4),Goiás - centro (3)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"46"},{"Columna 1":"PM101_17","ID Otimizado":"D1_PM101","Detalhe do roteiro":"Goianira - Residencial Triunfo (11),Goianira - Vila Padre Pelágio (4),Goianira - Jardim Imperial (4)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"94"},{"Columna 1":"PM101_6","ID Otimizado":"F1_PM101","Detalhe do roteiro":"Jussara - Setor Central (11),Matrinchã - Setor Central (6),Itapirapuã - Setor Central (5)","Tipos de serviços":"XPT - EGO21","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"69"},{"Columna 1":"PM101_20","ID Otimizado":"G1_PM101","Detalhe do roteiro":"Caldas Novas - Estância Itaguaí (13),Caldas Novas - Caldas do Oeste (10),Caldas Novas - Jardim Hanashiro (7)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"113"},{"Columna 1":"PM101_19","ID Otimizado":"G2_PM101","Detalhe do roteiro":"Pontalina - Setor Central (23),Piracanjuba - Setor Pouso Alto (5),Piracanjuba - Centro (5)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"83"},{"Columna 1":"PM101_8","ID Otimizado":"G3_PM101","Detalhe do roteiro":"Pires do Rio - Setor Central (25),Orizona - Campo Formoso (8),Pires do Rio - Outro (8)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"117"},{"Columna 1":"PM101_7","ID Otimizado":"G4_PM101","Detalhe do roteiro":"Ipameri - Setor Central (20),Ipameri - Outro (8),Campo Alegre de Goiás - Setor Central (8)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"87"},{"Columna 1":"PM101_22","ID Otimizado":"G5_PM101","Detalhe do roteiro":"Piracanjuba - Centro (10),Rio Quente - Setor Solon Amaral (5),Caldas Novas - Setor Lagoa Quente (3)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"57"},{"Columna 1":"PM101_21","ID Otimizado":"G6_PM101","Detalhe do roteiro":"Caldas Novas - Centro (26),Caldas Novas - Estância Itanhangá (14),Caldas Novas - Do Turista (9)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"126"},{"Columna 1":"PM101_18","ID Otimizado":"G7_PM101","Detalhe do roteiro":"Morrinhos - Centro (16),Morrinhos - Vila Nova (15),Morrinhos - Setor Aeroporto (10)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"113"},{"Columna 1":"PM101_15","ID Otimizado":"H1_PM101","Detalhe do roteiro":"Inhumas - Centro (24),Caturaí - Centro (4),Inhumas - Residencial Maurivan Pucci (4)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"91"},{"Columna 1":"PM101_16","ID Otimizado":"H2_PM101","Detalhe do roteiro":"Nerópolis - Centro (8),Nerópolis - Bairro Botafogo I (7),Nova Veneza - Setor Central (5)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"85"},{"Columna 1":"PM101_5","ID Otimizado":"I1_PM101","Detalhe do roteiro":"São Luís de Montes Belos - Setor Inicial (11),Firminópolis - Setor Central (10),São Luís de Montes Belos - Setor Montes Belos (10)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"97"},{"Columna 1":"PM101_4","ID Otimizado":"I2_PM101","Detalhe do roteiro":"Anicuns - Setor Central (13),Palminópolis - Setor Central (5),Nazário - Conjunto Pomares (3)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"66"},{"Columna 1":"PM101_3","ID Otimizado":"I3_PM101","Detalhe do roteiro":"Sanclerlândia - Setor Central (6),Córrego do Ouro - Centro (4),São Luís de Montes Belos - Residencial Califórnia (2)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"30"},{"Columna 1":"PM101_12","ID Otimizado":"J1_PM101","Detalhe do roteiro":"Montes Claros de Goiás - Setor Central (6),Montes Claros de Goiás - Outro (5),Montes Claros de Goiás - Centro (5)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"46"},{"Columna 1":"PM101_13","ID Otimizado":"J2_PM101","Detalhe do roteiro":"Caiapônia - Setor Central (18),Piranhas - Centro (8),Piranhas - Palmares (4)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"72"},{"Columna 1":"PM101_14","ID Otimizado":"J3_PM101","Detalhe do roteiro":"Iporá - Centro (33),Iporá - Mato Grosso (6),Iporá - Vila Cascalheira (4)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"82"}],"publicadoEm":"02/05/2026 17:17"};
-var GERADO_EM  = "02/05/2026 17:17";
+var DADOS_RAW = {"columns":["Columna 1","ID Otimizado","Detalhe do roteiro","Tipos de serviços","Quantidade de sacas","Tipo de Veículo","Pacotes estimados"],"rows":[{"Columna 1":"AM1_21","ID Otimizado":"B1_AM1","Detalhe do roteiro":"Caldas Novas - Estância Itanhangá (12),Caldas Novas - Estância Itaguaí (12),Caldas Novas - Jardim Hanashiro (10)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"114"},{"Columna 1":"AM1_24","ID Otimizado":"B2_AM1","Detalhe do roteiro":"Caldas Novas - Centro (13),Corumbaíba - Setor Central (11),Caldas Novas - Santa Efigênia (5)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Van","Pacotes estimados":"97"},{"Columna 1":"AM1_23","ID Otimizado":"B3_AM1","Detalhe do roteiro":"Pontalina - Setor Central (24),Piracanjuba - Centro (3),Pontalina - Outro (3)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"58"},{"Columna 1":"AM1_22","ID Otimizado":"B4_AM1","Detalhe do roteiro":"Morrinhos - Centro (20),Morrinhos - Vila Nova (17),Morrinhos - Setor Aeroporto (8)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"108"},{"Columna 1":"AM1_15","ID Otimizado":"B5_AM1","Detalhe do roteiro":"Orizona - Centro (12),Pires do Rio - Outro (10),Orizona - Campo Formoso (9)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Van","Pacotes estimados":"84"},{"Columna 1":"AM1_20","ID Otimizado":"B6_AM1","Detalhe do roteiro":"Piracanjuba - Centro (10),Caldas Novas - Do Turista 2ª Etapa (4),Rio Quente - Outro (3)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"69"},{"Columna 1":"AM1_14","ID Otimizado":"B7_AM1","Detalhe do roteiro":"Ipameri - Setor Central (16),Pires do Rio - Setor Central (6),Campo Alegre de Goiás - Setor Central (5)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"66"},{"Columna 1":"AM1_7","ID Otimizado":"D1_AM1","Detalhe do roteiro":"Nerópolis - Centro (9),Nova Veneza - Setor Central (5),Nerópolis - Dom Felipe III (3)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"57"},{"Columna 1":"AM1_9","ID Otimizado":"D2_AM1","Detalhe do roteiro":"Inhumas - Centro (16),Caturaí - Centro (5),Inhumas - Jardim Raio de Sol (4)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"89"},{"Columna 1":"AM1_8","ID Otimizado":"D3_AM1","Detalhe do roteiro":"Goianira - Residencial Triunfo (8),Goianira - Residencial Araguaia (3),Goianira - Residencial Triunfo II Etapa (3)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"86"},{"Columna 1":"AM1_2","ID Otimizado":"F1_AM1","Detalhe do roteiro":"Iporá - Centro (18),Montes Claros de Goiás - Setor Central (5),Iporá - Vila Brasília (4)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"65"},{"Columna 1":"AM1_3","ID Otimizado":"F2_AM1","Detalhe do roteiro":"Iporá - Centro (12),Montes Claros de Goiás - Setor Central (4),Piranhas - Recanto da Serra (3)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"48"},{"Columna 1":"AM1_1","ID Otimizado":"F3_AM1","Detalhe do roteiro":"Caiapônia - Setor Central (10),Piranhas - Centro (8),Piranhas - Sul (5)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"63"},{"Columna 1":"AM1_18","ID Otimizado":"G1_AM1","Detalhe do roteiro":"Uruana - Centro (5),Itapuranga - Joaquim Cardoso (4),Uruana - Setor Central (4)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"67"},{"Columna 1":"AM1_17","ID Otimizado":"G2_AM1","Detalhe do roteiro":"Goiás - Setor Central (11),Itaberaí - Jardim Cabral (4),Goiás - Centro (4)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"67"},{"Columna 1":"AM1_16","ID Otimizado":"G3_AM1","Detalhe do roteiro":"Itaberaí - Centro (4),Uruana - centro (4),Itaberaí - Residencial Alto da Boa Vista (3)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"65"},{"Columna 1":"AM1_12","ID Otimizado":"H1_AM1","Detalhe do roteiro":"Anicuns - Setor Central (11),Mossâmedes - Setor Central (5),Anicuns - Outro (4)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"66"},{"Columna 1":"AM1_13","ID Otimizado":"H2_AM1","Detalhe do roteiro":"São Luís de Montes Belos - Setor Inicial (17),São Luís de Montes Belos - Setor Montes Belos (5),São Luís de Montes Belos - Residencial Serra Verde II (4)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"93"},{"Columna 1":"AM1_19","ID Otimizado":"J1_AM1","Detalhe do roteiro":"Jussara - Setor Central (9),Jussara - Goiás (3),Jussara - Guanabara (2)","Tipos de serviços":"XPT - EGO21","Quantidade de sacas":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"47"},{"Columna 1":"AM1_10","ID Otimizado":"K1_AM1","Detalhe do roteiro":"Britânia - Centro (11),Aruanã - Setor Central (6),Araguapaz - Centro (3)","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"43"},{"Columna 1":"AM1_11","ID Otimizado":"K2_AM1","Detalhe do roteiro":"Mozarlândia - Centro (22),Araguapaz - Jardim Piauí (5),Mozarlândia - Setor Camões (3)","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"44"},{"Columna 1":"PM101_1","ID Otimizado":"B1_PM101","Detalhe do roteiro":"Mozarlândia - Centro (23),Mozarlândia - Setor Paranoá (4),Mozarlândia - Setor Barcus (3)","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"39"},{"Columna 1":"PM101_2","ID Otimizado":"B2_PM101","Detalhe do roteiro":"Britânia - Centro (13),Aruanã - Setor Central (5),Britânia - Vera Cruz (5)","Tipos de serviços":"XPT - EGO11","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"53"},{"Columna 1":"PM101_10","ID Otimizado":"C1_PM101","Detalhe do roteiro":"Itaberaí - Setor Central (10),Itaberaí - Vila Leonor (8),Itaguari - Setor Central (7)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"102"},{"Columna 1":"PM101_11","ID Otimizado":"C2_PM101","Detalhe do roteiro":"Itapuranga - Parque Alvorada (9),Itaguaru - Setor Central (5),Itapuranga - Joaquim Cardoso (5)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"91"},{"Columna 1":"PM101_9","ID Otimizado":"C3_PM101","Detalhe do roteiro":"Goiás - Setor Central (14),Goiás - Outro (4),Goiás - centro (3)","Tipos de serviços":"XPT - EGO7","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"46"},{"Columna 1":"PM101_17","ID Otimizado":"D1_PM101","Detalhe do roteiro":"Goianira - Residencial Triunfo (11),Goianira - Vila Padre Pelágio (4),Goianira - Jardim Imperial (4)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"94"},{"Columna 1":"PM101_6","ID Otimizado":"F1_PM101","Detalhe do roteiro":"Jussara - Setor Central (11),Matrinchã - Setor Central (6),Itapirapuã - Setor Central (5)","Tipos de serviços":"XPT - EGO21","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"69"},{"Columna 1":"PM101_20","ID Otimizado":"G1_PM101","Detalhe do roteiro":"Caldas Novas - Estância Itaguaí (13),Caldas Novas - Caldas do Oeste (10),Caldas Novas - Jardim Hanashiro (7)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"113"},{"Columna 1":"PM101_19","ID Otimizado":"G2_PM101","Detalhe do roteiro":"Pontalina - Setor Central (23),Piracanjuba - Setor Pouso Alto (5),Piracanjuba - Centro (5)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"83"},{"Columna 1":"PM101_8","ID Otimizado":"G3_PM101","Detalhe do roteiro":"Pires do Rio - Setor Central (25),Orizona - Campo Formoso (8),Pires do Rio - Outro (8)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"117"},{"Columna 1":"PM101_7","ID Otimizado":"G4_PM101","Detalhe do roteiro":"Ipameri - Setor Central (20),Ipameri - Outro (8),Campo Alegre de Goiás - Setor Central (8)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"87"},{"Columna 1":"PM101_22","ID Otimizado":"G5_PM101","Detalhe do roteiro":"Piracanjuba - Centro (10),Rio Quente - Setor Solon Amaral (5),Caldas Novas - Setor Lagoa Quente (3)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"57"},{"Columna 1":"PM101_21","ID Otimizado":"G6_PM101","Detalhe do roteiro":"Caldas Novas - Centro (26),Caldas Novas - Estância Itanhangá (14),Caldas Novas - Do Turista (9)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"126"},{"Columna 1":"PM101_18","ID Otimizado":"G7_PM101","Detalhe do roteiro":"Morrinhos - Centro (16),Morrinhos - Vila Nova (15),Morrinhos - Setor Aeroporto (10)","Tipos de serviços":"XPT - EGO3","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"113"},{"Columna 1":"PM101_15","ID Otimizado":"H1_PM101","Detalhe do roteiro":"Inhumas - Centro (24),Caturaí - Centro (4),Inhumas - Residencial Maurivan Pucci (4)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"91"},{"Columna 1":"PM101_16","ID Otimizado":"H2_PM101","Detalhe do roteiro":"Nerópolis - Centro (8),Nerópolis - Bairro Botafogo I (7),Nova Veneza - Setor Central (5)","Tipos de serviços":"XPT - EGO19","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"85"},{"Columna 1":"PM101_5","ID Otimizado":"I1_PM101","Detalhe do roteiro":"São Luís de Montes Belos - Setor Inicial (11),Firminópolis - Setor Central (10),São Luís de Montes Belos - Setor Montes Belos (10)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"97"},{"Columna 1":"PM101_4","ID Otimizado":"I2_PM101","Detalhe do roteiro":"Anicuns - Setor Central (13),Palminópolis - Setor Central (5),Nazário - Conjunto Pomares (3)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"66"},{"Columna 1":"PM101_3","ID Otimizado":"I3_PM101","Detalhe do roteiro":"Sanclerlândia - Setor Central (6),Córrego do Ouro - Centro (4),São Luís de Montes Belos - Residencial Califórnia (2)","Tipos de serviços":"XPT - EGO20","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"30"},{"Columna 1":"PM101_12","ID Otimizado":"J1_PM101","Detalhe do roteiro":"Montes Claros de Goiás - Setor Central (6),Montes Claros de Goiás - Outro (5),Montes Claros de Goiás - Centro (5)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"46"},{"Columna 1":"PM101_13","ID Otimizado":"J2_PM101","Detalhe do roteiro":"Caiapônia - Setor Central (18),Piranhas - Centro (8),Piranhas - Palmares (4)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"72"},{"Columna 1":"PM101_14","ID Otimizado":"J3_PM101","Detalhe do roteiro":"Iporá - Centro (33),Iporá - Mato Grosso (6),Iporá - Vila Cascalheira (4)","Tipos de serviços":"XPT - EGO12","Quantidade de sacas":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"82"}],"publicadoEm":"02/05/2026 17:26"};
+var GERADO_EM  = "02/05/2026 17:26";
 
 
 function esc(s) {
@@ -317,7 +310,7 @@ function extrairCiclo(id) {
 }
 
 
-var VAGA_MAP = {
+var DOCA_MAP = {
   'EGO21': 1,   
   
   'EGO20': 3,   
@@ -329,16 +322,15 @@ var VAGA_MAP = {
   'EGO11': 9    
 };
 
-
-var VAGAS_BLOQUEADAS = [2, 7];
-
-
-var VAGAS_ORDEM = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+var DOCAS_BLOQUEADAS = [2, 7];
 
 
-var EGO_BY_VAGA = (function() {
+var DOCAS_ORDEM = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+
+
+var EGO_BY_DOCA = (function() {
   var m = {};
-  Object.keys(VAGA_MAP).forEach(function(ego) { m[VAGA_MAP[ego]] = ego; });
+  Object.keys(DOCA_MAP).forEach(function(ego) { m[DOCA_MAP[ego]] = ego; });
   return m;
 }());
 
@@ -358,14 +350,72 @@ function processarDados() {
     if (!GRUPOS[ego]) GRUPOS[ego] = [];
     GRUPOS[ego].push(row);
   });
-  
-  
   EGO_ORDER = Object.keys(GRUPOS).sort(function(a, b) {
-    var va = VAGA_MAP[a] != null ? VAGA_MAP[a] : -1;
-    var vb = VAGA_MAP[b] != null ? VAGA_MAP[b] : -1;
+    var va = DOCA_MAP[a] != null ? DOCA_MAP[a] : -1;
+    var vb = DOCA_MAP[b] != null ? DOCA_MAP[b] : -1;
     return vb - va;
   });
 }
+
+
+var carouselIdx = 0;
+
+function isMobile() { return window.innerWidth <= 680; }
+
+function atualizarCarrossel() {
+  if (!isMobile()) return;
+  var cards = document.querySelectorAll('#grid > *');
+  var total = cards.length;
+  if (!total) return;
+
+  cards.forEach(function(c, i) {
+    c.classList.toggle('carousel-active', i === carouselIdx);
+  });
+
+  var docaNum = DOCAS_ORDEM[carouselIdx];
+  var isBloq  = DOCAS_BLOQUEADAS.indexOf(docaNum) >= 0;
+  var ego     = EGO_BY_DOCA[docaNum];
+
+  var docaEl = document.getElementById('carousel-doca');
+  var egoEl  = document.getElementById('carousel-ego');
+  if (docaEl) docaEl.textContent = 'Doca ' + docaNum + ' de ' + total;
+  if (egoEl)  egoEl.textContent  = isBloq ? '🚫 Bloqueada' : (ego || '');
+
+  
+  var dotsEl = document.getElementById('carousel-dots');
+  if (dotsEl) {
+    dotsEl.innerHTML = DOCAS_ORDEM.map(function(d, i) {
+      var cls = 'cdot';
+      if (DOCAS_BLOQUEADAS.indexOf(d) >= 0) cls += ' bloq';
+      if (i === carouselIdx) cls += ' active';
+      return '<span class="' + cls + '"></span>';
+    }).join('');
+  }
+
+  
+  var prev = document.getElementById('nav-prev');
+  var next = document.getElementById('nav-next');
+  if (prev) prev.disabled = (carouselIdx === 0);
+  if (next) next.disabled = (carouselIdx === total - 1);
+}
+
+function navDoca(dir) {
+  var total = document.querySelectorAll('#grid > *').length;
+  carouselIdx = Math.max(0, Math.min(total - 1, carouselIdx + dir));
+  atualizarCarrossel();
+}
+
+
+var _touchX = 0;
+document.addEventListener('touchstart', function(e) {
+  _touchX = e.touches[0].clientX;
+}, {passive: true});
+document.addEventListener('touchend', function(e) {
+  if (!isMobile()) return;
+  var dx = e.changedTouches[0].clientX - _touchX;
+  if (dx < -50) navDoca(1);   
+  if (dx >  50) navDoca(-1);  
+}, {passive: true});
 
 
 function buildUI() {
@@ -377,25 +427,23 @@ function buildUI() {
 
   processarDados();
 
-  
   var totalPacotes = rows.reduce(function(s, r) {
     return s + (parseInt(r[COL_PACOTES], 10) || 0);
   }, 0);
   document.getElementById('kpis').innerHTML =
     kpi('Total de rotas',    rows.length) +
-    kpi('Vagas ativas',      EGO_ORDER.length + ' de 7') +
+    kpi('Docas ativas',      EGO_ORDER.length + ' de 7') +
     kpi('Pacotes estimados', totalPacotes.toLocaleString('pt-BR'));
 
   
-  document.getElementById('grid').innerHTML = VAGAS_ORDEM.map(function(vagaNum) {
-    var isBloqueada = VAGAS_BLOQUEADAS.indexOf(vagaNum) >= 0;
+  document.getElementById('grid').innerHTML = DOCAS_ORDEM.map(function(docaNum) {
+    var isBloqueada = DOCAS_BLOQUEADAS.indexOf(docaNum) >= 0;
 
-    
     if (isBloqueada) {
       return '<div class="vcard-bloqueada">' +
                '<div class="vcard-hdr">' +
                  '<div>' +
-                   '<div class="vcard-name">Vaga ' + vagaNum + '</div>' +
+                   '<div class="vcard-name">Doca ' + docaNum + '</div>' +
                    '<div class="vcard-sub">Bloqueada</div>' +
                  '</div>' +
                  '<span class="vcard-badge">—</span>' +
@@ -407,8 +455,7 @@ function buildUI() {
              '</div>';
     }
 
-    
-    var ego    = EGO_BY_VAGA[vagaNum];
+    var ego    = EGO_BY_DOCA[docaNum];
     var linhas = (ego && GRUPOS[ego]) ? GRUPOS[ego] : [];
     var egoIdx = EGO_ORDER.indexOf(ego);
     var cc     = 'vc' + (egoIdx >= 0 ? Math.min(egoIdx, 6) : 0);
@@ -431,7 +478,7 @@ function buildUI() {
     return '<div class="vcard ' + cc + '">' +
              '<div class="vcard-hdr">' +
                '<div>' +
-                 '<div class="vcard-name">Vaga ' + vagaNum + ' &mdash; ' + esc(ego || '') + '</div>' +
+                 '<div class="vcard-name">Doca ' + docaNum + ' &mdash; ' + esc(ego || '') + '</div>' +
                  '<div class="vcard-sub">XPT &middot; ' + esc(ego || '') + '</div>' +
                '</div>' +
                '<span class="vcard-badge">' +
@@ -442,13 +489,15 @@ function buildUI() {
            '</div>';
   }).join('');
 
-  
   document.getElementById('pub-footer').innerHTML = EGO_ORDER.map(function(ego) {
     return '<div class="pub-item">' +
              '<span class="pub-dot"></span>' +
              '<strong>' + esc(ego) + '</strong> &middot; ' + esc(pubEm) +
            '</div>';
   }).join('');
+
+  
+  if (isMobile()) atualizarCarrossel();
 }
 
 function kpi(label, value) {
@@ -464,26 +513,36 @@ function buildStandby() {
   document.getElementById('badge-at').textContent   = 'Aguardando publicação';
   document.getElementById('kpis').innerHTML         = '';
   document.getElementById('legenda').style.display  = 'none';
+  document.getElementById('mobile-nav').style.display = 'none';
   document.getElementById('pub-footer').innerHTML   = '';
   document.getElementById('grid').innerHTML =
     '<div class="standby">' +
       '<div class="standby-icon">⏳</div>' +
       '<h2>Aguardando publicação</h2>' +
       '<p>Nenhuma rota XPT encontrada.<br>' +
-      'Na planilha, use o menu 📋 <strong style="color:#e67e22">Publicar XPT por vagas</strong> para atualizar este painel.</p>' +
-      '<div style="font-size:.68rem;color:#1e2a3a;margin-top:8px">SGO3 &middot; ' + esc(String(GERADO_EM || '')) + '</div>' +
+      'Na planilha, use o menu 📋 <strong style="color:#e67e22">Publicar XPT por docas</strong> para atualizar este painel.</p>' +
+      '<div style="font-size:.68rem;color:#94a3b8;margin-top:8px">SGO3 &middot; ' + esc(String(GERADO_EM || '')) + '</div>' +
     '</div>';
 }
 
 
 function imprimirPDF() {
-  
   var titulo = document.title;
   var pubEm  = (DADOS_RAW && DADOS_RAW.publicadoEm) ? DADOS_RAW.publicadoEm : GERADO_EM;
-  document.title = 'XPT_Vagas_SGO3_' + String(pubEm || '').replace(/[/:]/g, '-').replace(/ /g, '_');
+  document.title = 'XPT_Docas_SGO3_' + String(pubEm || '').replace(/[/:]/g, '-').replace(/ /g, '_');
   window.print();
   document.title = titulo;
 }
+
+
+window.addEventListener('resize', function() {
+  var cards = document.querySelectorAll('#grid > *');
+  if (isMobile()) {
+    atualizarCarrossel();
+  } else {
+    cards.forEach(function(c) { c.classList.remove('carousel-active'); });
+  }
+});
 
 
 window.addEventListener('load', function() {
