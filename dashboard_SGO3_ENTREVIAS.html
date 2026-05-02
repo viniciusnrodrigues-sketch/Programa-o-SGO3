@@ -22,6 +22,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e2e8f
 .tab-badge{font-size:.7rem;padding:2px 8px;border-radius:10px;font-weight:700}
 .tab-badge.ok{background:rgba(0,184,148,.15);color:#00b894}
 .tab-badge.wait{background:rgba(245,158,11,.12);color:#f59e0b}
+.tab-badge.sem{background:rgba(100,116,139,.15);color:#64748b}
 
 .tab-pane{display:none;padding:20px 28px}
 .tab-pane.active{display:block}
@@ -104,8 +105,8 @@ tr:hover td{background:rgba(0,184,148,.06)}
 
 <script>
 
-const CICLOS_RAW = {"PM":{"dados":{"columns":["Onda","ID da Rota","Rota otimizada","Rota original","Doca","Transportadora","Placa","Tipo de veículo","Tipo de rota","Tipo de área","SPR","Cluster","Observação"],"rows":[{"Onda":"Onda 1","ID da Rota":"500277000000","Rota otimizada":"A3_PM1","Rota original":"PM1_2","Doca":"22","Transportadora":"ENTREVIAS","Placa":"","Tipo de veículo":"Veículo de Passeio","Tipo de rota":"","Tipo de área":"Risco - Distante","SPR":"104","Cluster":"PM1 - C 1","Observação":""}]},"publicadoEm":"01/05/2026 13:45","ciclo":"PM"},"_mlpName":"ENTREVIAS"};
-const GERADO_EM  = '01/05/2026 13:45';
+const CICLOS_RAW = {"_mlpName":"ENTREVIAS"};
+const GERADO_EM  = '01/05/2026 23:33';
 const ABAS_ORDEM = ['AM','PM','SD','XPT'];
 
 
@@ -140,7 +141,8 @@ try {
   Object.keys(CICLOS_RAW).forEach(function(k) {
     if (k === '_mlpName') return;
     var n = normalizarCiclo(CICLOS_RAW[k]);
-    if (n && n.rows.length > 0) D[k] = n;
+    
+    if (n) D[k] = n;
   });
 } catch(e) { console.error('normalizar:', e); }
 
@@ -300,18 +302,21 @@ function buildUI() {
   var tabs = '', content = '', pub = '';
 
   ABAS_ORDEM.forEach(function(id, idx) {
-    var ciclo   = D[id];
-    var tem     = !!ciclo;
-    var isFirst = primeiraComDados !== null ? id === primeiraComDados : idx === 0;
+    var ciclo     = D[id];
+    var tem       = !!ciclo;                          
+    var temDados  = tem && ciclo.rows.length > 0;     
+    var isFirst   = primeiraComDados !== null ? id === primeiraComDados : idx === 0;
 
     
-    var badge = tem
+    var badge = temDados
       ? '<span class="tab-badge ok">✓ ' + ciclo.rows.length + ' rotas</span>'
-      : '<span class="tab-badge wait">⏳ aguardando</span>';
+      : tem
+        ? '<span class="tab-badge sem">— Sem rotas</span>'
+        : '<span class="tab-badge wait">⏳ aguardando</span>';
     tabs += '<button class="tab-btn' + (isFirst ? ' active' : '') +
       '" onclick="mostrarTab(\'' + id + '\',this)">' + id + ' ' + badge + '</button>';
 
-    if (tem) {
+    if (temDados) {
       var cfg = detectarConfig(ciclo.cols);
       CONFIGS[id]   = cfg;
       filtros[id]   = '';
@@ -368,7 +373,18 @@ function buildUI() {
           '</div>' +
         '</div>';
 
+    } else if (tem) {
+      
+      content +=
+        '<div id="pane-' + id + '" class="tab-pane' + (isFirst ? ' active' : '') + '">' +
+          '<div class="wait-pane">' +
+            '<div class="wait-icon">📭</div>' +
+            '<h3>Sem rotas programadas — ' + id + '</h3>' +
+            '<p>Nenhuma rota foi alocada para esta transportadora neste ciclo hoje.</p>' +
+          '</div>' +
+        '</div>';
     } else {
+      
       content +=
         '<div id="pane-' + id + '" class="tab-pane' + (isFirst ? ' active' : '') + '">' +
           '<div class="wait-pane">' +
@@ -379,7 +395,9 @@ function buildUI() {
         '</div>';
     }
 
-    var dot = tem ? '<span class="pub-dot"></span>' : '<span class="pub-dot wait"></span>';
+    var dot = temDados ? '<span class="pub-dot"></span>'
+            : tem      ? '<span class="pub-dot" style="background:#475569"></span>'
+            :            '<span class="pub-dot wait"></span>';
     pub += '<div class="pub-item">' + dot + '<strong>' + id + '</strong> · ' +
       esc(tem ? ciclo.publicadoEm : 'Aguardando publicação') + '</div>';
   });
@@ -416,7 +434,9 @@ function buildStandby() {
 }
 
 window.addEventListener('load', function() {
-  if (Object.keys(D).length === 0) { buildStandby(); } else { buildUI(); }
+  
+  
+  if (Object.keys(D).length === 0 && !MLP_NAME) { buildStandby(); } else { buildUI(); }
 });
 </script>
 </body>
