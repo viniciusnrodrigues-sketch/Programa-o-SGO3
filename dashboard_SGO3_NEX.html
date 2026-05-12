@@ -6,361 +6,332 @@
 <title>NEX — Programação SGO3</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#c9d1d9}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh}
+
+ 
 .hero{background:linear-gradient(135deg,#0d1117,#161b27);padding:16px 24px;
       text-align:center;border-bottom:1px solid #21262d}
-.hero h1{font-size:1.3rem;font-weight:700;color:#e6edf3;margin-bottom:2px}
+.hero h1{font-size:1.35rem;font-weight:700;color:#e6edf3;margin-bottom:2px}
 .hero h1 span{color:#e67e22}
 .hero .sub{color:#8b949e;font-size:.8rem}
 #ts-linha{color:#6c9bcf;font-size:.76rem;margin-top:4px}
 
  
-.tabs{display:flex;background:#161b27;border-bottom:1px solid #21262d;
-      position:sticky;top:0;z-index:100;overflow-x:auto}
-.tab{flex:1;min-width:90px;padding:10px 8px;text-align:center;cursor:pointer;
-     font-weight:700;font-size:.78rem;border-bottom:2px solid transparent;
-     transition:all .2s;color:#8b949e;white-space:nowrap}
-.tab.ativa{color:#e67e22;border-color:#e67e22;background:#1c2333}
-.tab:hover:not(.ativa){background:#1c2333;color:#c9d1d9}
-.badge-tab{border-radius:10px;padding:1px 6px;font-size:.65rem;font-weight:700;
-           margin-left:4px;opacity:.9;background:#21262d;color:#8b949e}
-.tab.ativa .badge-tab{background:rgba(230,126,34,.2);color:#e67e22}
-
-.container{width:100%;padding:12px 14px 48px}
-.painel{display:none}.painel.ativo{display:block}
+.kpis{display:flex;gap:8px;flex-wrap:wrap;padding:14px 16px 0}
+.kpi{flex:1;min-width:120px;border-radius:8px;overflow:hidden;text-align:center;
+     background:#161b27;border:1px solid #21262d}
+.kpi-accent{height:3px}
+.kpi-body{padding:9px 10px 10px}
+.kpi .lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+          margin-bottom:2px}
+.kpi .val{font-size:1.45rem;font-weight:800;line-height:1.1}
+.kpi .sub{font-size:.58rem;color:#8b949e;margin-top:2px}
 
  
-.kpis{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.kpi{flex:1;min-width:100px;border-radius:8px;overflow:hidden;text-align:center;
-     background:#161b27;border:1px solid #21262d;transition:transform .15s,box-shadow .15s}
-.kpi:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.35)}
-.kpi-accent{height:3px;width:100%}
-.kpi-body{padding:8px 7px 9px}
-.kpi .lbl{font-size:.58rem;font-weight:700;margin-bottom:1px;white-space:nowrap;
-          opacity:.9;letter-spacing:.03em;text-transform:uppercase}
-.kpi .val{font-size:1.4rem;font-weight:800;line-height:1.15}
-.kpi .sub{font-size:.56rem;color:#8b949e;margin-top:2px;white-space:nowrap}
+.toolbar{padding:12px 16px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.toolbar input[type=text]{
+  flex:1;min-width:220px;background:#161b27;border:1px solid #30363d;
+  border-radius:6px;padding:8px 12px;font-size:.85rem;color:#c9d1d9;outline:none}
+.toolbar input:focus{border-color:#e67e22}
+.cnt{color:#8b949e;font-size:.8rem;white-space:nowrap}
 
  
-.toolbar-row{display:flex;gap:8px;margin-bottom:7px;flex-wrap:wrap;align-items:center}
-.toolbar-row input{background:#161b27;border:1px solid #30363d;border-radius:6px;
-                   padding:7px 11px;font-size:.83rem;flex:1;min-width:200px;
-                   color:#c9d1d9;outline:none}
-.toolbar-row input:focus{border-color:#e67e22}
+.chips-bar{padding:8px 16px 6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chips-bar .lbl-chip{font-size:.72rem;color:#8b949e;font-weight:700;
+                     text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.chip{cursor:pointer;padding:4px 11px;border-radius:14px;font-size:.73rem;font-weight:700;
+      border:1px solid #30363d;background:#161b27;color:#8b949e;
+      transition:all .15s;white-space:nowrap}
+.chip.ativo{background:#1c2a1c;border-color:#56d364;color:#56d364}
+.chip:hover:not(.ativo){border-color:#8b949e;color:#c9d1d9}
+.chip-all.ativo{background:#1c2333;border-color:#e67e22;color:#e67e22}
+.chip-all:hover:not(.ativo){border-color:#8b949e;color:#c9d1d9}
 
  
-.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid #21262d;background:#161b27}
+.tbl-container{padding:8px 16px 48px;overflow-x:auto}
+.tbl-wrap{border-radius:8px;border:1px solid #21262d;overflow:hidden;background:#161b27}
 table{width:100%;border-collapse:collapse;font-size:.82rem}
-thead th{padding:9px 11px;background:#1c2333;color:#8b949e;font-weight:700;
-         font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;
-         white-space:nowrap;border-bottom:1px solid #21262d;cursor:pointer;
-         user-select:none}
+thead th{padding:9px 12px;background:#1c2333;color:#8b949e;font-weight:700;
+         font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;
+         white-space:nowrap;border-bottom:1px solid #21262d;
+         cursor:pointer;user-select:none}
 thead th:hover{color:#c9d1d9}
 thead th.sort-asc::after{content:' ↑'}
 thead th.sort-desc::after{content:' ↓'}
 tbody tr{border-bottom:1px solid #1a1f26;transition:background .12s}
 tbody tr:hover{background:#1c2333}
-td{padding:9px 11px;vertical-align:top}
-td.num{text-align:right;font-variant-numeric:tabular-nums}
+td{padding:9px 12px;vertical-align:middle}
+td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.em-vazio{color:#8b949e}
 
  
-.ego-badge{display:inline-block;padding:2px 7px;border-radius:10px;
-           font-size:.7rem;font-weight:700;margin-right:2px;white-space:nowrap}
-.ego3  {background:rgba(230,126,34,.15);color:#e67e22}
-.ego7  {background:rgba(88,166,255,.15);color:#58a6ff}
-.ego12 {background:rgba(188,140,255,.15);color:#bc8cff}
-.ego19 {background:rgba(86,211,100,.15);color:#56d364}
-.ego20 {background:rgba(244,112,103,.15);color:#f47067}
-.ego21 {background:rgba(227,179,65,.15);color:#e3b341}
-.ego-outro{background:rgba(139,148,158,.15);color:#8b949e}
+.vb{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.68rem;
+    font-weight:700;white-space:nowrap;margin:1px 0}
+.vb-passeio {background:rgba(88,166,255,.15);color:#58a6ff}
+.vb-vuc     {background:rgba(86,211,100,.15);color:#56d364}
+.vb-util    {background:rgba(227,179,65,.15);color:#e3b341}
+.vb-carreta {background:rgba(244,112,103,.15);color:#f47067}
+.vb-truck   {background:rgba(188,140,255,.15);color:#bc8cff}
+.vb-moto    {background:rgba(230,126,34,.15);color:#e67e22}
+.vb-outro   {background:rgba(139,148,158,.15);color:#8b949e}
 
  
-.rota-chip{display:inline-block;background:#0d2020;color:#56d364;border:1px solid #1a4040;
-           border-radius:4px;padding:1px 5px;font-size:.68rem;margin:1px 2px;
-           font-family:'Consolas','Courier New',monospace;white-space:nowrap}
+.rota-chip{display:inline-block;background:#0d2020;color:#56d364;
+           border:1px solid #1a4040;border-radius:4px;padding:1px 5px;
+           font-size:.67rem;margin:1px 2px;font-family:'Consolas','Courier New',monospace;
+           white-space:nowrap}
 
  
-.standby{text-align:center;padding:80px 20px;color:#8b949e}
-.standby .icon{font-size:3rem;margin-bottom:16px}
+.standby{text-align:center;padding:90px 20px;color:#8b949e}
+.standby .icon{font-size:3.5rem;margin-bottom:16px}
 .standby h2{color:#c9d1d9;font-size:1.2rem;margin-bottom:8px}
+.standby p{font-size:.88rem;line-height:1.6}
 </style>
 </head>
 <body>
 
+
 <div class="hero">
   <h1>🗺️ Dashboard <span>NEX</span> — SGO3</h1>
-  <div class="sub">Programação de agências e rotas</div>
+  <div class="sub">Programação de agências e perfis de veículo</div>
   <div id="ts-linha">Carregando…</div>
 </div>
 
-<div class="tabs" id="tabs-container"></div>
 
-<div class="container" id="paineis-container"></div>
+<div class="kpis" id="kpis"></div>
+
+
+<div class="toolbar">
+  <input type="text" id="busca" placeholder="Buscar agência, nome, código de rota…" oninput="aplicarFiltros()">
+  <span class="cnt" id="cnt-vis"></span>
+</div>
+
+
+<div class="chips-bar" id="chips-bar">
+  <span class="lbl-chip">Veículo:</span>
+</div>
+
+
+<div class="tbl-container">
+  <div id="tbl-wrap"></div>
+</div>
 
 <script>
-
-var DADOS_RAW = {"rows":[{"agencia":"BRNGO319","nome":"WI INFORMATICA E SERVICOS","rotas":"AM1_7_1, AM1_7_2, AM1_7_3","sacas":3,"horario":"11:30","pacotes":82,"ego":"EGO7"},{"agencia":"BRNGO2","nome":"CHAVEIRO SOLUÇÃO","rotas":"AM1_3_1, AM1_3_2, AM1_3_3","sacas":3,"horario":"11:30","pacotes":88,"ego":"EGO3"},{"agencia":"BRNGO363","nome":"TIC TAC UNIFORMES","rotas":"AM1_5_1, AM1_5_2, AM1_5_3","sacas":3,"horario":"11:30","pacotes":90,"ego":"EGO5"},{"agencia":"BRNGO557","nome":"MASTER LAN HOUSE","rotas":"AM1_2_1, AM1_2_2, AM1_2_3","sacas":3,"horario":"12:00","pacotes":88,"ego":"EGO2"},{"agencia":"BRNGO953","nome":"SMART UP","rotas":"AM1_4_1, AM1_4_2","sacas":2,"horario":"12:00","pacotes":80,"ego":"EGO4"},{"agencia":"BRNGO852","nome":"MVWEB DIGITAL","rotas":"AM1_5_4","sacas":1,"horario":"11:30","pacotes":40,"ego":"EGO5"},{"agencia":"BRNGO740","nome":"MAJESTIC STORE","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO561","nome":"VANCEL CELULARES E INFORMATICA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO685","nome":"CONSERTA SMART VILA AURORA OESTE","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO578","nome":"CABANA DO SAPATO GOIANIA VIVA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO358","nome":"ARARA BRASIL TECNOLOGIA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO831","nome":"WM INFORMATICA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7522","nome":"BATER CENTER BATERIAS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO260","nome":"KOOPNOW ROLAMENTOS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO399","nome":"CONEXAO CELULARES INFORMATICA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO215","nome":"MKD MAIS KI DESCARTAVEIS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO622","nome":"SD TOKINHA DO ALUNO","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO311","nome":"100 SEDE DISTRIBUIDORA DE AGUA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO901","nome":"RGR ENGENHARIA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO144","nome":"NATURALLY","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO241","nome":"JWE E CONEXÃO CONTABILIDADE","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO353","nome":"3RICK ELETRONIC","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO519","nome":"AGAPE CELULARES","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO940","nome":"ENGATES BR","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO821","nome":"EXPRESS CELULARES","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7449","nome":"LEX CORP","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7466","nome":"LC FERRAGISTA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7475","nome":"GMH TUBOS E CONEXÕES","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7533","nome":"WI DESIGN","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7534","nome":"SUPER CÓPIAS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRDGO7539","nome":"LACASA DELIVERY","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO970","nome":"LOUCAS POR CHINELOS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""}],"publicadoEm":"12/05/2026 00:37"};
-var GERADO_EM = "12/05/2026 00:37";
-
-
-var EGO_COR = {
-  'EGO3' :'#e67e22','EGO7' :'#58a6ff','EGO12':'#bc8cff',
-  'EGO19':'#56d364','EGO20':'#f47067','EGO21':'#e3b341'
-};
-var EGO_ORDEM = ['EGO3','EGO7','EGO12','EGO19','EGO20','EGO21'];
-
-function egoCls(ego){
-  if(!ego) return 'ego-outro';
-  var n = ego.replace(/\D/g,'');
-  return 'ego'+n;
-}
-
-function egoCor(ego){
-  return EGO_COR[ego] || '#8b949e';
-}
+var DADOS_RAW = {"rows":[{"agencia":"BRNGO319","nome":"WI INFORMATICA E SERVICOS","veiculo":"Veiculo de Passeio Extra 4h","rotas":"AM1_7_1, AM1_7_2, AM1_7_3","sacas":3,"horario":"11:30","pacotes":82},{"agencia":"BRNGO2","nome":"CHAVEIRO SOLUÇÃO","veiculo":"Veiculo de Passeio Extra 4h","rotas":"AM1_3_1, AM1_3_2, AM1_3_3","sacas":3,"horario":"11:30","pacotes":88},{"agencia":"BRNGO363","nome":"TIC TAC UNIFORMES","veiculo":"Moto ME Extra | Veiculo de Passeio Extra 4h","rotas":"AM1_5_1, AM1_5_2, AM1_5_3","sacas":3,"horario":"11:30","pacotes":90},{"agencia":"BRNGO557","nome":"MASTER LAN HOUSE","veiculo":"Veiculo de Passeio Extra 4h | Moto ME Extra","rotas":"AM1_2_1, AM1_2_2, AM1_2_3","sacas":3,"horario":"12:00","pacotes":88},{"agencia":"BRNGO953","nome":"SMART UP","veiculo":"Veiculo de Passeio Extra 4h","rotas":"AM1_4_1, AM1_4_2","sacas":2,"horario":"12:00","pacotes":80},{"agencia":"BRNGO852","nome":"MVWEB DIGITAL","veiculo":"Veiculo de Passeio Extra 4h","rotas":"AM1_5_4","sacas":1,"horario":"11:30","pacotes":40},{"agencia":"BRNGO740","nome":"MAJESTIC STORE","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO561","nome":"VANCEL CELULARES E INFORMATICA","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO685","nome":"CONSERTA SMART VILA AURORA OESTE","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO578","nome":"CABANA DO SAPATO GOIANIA VIVA","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO358","nome":"ARARA BRASIL TECNOLOGIA","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO831","nome":"WM INFORMATICA","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO7522","nome":"BATER CENTER BATERIAS","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO260","nome":"KOOPNOW ROLAMENTOS","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO399","nome":"CONEXAO CELULARES INFORMATICA","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO215","nome":"MKD MAIS KI DESCARTAVEIS","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO622","nome":"SD TOKINHA DO ALUNO","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO311","nome":"100 SEDE DISTRIBUIDORA DE AGUA","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO901","nome":"RGR ENGENHARIA","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO144","nome":"NATURALLY","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO241","nome":"JWE E CONEXÃO CONTABILIDADE","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO353","nome":"3RICK ELETRONIC","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO519","nome":"AGAPE CELULARES","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO940","nome":"ENGATES BR","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO821","nome":"EXPRESS CELULARES","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO7449","nome":"LEX CORP","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO7466","nome":"LC FERRAGISTA","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO7475","nome":"GMH TUBOS E CONEXÕES","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO7533","nome":"WI DESIGN","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO7534","nome":"SUPER CÓPIAS","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRDGO7539","nome":"LACASA DELIVERY","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0},{"agencia":"BRNGO970","nome":"LOUCAS POR CHINELOS","veiculo":"","rotas":"","sacas":0,"horario":"","pacotes":0}],"publicadoEm":"12/05/2026 00:44"};
+var GERADO_EM = "12/05/2026 00:44";
 
 
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function fmt(n){ return (n||0).toLocaleString('pt-BR'); }
 
 
+function vbCls(tipo){
+  var t = tipo.toLowerCase();
+  if(t.indexOf('passeio')>=0) return 'vb-passeio';
+  if(t.indexOf('vuc')>=0)     return 'vb-vuc';
+  if(t.indexOf('util')>=0)    return 'vb-util';
+  if(t.indexOf('carreta')>=0) return 'vb-carreta';
+  if(t.indexOf('truck')>=0||t.indexOf('caminhao')>=0) return 'vb-truck';
+  if(t.indexOf('moto')>=0)    return 'vb-moto';
+  return 'vb-outro';
+}
+
+
+function renderVeiculo(tipo){
+  if(!tipo) return '<span class="em-vazio">—</span>';
+  return tipo.split(' | ').map(function(t){
+    t = t.trim();
+    return '<span class="vb '+vbCls(t)+'">'+esc(t)+'</span>';
+  }).join(' ');
+}
+
+
 function renderRotas(rotasStr){
-  if(!rotasStr) return '<span style="color:#8b949e">—</span>';
+  if(!rotasStr) return '<span class="em-vazio">—</span>';
   var chips = rotasStr.split(',').map(function(r){ return r.trim(); }).filter(Boolean);
-  if(chips.length === 0) return '<span style="color:#8b949e">—</span>';
-  return chips.map(function(c){ return '<span class="rota-chip">'+escHtml(c)+'</span>'; }).join('');
-}
-
-function escHtml(s){
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return chips.length
+    ? chips.map(function(c){ return '<span class="rota-chip">'+esc(c)+'</span>'; }).join('')
+    : '<span class="em-vazio">—</span>';
 }
 
 
-var sortState = {};  
-
-function sortRows(rows, col, dir){
-  return rows.slice().sort(function(a,b){
-    var va = a[col] !== undefined ? a[col] : '';
-    var vb = b[col] !== undefined ? b[col] : '';
-    if(typeof va === 'number' && typeof vb === 'number'){
-      return dir === 'asc' ? va - vb : vb - va;
-    }
-    va = String(va).toLowerCase();
-    vb = String(vb).toLowerCase();
-    if(va < vb) return dir === 'asc' ? -1 : 1;
-    if(va > vb) return dir === 'asc' ? 1 : -1;
-    return 0;
-  });
-}
+var ROWS_BASE = [];       
+var CHIP_ATIVO = 'todos'; 
+var SORT = {col:'agencia', dir:'asc'};
 
 
-function buildTabela(painelId, rows){
-  var wrap = document.getElementById('tbl-'+painelId);
-  if(!wrap) return;
+function init(){
+  var rawRows = Array.isArray(DADOS_RAW.rows) ? DADOS_RAW.rows : [];
 
-  var ss = sortState[painelId] || {col:'agencia', dir:'asc'};
-  var sorted = sortRows(rows.filter(function(r){ return r._visible !== false; }), ss.col, ss.dir);
-
-  var cols = [
-    {key:'ego',    label:'EGO',       cls:''},
-    {key:'agencia',label:'Agência',   cls:''},
-    {key:'nome',   label:'Nome',      cls:''},
-    {key:'rotas',  label:'Rotas',     cls:''},
-    {key:'sacas',  label:'Sacas',     cls:'num'},
-    {key:'horario',label:'Horário',   cls:''},
-    {key:'pacotes',label:'Pacotes',   cls:'num'}
-  ];
-
-  var th = cols.map(function(c){
-    var cls = '';
-    if(ss.col === c.key) cls = ' class="sort-'+ss.dir+'"';
-    return '<th'+cls+' onclick="clickSort(\''+painelId+'\',\''+c.key+'\')">'+c.label+'</th>';
-  }).join('');
-
-  var tbody = sorted.map(function(r){
-    var egoBadge = r.ego
-      ? '<span class="ego-badge '+egoCls(r.ego)+'">'+escHtml(r.ego)+'</span>'
-      : '<span class="ego-badge ego-outro">—</span>';
-    return '<tr>'
-      + '<td>'+egoBadge+'</td>'
-      + '<td><strong>'+escHtml(r.agencia)+'</strong></td>'
-      + '<td>'+escHtml(r.nome)+'</td>'
-      + '<td>'+renderRotas(r.rotas)+'</td>'
-      + '<td class="num">'+fmt(r.sacas)+'</td>'
-      + '<td>'+escHtml(r.horario||'—')+'</td>'
-      + '<td class="num"><strong>'+fmt(r.pacotes)+'</strong></td>'
-      + '</tr>';
-  }).join('');
-
-  wrap.innerHTML = sorted.length === 0
-    ? '<div style="padding:40px;text-align:center;color:#8b949e">Nenhuma agência encontrada.</div>'
-    : '<div class="tbl-wrap"><table><thead><tr>'+th+'</tr></thead><tbody>'+tbody+'</tbody></table></div>';
-}
-
-function clickSort(painelId, col){
-  var ss = sortState[painelId] || {col:'agencia', dir:'asc'};
-  if(ss.col === col){
-    ss.dir = ss.dir === 'asc' ? 'desc' : 'asc';
-  } else {
-    ss.col = col; ss.dir = 'asc';
-  }
-  sortState[painelId] = ss;
-  buildTabela(painelId, window._painelRows[painelId] || []);
-}
-
-
-function buildKpis(rows, accentColor){
-  var totalAgencias = rows.length;
-  var totalSacas    = rows.reduce(function(s,r){ return s + (r.sacas||0); }, 0);
-  var totalPacotes  = rows.reduce(function(s,r){ return s + (r.pacotes||0); }, 0);
-  var egoSet = {};
-  rows.forEach(function(r){ if(r.ego) egoSet[r.ego] = true; });
-  var totalEgos = Object.keys(egoSet).length;
-
-  var ac = accentColor || '#e67e22';
-  function card(lbl, val, sub, color){
-    return '<div class="kpi">'
-      + '<div class="kpi-accent" style="background:'+color+'"></div>'
-      + '<div class="kpi-body">'
-      + '<div class="lbl" style="color:'+color+'">'+lbl+'</div>'
-      + '<div class="val">'+val+'</div>'
-      + (sub ? '<div class="sub">'+sub+'</div>' : '')
-      + '</div></div>';
-  }
-
-  return card('Agências',  fmt(totalAgencias), 'no período',      ac)
-       + card('Sacas',     fmt(totalSacas),    'total de rotas',  '#58a6ff')
-       + card('Pacotes',   fmt(totalPacotes),  'total estimado',  '#56d364')
-       + card('EGOs',      fmt(totalEgos),     'ativos neste ciclo', '#bc8cff');
-}
-
-
-window._painelRows = {};
-
-function filtrar(painelId){
-  var q = (document.getElementById('busca-'+painelId)||{value:''}).value.trim().toLowerCase();
-  var rows = (window._painelRows[painelId]||[]).map(function(r){
-    if(!q){ r._visible = true; return r; }
-    var hay = [r.agencia, r.nome, r.rotas, r.ego, r.horario].join(' ').toLowerCase();
-    r._visible = hay.indexOf(q) >= 0;
-    return r;
-  });
-  buildTabela(painelId, rows);
-  
-  var vis = rows.filter(function(r){ return r._visible !== false; }).length;
-  var el = document.getElementById('cnt-'+painelId);
-  if(el) el.textContent = vis + ' agência' + (vis !== 1 ? 's' : '');
-}
-
-
-function buildUI(){
-  var rows = Array.isArray(DADOS_RAW.rows) ? DADOS_RAW.rows : [];
-
-  
-  if(rows.length === 0){
-    document.getElementById('tabs-container').style.display = 'none';
-    document.getElementById('paineis-container').innerHTML =
+  if(rawRows.length === 0){
+    document.getElementById('kpis').innerHTML = '';
+    document.getElementById('tbl-wrap').innerHTML =
       '<div class="standby"><div class="icon">🗺️</div>'
-      + '<h2>Dashboard NEX aguardando publicação</h2>'
-      + '<p>Use o menu <strong>🚀 Dashboard SGO3 → 🗺️ Publicar NEX</strong> na planilha.</p></div>';
+      +'<h2>Dashboard NEX aguardando publicação</h2>'
+      +'<p>Use o menu <strong>🚀 Dashboard SGO3 → 🗺️ Publicar NEX</strong> na planilha.</p></div>';
     document.getElementById('ts-linha').textContent = 'Sem dados publicados';
+    document.getElementById('chips-bar').style.display = 'none';
     return;
   }
 
   document.getElementById('ts-linha').textContent = 'Atualizado em ' + GERADO_EM;
+  ROWS_BASE = rawRows;
+
+  buildKpis(rawRows);
+  buildChips(rawRows);
+  renderTabela(rawRows);
+}
+
+
+function buildKpis(rows){
+  var totalAg    = rows.length;
+  var totalSacas = rows.reduce(function(s,r){ return s+(r.sacas||0); },0);
+  var totalPac   = rows.reduce(function(s,r){ return s+(r.pacotes||0); },0);
 
   
-  var grupos = {};
+  var tiposSet = {};
   rows.forEach(function(r){
-    var ego = r.ego || 'Outros';
-    if(!grupos[ego]) grupos[ego] = [];
-    grupos[ego].push(r);
+    if(r.veiculo) r.veiculo.split(' | ').forEach(function(t){ tiposSet[t.trim()]=true; });
   });
+  var totalTipos = Object.keys(tiposSet).length;
 
-  
-  var egoKeys = Object.keys(grupos).sort(function(a,b){
-    var ia = EGO_ORDEM.indexOf(a);
-    var ib = EGO_ORDEM.indexOf(b);
-    if(ia < 0) ia = 999;
-    if(ib < 0) ib = 999;
-    return ia - ib;
-  });
+  function card(lbl, val, sub, cor){
+    return '<div class="kpi">'
+      +'<div class="kpi-accent" style="background:'+cor+'"></div>'
+      +'<div class="kpi-body">'
+      +'<div class="lbl" style="color:'+cor+'">'+lbl+'</div>'
+      +'<div class="val">'+val+'</div>'
+      +(sub?'<div class="sub">'+sub+'</div>':'')
+      +'</div></div>';
+  }
 
-  var tabsEl    = document.getElementById('tabs-container');
-  var paineiEl  = document.getElementById('paineis-container');
-  tabsEl.innerHTML   = '';
-  paineiEl.innerHTML = '';
-
-  
-  var todasId = 'todas';
-  window._painelRows[todasId] = rows.map(function(r){ r._visible=true; return r; });
-
-  var tabTodas = document.createElement('div');
-  tabTodas.className = 'tab ativa';
-  tabTodas.id = 'tab-'+todasId;
-  tabTodas.innerHTML = 'Todas <span class="badge-tab">'+rows.length+'</span>';
-  tabTodas.onclick = function(){ ativarTab(todasId); };
-  tabsEl.appendChild(tabTodas);
-
-  var painelTodas = document.createElement('div');
-  painelTodas.className = 'painel ativo';
-  painelTodas.id = 'painel-'+todasId;
-  painelTodas.innerHTML =
-    '<div class="kpis">'+buildKpis(rows, '#e67e22')+'</div>'
-    + '<div class="toolbar-row">'
-    + '<input type="text" id="busca-'+todasId+'" placeholder="Buscar agência, rota, EGO…" oninput="filtrar(\''+todasId+'\')">'
-    + '<span id="cnt-'+todasId+'" style="color:#8b949e;font-size:.8rem;white-space:nowrap">'+rows.length+' agências</span>'
-    + '</div>'
-    + '<div id="tbl-'+todasId+'"></div>';
-  paineiEl.appendChild(painelTodas);
-  buildTabela(todasId, rows);
-
-  
-  egoKeys.forEach(function(ego){
-    var gr = grupos[ego];
-    var id = 'ego_'+ego.replace(/\W/g,'');
-    var cor = egoCor(ego);
-    window._painelRows[id] = gr.map(function(r){ r._visible=true; return r; });
-
-    var tab = document.createElement('div');
-    tab.className = 'tab';
-    tab.id = 'tab-'+id;
-    tab.innerHTML = escHtml(ego) + ' <span class="badge-tab">'+gr.length+'</span>';
-    tab.style.setProperty('--ego-cor', cor);
-    tab.onclick = (function(eid){ return function(){ ativarTab(eid); }; })(id);
-    tabsEl.appendChild(tab);
-
-    var painel = document.createElement('div');
-    painel.className = 'painel';
-    painel.id = 'painel-'+id;
-    painel.innerHTML =
-      '<div class="kpis">'+buildKpis(gr, cor)+'</div>'
-      + '<div class="toolbar-row">'
-      + '<input type="text" id="busca-'+id+'" placeholder="Buscar agência, rota…" oninput="filtrar(\''+id+'\')">'
-      + '<span id="cnt-'+id+'" style="color:#8b949e;font-size:.8rem;white-space:nowrap">'+gr.length+' agências</span>'
-      + '</div>'
-      + '<div id="tbl-'+id+'"></div>';
-    paineiEl.appendChild(painel);
-    buildTabela(id, gr);
-  });
-}
-
-var _tabAtiva = 'todas';
-function ativarTab(id){
-  
-  var oldTab = document.getElementById('tab-'+_tabAtiva);
-  var oldPan = document.getElementById('painel-'+_tabAtiva);
-  if(oldTab) oldTab.classList.remove('ativa');
-  if(oldPan) oldPan.classList.remove('ativo');
-  
-  var newTab = document.getElementById('tab-'+id);
-  var newPan = document.getElementById('painel-'+id);
-  if(newTab){ newTab.classList.add('ativa'); }
-  if(newPan){ newPan.classList.add('ativo'); }
-  _tabAtiva = id;
+  document.getElementById('kpis').innerHTML =
+    card('Agências', fmt(totalAg),    'no ciclo',        '#e67e22')
+   +card('Sacas',    fmt(totalSacas), 'total de rotas',  '#58a6ff')
+   +card('Pacotes',  fmt(totalPac),   'total estimado',  '#56d364')
+   +card('Perfis',   fmt(totalTipos), 'tipos de veículo','#bc8cff');
 }
 
 
-buildUI();
+function buildChips(rows){
+  
+  var tiposSet = {};
+  rows.forEach(function(r){
+    if(r.veiculo){
+      r.veiculo.split(' | ').forEach(function(t){
+        t = t.trim();
+        if(t) tiposSet[t] = (tiposSet[t]||0) + 1;
+      });
+    }
+  });
+  var tipos = Object.keys(tiposSet).sort();
+
+  var bar = document.getElementById('chips-bar');
+  
+  var cAll = document.createElement('span');
+  cAll.className = 'chip chip-all ativo';
+  cAll.id = 'chip-todos';
+  cAll.textContent = 'Todos (' + rows.length + ')';
+  cAll.onclick = function(){ setChip('todos'); };
+  bar.appendChild(cAll);
+
+  tipos.forEach(function(t){
+    var c = document.createElement('span');
+    c.className = 'chip';
+    c.id = 'chip-'+t;
+    c.textContent = t + ' (' + tiposSet[t] + ')';
+    c.onclick = (function(tipo){ return function(){ setChip(tipo); }; })(t);
+    bar.appendChild(c);
+  });
+}
+
+function setChip(tipo){
+  
+  var prev = document.getElementById('chip-'+CHIP_ATIVO);
+  if(prev) prev.classList.remove('ativo');
+  CHIP_ATIVO = tipo;
+  var next = document.getElementById('chip-'+tipo);
+  if(next) next.classList.add('ativo');
+  aplicarFiltros();
+}
+
+
+function aplicarFiltros(){
+  var q = (document.getElementById('busca').value || '').trim().toLowerCase();
+
+  var filtered = ROWS_BASE.filter(function(r){
+    
+    if(CHIP_ATIVO !== 'todos'){
+      var tipos = r.veiculo ? r.veiculo.split(' | ').map(function(t){ return t.trim(); }) : [];
+      if(tipos.indexOf(CHIP_ATIVO) < 0) return false;
+    }
+    
+    if(q){
+      var hay = [r.agencia, r.nome, r.rotas, r.veiculo, r.horario].join(' ').toLowerCase();
+      if(hay.indexOf(q) < 0) return false;
+    }
+    return true;
+  });
+
+  renderTabela(filtered);
+}
+
+
+var COLS = [
+  {key:'agencia', label:'Agência'},
+  {key:'nome',    label:'Nome'},
+  {key:'veiculo', label:'Tipo de Veículo'},
+  {key:'rotas',   label:'Rotas'},
+  {key:'sacas',   label:'Sacas',   cls:'num'},
+  {key:'horario', label:'Horário'},
+  {key:'pacotes', label:'Pacotes', cls:'num'}
+];
+
+function renderTabela(rows){
+  
+  var sorted = rows.slice().sort(function(a,b){
+    var va = a[SORT.col] !== undefined ? a[SORT.col] : '';
+    var vb = b[SORT.col] !== undefined ? b[SORT.col] : '';
+    if(typeof va==='number'&&typeof vb==='number') return SORT.dir==='asc'?va-vb:vb-va;
+    va=String(va).toLowerCase(); vb=String(vb).toLowerCase();
+    if(va<vb) return SORT.dir==='asc'?-1:1;
+    if(va>vb) return SORT.dir==='asc'?1:-1;
+    return 0;
+  });
+
+  var th = COLS.map(function(c){
+    var sc = SORT.col===c.key ? ' class="sort-'+SORT.dir+'"' : '';
+    return '<th'+sc+' onclick="clickSort(\''+c.key+'\')">'+c.label+'</th>';
+  }).join('');
+
+  var tbody = sorted.map(function(r){
+    return '<tr>'
+      +'<td><strong>'+esc(r.agencia)+'</strong></td>'
+      +'<td>'+esc(r.nome)+'</td>'
+      +'<td>'+renderVeiculo(r.veiculo)+'</td>'
+      +'<td>'+renderRotas(r.rotas)+'</td>'
+      +'<td class="num">'+fmt(r.sacas)+'</td>'
+      +'<td>'+(r.horario||'<span class="em-vazio">—</span>')+'</td>'
+      +'<td class="num"><strong>'+fmt(r.pacotes)+'</strong></td>'
+      +'</tr>';
+  }).join('');
+
+  document.getElementById('cnt-vis').textContent =
+    sorted.length + ' agência' + (sorted.length!==1?'s':'');
+
+  document.getElementById('tbl-wrap').innerHTML = sorted.length === 0
+    ? '<div style="padding:40px;text-align:center;color:#8b949e">Nenhuma agência encontrada.</div>'
+    : '<div class="tbl-wrap"><table><thead><tr>'+th+'</tr></thead><tbody>'+tbody+'</tbody></table></div>';
+}
+
+function clickSort(col){
+  if(SORT.col===col) SORT.dir = SORT.dir==='asc'?'desc':'asc';
+  else { SORT.col=col; SORT.dir='asc'; }
+  aplicarFiltros();
+}
+
+
+init();
 </script>
 </body>
 </html>
