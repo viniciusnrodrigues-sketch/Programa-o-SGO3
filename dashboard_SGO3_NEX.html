@@ -5,271 +5,221 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NEX — Programação SGO3</title>
 <style>
- 
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter','Plus Jakarta Sans',system-ui,sans-serif;
-     background:#f4f6f9;color:#1e293b;
-     height:100vh;overflow:hidden;display:flex;flex-direction:column}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#c9d1d9}
+.hero{background:linear-gradient(135deg,#0d1117,#161b27);padding:16px 24px;text-align:center;border-bottom:1px solid #21262d}
+.hero h1{font-size:1.3rem;font-weight:700;color:#e6edf3;margin-bottom:2px}
+.hero h1 span{color:#e67e22}
+.hero .sub{color:#8b949e;font-size:.8rem}
+#ts-linha{color:#6c9bcf;font-size:.76rem;margin-top:4px}
 
  
-#hdr{background:linear-gradient(135deg,#1a1a2e,#16213e);
-     padding:11px 24px;display:flex;align-items:center;
-     justify-content:space-between;
-     border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;
-     box-shadow:0 2px 12px rgba(0,0,0,.25)}
-#hdr h1{font-size:clamp(1.2rem,1.5vw,1.75rem);font-weight:800;color:#fff}
-#hdr h1 span{color:#e67e22}
-.hdr-sub{font-size:12px;color:#64748b;margin-top:2px}
-.hdr-pub{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
-.badge-data{background:rgba(255,255,255,.1);color:#e2e8f0;
-            border:1px solid rgba(255,255,255,.14);border-radius:8px;
-            padding:4px 14px;font-size:clamp(.85rem,.95vw,1rem);font-weight:700;
-            letter-spacing:.3px}
-.badge-at{font-size:11px;color:#475569;display:flex;align-items:center;gap:5px}
-.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;
-          animation:live-pulse 2s ease-in-out infinite}
-@keyframes live-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}
-                       50%{opacity:.7;box-shadow:0 0 0 4px rgba(34,197,94,0)}}
+.tabs{display:flex;background:#161b27;border-bottom:1px solid #21262d;
+      position:sticky;top:0;z-index:100;overflow-x:auto}
+.tab{flex:1;min-width:90px;padding:10px 8px;text-align:center;cursor:pointer;
+     font-weight:700;font-size:.78rem;border-bottom:2px solid transparent;
+     transition:all .2s;color:#8b949e;white-space:nowrap}
+.tab.ativa{color:#e67e22;border-color:#e67e22;background:#1c2333}
+.tab:hover:not(.ativa){background:#1c2333;color:#c9d1d9}
+.badge-tab{border-radius:10px;padding:1px 6px;font-size:.65rem;font-weight:700;
+           margin-left:4px;opacity:.9;background:#21262d;color:#8b949e}
+.tab.ativa .badge-tab{background:rgba(230,126,34,.2);color:#e67e22}
+
+.container{width:100%;padding:12px 14px 48px}
+.painel{display:none}.painel.ativo{display:block}
 
  
-#kpis{display:flex;gap:8px;padding:8px 20px;flex-shrink:0}
-.kpi{background:#fff;border-radius:12px;
-     box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
-     padding:10px 18px;flex:1;min-width:0}
-.kpi-l{font-size:11px;color:#94a3b8;text-transform:uppercase;
-        letter-spacing:.08em;margin-bottom:4px;font-weight:600}
-.kpi-v{font-size:clamp(2rem,2.8vw,2.8rem);font-weight:700;color:#1e293b;line-height:1}
+.kpis{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.kpi{flex:1;min-width:100px;border-radius:8px;overflow:hidden;text-align:center;
+     background:#161b27;border:1px solid #21262d;transition:transform .15s,box-shadow .15s}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.kpi-accent{height:3px;width:100%}
+.kpi-body{padding:8px 7px 9px}
+.kpi .lbl{font-size:.58rem;font-weight:700;margin-bottom:1px;white-space:nowrap;
+          opacity:.9;letter-spacing:.03em;text-transform:uppercase}
+.kpi .val{font-size:1.4rem;font-weight:800;line-height:1.15}
+.kpi .sub{font-size:.56rem;color:#8b949e;margin-top:2px;white-space:nowrap}
 
  
-#grid{display:flex;gap:10px;padding:0 20px 10px;flex:1;overflow-x:auto;
-      overflow-y:hidden;min-height:0;align-items:stretch}
+.toolbar-row{display:flex;gap:8px;margin-bottom:7px;flex-wrap:wrap;align-items:center}
+.toolbar-row input{background:#161b27;border:1px solid #30363d;border-radius:6px;
+                   padding:7px 11px;font-size:.83rem;flex:1;min-width:200px;
+                   color:#c9d1d9;outline:none}
+.toolbar-row input:focus{border-color:#e67e22}
+.chips-section{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;
+               padding:7px 10px;background:#161b27;border:1px solid #21262d;border-radius:8px}
+.chip-lbl{color:#8b949e;font-size:.72rem;font-weight:700;white-space:nowrap;
+          min-width:54px;letter-spacing:.03em}
+.chips-group{display:flex;flex-wrap:wrap;gap:5px;flex:1}
+.chip-btn{background:#21262d;border:1px solid #30363d;border-radius:20px;
+          color:#484f58;padding:4px 10px;font-size:.74rem;font-weight:700;
+          cursor:pointer;transition:all .15s;outline:none;white-space:nowrap}
+.chip-btn:hover{opacity:.8}
+.chip-btn.active{background:#2a1e10;border-color:#e67e22;color:#e67e22}
+.chip-ctrl{background:none;border:none;font-size:.72rem;cursor:pointer;padding:0 4px;white-space:nowrap}
+.chip-ctrl.todos{color:#e67e22}.chip-ctrl.nenhum{color:#484f58}
+.chip-ctrl:hover{opacity:.7}
+.chip-sep{color:#30363d;font-size:.8rem;align-self:center}
 
  
-.ego-card{background:#fff;border-radius:14px;
-          box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.05);
-          display:flex;flex-direction:column;overflow:hidden;
-          min-width:240px;max-width:300px;flex:1;min-height:0;
-          transition:box-shadow .2s}
-.ego-card:hover{box-shadow:0 2px 6px rgba(0,0,0,.08),0 8px 20px rgba(0,0,0,.07)}
+.card{background:#161b27;border:1px solid #21262d;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.card-hdr{padding:9px 14px;font-weight:700;font-size:.84rem;color:#e6edf3;
+          display:flex;justify-content:space-between;align-items:center;
+          border-bottom:1px solid #21262d;background:#1a1e2e}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+thead th{background:#1c2333;color:#8b949e;padding:8px 11px;text-align:left;
+         white-space:nowrap;position:sticky;top:0;z-index:10;font-size:.71rem;
+         text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #30363d;
+         cursor:pointer;user-select:none;transition:background .15s,color .15s}
+thead th:hover{background:#21262d;color:#c9d1d9}
+thead th.sort-desc{color:#e67e22}
+thead th.sort-asc{color:#58a6ff}
+tbody td{padding:8px 11px;border-bottom:1px solid #21262d;color:#c9d1d9;vertical-align:middle}
+tbody tr:hover{background:#1c2333}
+.vazio{text-align:center;padding:28px;color:#484f58;font-style:italic}
 
  
-.ec0{border-top:3px solid #3b82f6}
-.ec1{border-top:3px solid #10b981}
-.ec2{border-top:3px solid #f59e0b}
-.ec3{border-top:3px solid #8b5cf6}
-.ec4{border-top:3px solid #ef4444}
-.ec5{border-top:3px solid #06b6d4}
-.ec6{border-top:3px solid #e67e22}
+.ego-badge{border-radius:10px;padding:2px 8px;font-size:.68rem;font-weight:800;white-space:nowrap}
+.ego-EGO3  {background:#2a1e10;color:#e67e22;border:1px solid #e67e22}
+.ego-EGO7  {background:#0d1e35;color:#58a6ff;border:1px solid #58a6ff}
+.ego-EGO12 {background:#1a1226;color:#bc8cff;border:1px solid #bc8cff}
+.ego-EGO19 {background:#0d2020;color:#56d364;border:1px solid #56d364}
+.ego-EGO20 {background:#1f1215;color:#f47067;border:1px solid #f47067}
+.ego-EGO21 {background:#1a1a0f;color:#e3b341;border:1px solid #e3b341}
+.ego-outro {background:#21262d;color:#8b949e;border:1px solid #30363d}
 
  
-.ego-hdr{padding:8px 11px;display:flex;align-items:flex-start;
-          justify-content:space-between;border-bottom:1px solid #f1f5f9;
-          flex-shrink:0;background:#fafbfc;gap:4px}
-.ego-name{font-size:clamp(13px,1vw,16px);font-weight:700;color:#1e293b;line-height:1.2}
-.ego-sub{font-size:11px;color:#94a3b8;margin-top:3px;font-weight:500}
-.ego-badges{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.vbadge{border-radius:10px;padding:2px 8px;font-size:.68rem;font-weight:700;white-space:nowrap}
+.vb-van    {background:#0d1e35;color:#58a6ff;border:1px solid #388bfd}
+.vb-vuc    {background:#1a1226;color:#bc8cff;border:1px solid #8957e5}
+.vb-util   {background:#2a1e10;color:#e67e22;border:1px solid #c2410c}
+.vb-carreta{background:#0d2020;color:#56d364;border:1px solid #3fb950}
+.vb-truck  {background:#1a1a0f;color:#e3b341;border:1px solid #9e6a03}
+.vb-outro  {background:#21262d;color:#8b949e;border:1px solid #30363d}
 
  
-.badge-ok   {background:#dcfce7;color:#15803d;font-size:11px;padding:3px 8px;border-radius:8px;font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
-.badge-amber{background:#fef9c3;color:#a16207;font-size:11px;padding:3px 8px;border-radius:8px;font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
-.badge-red  {background:#fee2e2;color:#b91c1c;font-size:11px;padding:3px 8px;border-radius:8px;font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
-.badge-pkg  {background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;
-             font-size:10px;padding:2px 7px;border-radius:8px;
-             font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
+.cl-chip{background:#0d2020;color:#56d364;border:1px solid #238636;border-radius:6px;
+         padding:1px 5px;font-size:.65rem;font-weight:700;margin-right:2px;white-space:nowrap}
 
  
-.ego-veiculos{display:flex;gap:4px;flex-wrap:wrap;
-              padding:5px 11px;border-bottom:1px solid #f1f5f9;
-              flex-shrink:0;min-height:28px;align-items:center}
-.vtag{font-size:10px;font-weight:700;border-radius:5px;
-      padding:2px 7px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
-.vtag-van    {background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd}
-.vtag-vuc    {background:#fdf4ff;color:#7c3aed;border:1px solid #e9d5ff}
-.vtag-util   {background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
-.vtag-carreta{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
-.vtag-truck  {background:#fef9c3;color:#a16207;border:1px solid #fde68a}
-.vtag-outro  {background:#f8fafc;color:#64748b;border:1px solid #e2e8f0}
+.standby{text-align:center;padding:60px 20px;color:#484f58}
+.standby-icon{font-size:2.5rem;margin-bottom:12px;animation:pulse 2s ease-in-out infinite}
+.standby h2{font-size:1.1rem;font-weight:700;color:#8b949e;margin-bottom:8px}
+.standby p{font-size:.85rem;line-height:1.6}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
- 
-.rota-list{display:flex;flex-direction:column;gap:5px;
-           padding:7px;overflow-y:auto;overflow-x:hidden;
-           flex:1;min-height:0;
-           scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.08) transparent}
-.rota-list::-webkit-scrollbar{width:3px}
-.rota-list::-webkit-scrollbar-track{background:transparent}
-.rota-list::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:3px}
+footer{text-align:center;color:#484f58;font-size:.71rem;margin-top:18px;
+       border-top:1px solid #21262d;padding-top:12px}
 
- 
-.rota-card{background:#fff;border:1px solid #e8ecf0;
-           border-left:4px solid #e2e8f0;
-           border-radius:8px;padding:7px 8px;
-           display:flex;flex-direction:column;gap:4px;
-           cursor:default;transition:transform .15s,box-shadow .15s}
-.rota-card:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.09)}
-
-.rota-top{display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0}
-.rota-nome{font-size:clamp(11px,1.1vw,13px);font-weight:700;color:#1e293b;
-           white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-           font-variant-numeric:tabular-nums}
-.cluster-chips{display:flex;gap:3px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
-.cluster-chip{font-size:9px;font-weight:800;background:#e0f2fe;color:#0369a1;
-              border:1px solid #bae6fd;border-radius:4px;padding:1px 5px;
-              white-space:nowrap;line-height:1.4}
-
-.rota-detalhe{font-size:10px;color:#64748b;white-space:nowrap;overflow:hidden;
-              text-overflow:ellipsis;line-height:1.3}
-
-.rota-bottom{display:flex;align-items:center;justify-content:space-between;gap:4px}
-
- 
-.rv-badge{font-size:10px;font-weight:700;border-radius:5px;
-          padding:2px 7px;white-space:nowrap}
-
- 
-.rp-badge{font-size:10px;font-weight:600;color:#64748b;
-          white-space:nowrap;flex-shrink:0}
-
- 
-.ec0 .rota-card{border-left-color:#3b82f6}
-.ec1 .rota-card{border-left-color:#10b981}
-.ec2 .rota-card{border-left-color:#f59e0b}
-.ec3 .rota-card{border-left-color:#8b5cf6}
-.ec4 .rota-card{border-left-color:#ef4444}
-.ec5 .rota-card{border-left-color:#06b6d4}
-.ec6 .rota-card{border-left-color:#e67e22}
-
- 
-.sem-rotas{flex:1;display:flex;align-items:center;justify-content:center;
-           color:#cbd5e1;font-size:11px;font-weight:500}
-
- 
-.standby{display:flex;flex-direction:column;align-items:center;
-         justify-content:center;flex:1;gap:12px;text-align:center}
-.standby-icon{font-size:2.5rem;animation:pulse 2s ease-in-out infinite}
-.standby h2{font-size:1.1rem;font-weight:800;color:#1e293b}
-.standby p{color:#94a3b8;font-size:.8rem;max-width:340px;line-height:1.5}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.1)}}
-
- 
-#pub-footer{background:#fff;border-top:1px solid #e8ecf0;
-            padding:5px 20px;display:flex;gap:16px;flex-wrap:wrap;
-            align-items:center;flex-shrink:0}
-.pub-item{font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:5px}
-.pub-dot{width:5px;height:5px;border-radius:50%;background:#e67e22;flex-shrink:0}
-.pub-item strong{color:#475569;font-weight:600}
-
- 
-.btn-print{background:rgba(230,126,34,.1);color:#c2410c;
-           border:1px solid rgba(230,126,34,.3);border-radius:8px;
-           padding:6px 13px;font-size:12px;font-weight:700;
-           cursor:pointer;display:flex;align-items:center;gap:5px;
-           transition:background .2s;white-space:nowrap;flex-shrink:0}
-.btn-print:hover{background:rgba(230,126,34,.2)}
-
- 
-@media (max-width:680px){
-  body{height:100vh;overflow:hidden}
-  #hdr{padding:10px 14px}
-  #hdr h1{font-size:1.05rem}
-  .hdr-sub{font-size:11px}
-  .badge-data{font-size:.82rem;padding:3px 10px}
-  .btn-print{padding:5px 10px;font-size:.72rem}
-  #kpis{padding:5px 14px;gap:5px;overflow-x:auto;flex-wrap:nowrap}
-  .kpi{padding:6px 12px;min-width:88px;flex-shrink:0}
-  .kpi-l{font-size:10px}
-  .kpi-v{font-size:1.5rem}
-  #grid{padding:6px 14px 10px;gap:8px}
-  .ego-card{min-width:200px}
-  .rota-nome{font-size:11px}
-  #pub-footer{padding:4px 14px;gap:8px}
-}
-
- 
 @media print{
-  @page{size:A3 landscape;margin:8mm}
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  body{height:auto!important;overflow:visible!important;background:#fff!important}
-  .btn-print,#pub-footer{display:none!important}
-  #grid{flex-wrap:wrap!important;overflow:visible!important;height:auto!important}
-  .ego-card{min-width:180px!important;max-width:none!important;
-            flex:1 1 200px!important;break-inside:avoid;
-            box-shadow:none!important;border:1px solid #e2e8f0!important}
-  .rota-list{overflow:visible!important;height:auto!important;flex:none!important}
-  .rota-card{min-height:auto!important;padding:4px 6px!important}
-  .rota-nome{font-size:10px!important}
+  body{background:#fff!important;color:#000!important}
+  .tabs{display:none!important}
+  .painel{display:block!important}
+  .chips-section,.toolbar-row{display:none!important}
+  thead th{background:#eee!important;color:#333!important}
+  .card{border:1px solid #ccc!important;background:#fff!important}
+  .card-hdr{background:#eee!important;color:#000!important}
+  tbody td{border-bottom:1px solid #eee!important;color:#000!important}
 }
 </style>
 </head>
 <body>
 
-<div id="hdr">
-  <div>
-    <h1>🗺️ NEX <span>Programação</span> — SGO3</h1>
-    <div class="hdr-sub">Roteirização por EGO · Goiânia / GO</div>
-  </div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <button class="btn-print" onclick="imprimirPDF()" title="Gerar PDF">
-      🖨️ Imprimir
-    </button>
-    <div class="hdr-pub">
-      <span class="badge-data" id="badge-data">—</span>
-      <span class="badge-at" id="badge-at">
-        <span class="live-dot"></span><span id="badge-at-txt"></span>
-      </span>
-    </div>
-  </div>
+<div class="hero">
+  <h1>🗺️ NEX <span>Programação</span> — SGO3</h1>
+  <div class="sub">Roteirização XPT por EGO · Goiânia / GO</div>
+  <div id="ts-linha">—</div>
 </div>
 
-<div id="kpis"></div>
-<div id="grid"></div>
-<div id="pub-footer"></div>
+<div class="tabs" id="tabs-container"></div>
+
+<div class="container">
+  <div id="erro-global"></div>
+  <div id="paineis-container"></div>
+</div>
+
+<footer id="rodape">Dashboard NEX · SGO3 · Goiânia · Mercado Livre Logística</footer>
 
 <script>
-var DADOS_RAW = {"columns":["Agencia","Nome","Quantidade de sacas","Pacotes","Horario de ofertas","Pacotes"],"rows":[{"Agencia":"BRNGO319","Nome":"WI INFORMATICA E SERVICOS","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_7_1), Veiculo de Passeio Extra 4h Rota (AM1_7_2), Veiculo de Passeio Extra 4h Rota (AM1_7_3)","Pacotes":"82","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO2","Nome":"CHAVEIRO SOLUÇÃO","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_3_1), Veiculo de Passeio Extra 4h Rota (AM1_3_2), Veiculo de Passeio Extra 4h Rota (AM1_3_3)","Pacotes":"88","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO363","Nome":"TIC TAC UNIFORMES","Quantidade de sacas":"Moto ME Extra Rota (AM1_5_1), Moto ME Extra Rota (AM1_5_2), Veiculo de Passeio Extra 4h Rota (AM1_5_3)","Pacotes":"90","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO557","Nome":"MASTER LAN HOUSE","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_2_1), Moto ME Extra Rota (AM1_2_2), Moto ME Extra Rota (AM1_2_3)","Pacotes":"88","Horario de ofertas":"Sat Dec 30 1899 12:00:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO953","Nome":"SMART UP","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_4_1), Veiculo de Passeio Extra 4h Rota (AM1_4_2)","Pacotes":"80","Horario de ofertas":"Sat Dec 30 1899 12:00:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO852","Nome":"MVWEB DIGITAL","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_5_4)","Pacotes":"40","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO740","Nome":"MAJESTIC STORE","Quantidade de sacas":"","Pacotes":"#N/A","Horario de ofertas":""},{"Agencia":"BRNGO561","Nome":"VANCEL CELULARES E INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO685","Nome":"CONSERTA SMART VILA AURORA OESTE","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO578","Nome":"CABANA DO SAPATO GOIANIA VIVA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO358","Nome":"ARARA BRASIL TECNOLOGIA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO831","Nome":"WM INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7522","Nome":"BATER CENTER BATERIAS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO260","Nome":"KOOPNOW ROLAMENTOS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO399","Nome":"CONEXAO CELULARES INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO215","Nome":"MKD MAIS KI DESCARTAVEIS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO622","Nome":"SD TOKINHA DO ALUNO","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO311","Nome":"100 SEDE DISTRIBUIDORA DE AGUA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO901","Nome":"RGR ENGENHARIA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO144","Nome":"NATURALLY","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO241","Nome":"JWE E CONEXÃO CONTABILIDADE","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO353","Nome":"3RICK ELETRONIC","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO519","Nome":"AGAPE CELULARES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO940","Nome":"ENGATES BR","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO821","Nome":"EXPRESS CELULARES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7449","Nome":"LEX CORP","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7466","Nome":"LC FERRAGISTA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7475","Nome":"GMH TUBOS E CONEXÕES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7533","Nome":"WI DESIGN","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7534","Nome":"SUPER CÓPIAS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRDGO7539","Nome":"LACASA DELIVERY","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO970","Nome":"LOUCAS POR CHINELOS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""}],"publicadoEm":"11/05/2026 23:50"};
-var GERADO_EM  = "11/05/2026 23:50";
+ 
+var DADOS_RAW = {"columns":["Agencia","Nome","Quantidade de sacas","Pacotes","Horario de ofertas","Pacotes"],"rows":[{"Agencia":"BRNGO319","Nome":"WI INFORMATICA E SERVICOS","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_7_1), Veiculo de Passeio Extra 4h Rota (AM1_7_2), Veiculo de Passeio Extra 4h Rota (AM1_7_3)","Pacotes":"82","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO2","Nome":"CHAVEIRO SOLUÇÃO","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_3_1), Veiculo de Passeio Extra 4h Rota (AM1_3_2), Veiculo de Passeio Extra 4h Rota (AM1_3_3)","Pacotes":"88","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO363","Nome":"TIC TAC UNIFORMES","Quantidade de sacas":"Moto ME Extra Rota (AM1_5_1), Moto ME Extra Rota (AM1_5_2), Veiculo de Passeio Extra 4h Rota (AM1_5_3)","Pacotes":"90","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO557","Nome":"MASTER LAN HOUSE","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_2_1), Moto ME Extra Rota (AM1_2_2), Moto ME Extra Rota (AM1_2_3)","Pacotes":"88","Horario de ofertas":"Sat Dec 30 1899 12:00:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO953","Nome":"SMART UP","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_4_1), Veiculo de Passeio Extra 4h Rota (AM1_4_2)","Pacotes":"80","Horario de ofertas":"Sat Dec 30 1899 12:00:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO852","Nome":"MVWEB DIGITAL","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_5_4)","Pacotes":"40","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO740","Nome":"MAJESTIC STORE","Quantidade de sacas":"","Pacotes":"#N/A","Horario de ofertas":""},{"Agencia":"BRNGO561","Nome":"VANCEL CELULARES E INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO685","Nome":"CONSERTA SMART VILA AURORA OESTE","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO578","Nome":"CABANA DO SAPATO GOIANIA VIVA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO358","Nome":"ARARA BRASIL TECNOLOGIA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO831","Nome":"WM INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7522","Nome":"BATER CENTER BATERIAS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO260","Nome":"KOOPNOW ROLAMENTOS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO399","Nome":"CONEXAO CELULARES INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO215","Nome":"MKD MAIS KI DESCARTAVEIS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO622","Nome":"SD TOKINHA DO ALUNO","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO311","Nome":"100 SEDE DISTRIBUIDORA DE AGUA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO901","Nome":"RGR ENGENHARIA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO144","Nome":"NATURALLY","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO241","Nome":"JWE E CONEXÃO CONTABILIDADE","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO353","Nome":"3RICK ELETRONIC","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO519","Nome":"AGAPE CELULARES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO940","Nome":"ENGATES BR","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO821","Nome":"EXPRESS CELULARES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7449","Nome":"LEX CORP","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7466","Nome":"LC FERRAGISTA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7475","Nome":"GMH TUBOS E CONEXÕES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7533","Nome":"WI DESIGN","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7534","Nome":"SUPER CÓPIAS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRDGO7539","Nome":"LACASA DELIVERY","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO970","Nome":"LOUCAS POR CHINELOS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""}],"publicadoEm":"12/05/2026 00:09"};
+var GERADO_EM = "12/05/2026 00:09";
+
+ 
+var EGO_ORDEM = ['EGO3','EGO7','EGO12','EGO19','EGO20','EGO21'];
 
  
 function esc(s){
   return String(s==null?'':s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function extrairEGO(svc){
-  var m=String(svc||'').match(/EGO\s*(\d+)/i);
-  return m?'EGO'+parseInt(m[1],10):String(svc||'').trim();
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
 }
 
  
-var EGO_CORES=['ec0','ec1','ec2','ec3','ec4','ec5','ec6'];
-var EGO_ORDEM_FIXO=['EGO3','EGO7','EGO12','EGO19','EGO20','EGO21'];
-
- 
-function badgeRoutes(n){
-  var cls=n>20?'badge-red':n>15?'badge-amber':'badge-ok';
-  return '<span class="'+cls+'">'+n+' rota'+(n!==1?'s':'')+'</span>';
+function trocarAba(ego, el){
+  document.querySelectorAll('.painel').forEach(function(p){p.classList.remove('ativo');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('ativa');});
+  var painel = document.getElementById('painel-'+ego);
+  if(painel) painel.classList.add('ativo');
+  el.classList.add('ativa');
 }
 
  
-function badgePacotes(n){
-  if(!n)return '';
-  var fmt=n>=1000?(n/1000).toFixed(1).replace('.',',')+'k':String(n);
-  return '<span class="badge-pkg">📦 '+fmt+' pkg</span>';
+function toggleChip(btn){
+  btn.classList.toggle('active');
+  filtrar(btn.getAttribute('data-ego'));
+}
+function todosChips(cid, ego, ativo){
+  var el=document.getElementById(cid); if(!el)return;
+  el.querySelectorAll('.chip-btn').forEach(function(b){
+    ativo?b.classList.add('active'):b.classList.remove('active');
+  });
+  filtrar(ego);
+}
+function okChip(cid, val){
+  var el=document.getElementById(cid); if(!el)return true;
+  var all=el.querySelectorAll('.chip-btn'); if(!all.length)return true;
+  var on=el.querySelectorAll('.chip-btn.active'); if(!on.length)return false;
+  var vs=Array.prototype.map.call(on,function(b){return b.getAttribute('data-val');});
+  return vs.indexOf(val)>=0;
 }
 
  
-function classVeiculo(tipo){
-  var t=String(tipo||'').toLowerCase();
-  if(t.indexOf('van')>=0)    return 'vtag-van';
-  if(t.indexOf('vuc')>=0)    return 'vtag-vuc';
-  if(t.indexOf('util')>=0)   return 'vtag-util';
-  if(t.indexOf('carreta')>=0)return 'vtag-carreta';
-  if(t.indexOf('truck')>=0)  return 'vtag-truck';
-  if(t.indexOf('toco')>=0)   return 'vtag-truck';
-  return 'vtag-outro';
+function filtrar(ego){
+  var busca=((document.getElementById('busca-'+ego)||{}).value||'').toLowerCase().trim();
+  var tbody=document.getElementById('body-'+ego); if(!tbody)return;
+  var cnt=0;
+  tbody.querySelectorAll('tr').forEach(function(tr){
+    if(tr.querySelector('.vazio'))return;
+    var okB=!busca||tr.innerText.toLowerCase().indexOf(busca)>=0;
+    var okV=okChip('vchips-'+ego, tr.getAttribute('data-veiculo')||'');
+    var show=okB&&okV;
+    tr.style.display=show?'':'none';
+    if(show)cnt++;
+  });
+  var cntEl=document.getElementById('count-'+ego);
+  if(cntEl)cntEl.textContent=cnt;
 }
-function iconVeiculo(tipo){
-  var t=String(tipo||'').toLowerCase();
+
+ 
+function egoBadge(ego){
+  var cls=EGO_ORDEM.indexOf(ego)>=0?'ego-'+ego:'ego-outro';
+  return "<span class='ego-badge "+cls+"'>"+esc(ego)+"</span>";
+}
+
+ 
+function vCls(v){
+  var t=String(v||'').toLowerCase();
+  if(t.indexOf('van')>=0)    return 'vb-van';
+  if(t.indexOf('vuc')>=0)    return 'vb-vuc';
+  if(t.indexOf('util')>=0)   return 'vb-util';
+  if(t.indexOf('carreta')>=0)return 'vb-carreta';
+  if(t.indexOf('truck')>=0||t.indexOf('toco')>=0)return 'vb-truck';
+  return 'vb-outro';
+}
+function vIcon(v){
+  var t=String(v||'').toLowerCase();
   if(t.indexOf('van')>=0)    return '🚗';
   if(t.indexOf('vuc')>=0)    return '🚐';
   if(t.indexOf('util')>=0)   return '🏎️';
@@ -277,26 +227,54 @@ function iconVeiculo(tipo){
   if(t.indexOf('truck')>=0||t.indexOf('toco')>=0)return '🚛';
   return '🚚';
 }
-
- 
-function contarVeiculos(linhas){
-  var counts={};
-  linhas.forEach(function(r){
-    var v=String(r['Tipo de Veículo']||'').trim();
-    if(!v)return;
-    counts[v]=(counts[v]||0)+1;
-  });
-  return counts;
+function veiculoBadge(v){
+  if(!v)return "<span style='color:#484f58'>—</span>";
+  return "<span class='vbadge "+vCls(v)+"'>"+vIcon(v)+" "+esc(v)+"</span>";
 }
 
  
-function clusterChips(raw){
-  if(!raw)return '';
+function clusterHtml(raw){
+  if(!raw)return "<span style='color:#484f58'>—</span>";
   var ids=String(raw).split(/[,;\s]+/).map(function(s){return s.trim();}).filter(Boolean);
-  if(!ids.length)return '';
-  return ids.slice(0,3).map(function(id){
-    return '<span class="cluster-chip">'+esc(id)+'</span>';
-  }).join('')+(ids.length>3?'<span class="cluster-chip" title="'+esc(ids.slice(3).join(', '))+'">+'+( ids.length-3)+'</span>':'');
+  if(!ids.length)return "<span style='color:#484f58'>—</span>";
+  return ids.slice(0,4).map(function(id){
+    return "<span class='cl-chip'>"+esc(id)+"</span>";
+  }).join('')+(ids.length>4?'<span class="cl-chip" style="opacity:.6">+'+( ids.length-4)+'</span>':'');
+}
+
+ 
+function kpiCard(lbl,val,bg,cor,accent,sub){
+  var ac=accent?"<div class='kpi-accent' style='background:"+accent+"'></div>":'';
+  var sb=sub?"<div class='sub'>"+sub+"</div>":'';
+  return "<div class='kpi' style='background:"+bg+"'>"+ac
+    +"<div class='kpi-body'><div class='lbl' style='color:"+cor+"'>"+lbl+"</div>"
+    +"<div class='val' style='color:"+cor+"'>"+val+"</div>"+sb+"</div></div>";
+}
+
+ 
+var _sd={};
+function sortarTabela(ego,cIdx,th){
+  var tbody=document.getElementById('body-'+ego); if(!tbody)return;
+  var key=ego+'_'+cIdx;
+  var dir=_sd[key]==='desc'?'asc':'desc'; _sd[key]=dir;
+  th.closest('thead').querySelectorAll('th').forEach(function(h){
+    h.classList.remove('sort-desc','sort-asc');
+  });
+  th.classList.add(dir==='desc'?'sort-desc':'sort-asc');
+  var rows=Array.prototype.slice.call(tbody.querySelectorAll('tr')).filter(function(tr){
+    return !tr.querySelector('.vazio') && tr.style.display!=='none';
+  });
+  rows.sort(function(a,b){
+    var ca=a.querySelectorAll('td')[cIdx];
+    var cb=b.querySelectorAll('td')[cIdx];
+    var va=ca?(ca.innerText||'').trim():'';
+    var vb=cb?(cb.innerText||'').trim():'';
+    var na=parseFloat(va.replace(/[^0-9.,\-]/g,'').replace(',','.'));
+    var nb=parseFloat(vb.replace(/[^0-9.,\-]/g,'').replace(',','.'));
+    var cmp=(!isNaN(na)&&!isNaN(nb))?(na-nb):va.localeCompare(vb,'pt-BR',{sensitivity:'base'});
+    return dir==='desc'?-cmp:cmp;
+  });
+  rows.forEach(function(r){tbody.appendChild(r);});
 }
 
  
@@ -304,136 +282,128 @@ function buildUI(){
   var rows=Array.isArray(DADOS_RAW.rows)?DADOS_RAW.rows:[];
   var pubEm=DADOS_RAW.publicadoEm||GERADO_EM;
 
-  document.getElementById('badge-data').textContent=pubEm||GERADO_EM;
-  var atTxt=document.getElementById('badge-at-txt');
-  if(atTxt)atTxt.textContent='Publicado em '+pubEm;
+  document.getElementById('ts-linha').innerHTML=
+    'Publicado em: <strong>'+esc(pubEm)+'</strong> &nbsp;|&nbsp; Total: <strong>'+rows.length+'</strong> rotas';
 
   
   var grupos={};
   rows.forEach(function(row){
-    var ego=extrairEGO(row['Tipos de serviços']||'');
-    if(!ego)return;
+    var ego=row.ego||'—';
     if(!grupos[ego])grupos[ego]=[];
     grupos[ego].push(row);
   });
 
   
   var egosPresentes=Object.keys(grupos);
-  var egoOrder=EGO_ORDEM_FIXO.filter(function(e){return grupos[e];});
+  var egoOrder=EGO_ORDEM.filter(function(e){return grupos[e];});
   egosPresentes.forEach(function(e){if(egoOrder.indexOf(e)<0)egoOrder.push(e);});
 
-  
-  var totalRotas=rows.length;
-  var totalPacotes=rows.reduce(function(s,r){return s+(parseInt(r['Pacotes estimados'],10)||0);},0);
-  document.getElementById('kpis').innerHTML=
-    kpi('Total de rotas',totalRotas)+
-    kpi('EGOs ativos',egoOrder.length)+
-    kpi('Pacotes estimados',totalPacotes.toLocaleString('pt-BR'));
+  var totalPacotes=rows.reduce(function(s,r){return s+(r.pacotes||0);},0);
 
   
-  document.getElementById('grid').innerHTML=egoOrder.map(function(ego,idx){
-    var linhas=grupos[ego]||[];
-    var cc=EGO_CORES[idx%EGO_CORES.length];
-    var pkgTotal=linhas.reduce(function(s,r){return s+(parseInt(r['Pacotes estimados'],10)||0);},0);
-    var veicCounts=contarVeiculos(linhas);
-
-    
-    var veicHtml=Object.keys(veicCounts).sort().map(function(v){
-      return '<span class="vtag '+classVeiculo(v)+'">'+
-        iconVeiculo(v)+' '+esc(v)+'<span style="opacity:.7;font-weight:600;margin-left:3px">×'+veicCounts[v]+'</span>'+
-      '</span>';
-    }).join('');
-    if(!veicHtml)veicHtml='<span style="font-size:10px;color:#cbd5e1">—</span>';
-
-    
-    var cards=linhas.map(function(row){
-      var rota=row['Rota original']||'—';
-      var cluster=row['Cluster ID']||'';
-      var detalhe=row['Detalhe do roteiro']||'';
-      var veiculo=String(row['Tipo de Veículo']||'').trim();
-      var pacotes=parseInt(row['Pacotes estimados'],10)||0;
-
-      var veicBadgeHtml=veiculo
-        ?'<span class="rv-badge '+classVeiculo(veiculo)+'">'+esc(iconVeiculo(veiculo)+' '+veiculo)+'</span>'
-        :'';
-      var pkgHtml=pacotes?'<span class="rp-badge">📦 '+pacotes+'</span>':'';
-
-      return '<div class="rota-card">'+
-               '<div class="rota-top">'+
-                 '<span class="rota-nome" title="'+esc(rota)+'">'+esc(rota)+'</span>'+
-                 '<div class="cluster-chips">'+clusterChips(cluster)+'</div>'+
-               '</div>'+
-               (detalhe?'<div class="rota-detalhe" title="'+esc(detalhe)+'">'+esc(detalhe)+'</div>':'')+
-               '<div class="rota-bottom">'+veicBadgeHtml+pkgHtml+'</div>'+
-             '</div>';
-    }).join('');
-
-    var body=linhas.length>0
-      ?'<div class="rota-list">'+cards+'</div>'
-      :'<div class="sem-rotas">Sem rotas</div>';
-
-    return '<div class="ego-card '+cc+'">'+
-             '<div class="ego-hdr">'+
-               '<div style="min-width:0">'+
-                 '<div class="ego-name">'+esc(ego)+'</div>'+
-                 '<div class="ego-sub">XPT · '+linhas.length+' rota'+(linhas.length!==1?'s':'')+'</div>'+
-               '</div>'+
-               '<div class="ego-badges">'+
-                 badgeRoutes(linhas.length)+
-                 badgePacotes(pkgTotal)+
-               '</div>'+
-             '</div>'+
-             '<div class="ego-veiculos">'+veicHtml+'</div>'+
-             body+
-           '</div>';
+  var tabsHtml=egoOrder.map(function(ego,i){
+    var cnt=(grupos[ego]||[]).length;
+    return "<div class='tab"+(i===0?' ativa':'')+"' onclick='trocarAba(\""+esc(ego)+"\",this)'>"+
+      esc(ego)+"<span class='badge-tab'>"+cnt+"</span></div>";
   }).join('');
+  
+  tabsHtml="<div class='tab ativa' onclick='trocarAba(\"TODAS\",this)'>Todas <span class='badge-tab'>"+rows.length+"</span></div>"+
+    egoOrder.map(function(ego,i){
+      var cnt=(grupos[ego]||[]).length;
+      return "<div class='tab' onclick='trocarAba(\""+esc(ego)+"\",this)'>"+
+        esc(ego)+"<span class='badge-tab'>"+cnt+"</span></div>";
+    }).join('');
+  document.getElementById('tabs-container').innerHTML=tabsHtml;
 
   
-  document.getElementById('pub-footer').innerHTML=
-    '<div class="pub-item"><span class="pub-dot"></span><strong>SGO3</strong> · NEX Programação · '+esc(pubEm)+'</div>'+
-    egoOrder.map(function(ego){
-      var cnt=(grupos[ego]||[]).length;
-      return '<div class="pub-item">'+
-               '<span class="pub-dot" style="background:#64748b"></span>'+
-               '<strong>'+esc(ego)+'</strong> · '+cnt+' rota'+(cnt!==1?'s':'')+'</div>';
-    }).join('');
-}
+  var painéisHtml='';
+  var painelEgos=['TODAS'].concat(egoOrder);
+  painelEgos.forEach(function(ego,pIdx){
+    var linhas=ego==='TODAS'?rows:(grupos[ego]||[]);
+    var pkgTotal=linhas.reduce(function(s,r){return s+(r.pacotes||0);},0);
 
-function kpi(label,value){
-  return '<div class="kpi">'+
-    '<div class="kpi-l">'+esc(label)+'</div>'+
-    '<div class="kpi-v">'+esc(String(value))+'</div>'+
-  '</div>';
+    
+    var veicSet={};
+    linhas.forEach(function(r){if(r.veiculo)veicSet[r.veiculo]=1;});
+    var veics=Object.keys(veicSet).sort();
+
+    var vChips=veics.map(function(v){
+      return "<button class='chip-btn active' data-val='"+esc(v)+"' data-ego='"+esc(ego)+"' onclick='toggleChip(this)'>"+
+        vIcon(v)+' '+esc(v)+"</button>";
+    }).join('');
+
+    
+    var kpis=kpiCard('ROTAS',linhas.length,'#161b27','#e6edf3','#e67e22','neste grupo')+
+      kpiCard('PACOTES',pkgTotal.toLocaleString('pt-BR'),'#161b27','#58a6ff','#388bfd','estimados')+
+      kpiCard('VEÍCULOS',veics.length,'#161b27','#bc8cff','#8957e5','tipos distintos');
+    if(ego==='TODAS'){
+      kpis+=kpiCard('EGOs ATIVOS',egoOrder.length,'#161b27','#56d364','#3fb950','grupos');
+    }
+
+    
+    var tbodyRows=linhas.map(function(r){
+      var vVal=String(r.veiculo||'');
+      return "<tr data-veiculo='"+esc(vVal)+"'>"+
+        (ego==='TODAS'?"<td>"+egoBadge(r.ego||'—')+"</td>":'')+
+        "<td style='font-weight:700;color:#e6edf3;font-family:monospace'>"+esc(r.rota)+"</td>"+
+        "<td>"+clusterHtml(r.cluster)+"</td>"+
+        "<td style='font-size:.8rem;color:#8b949e;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis' title='"+esc(r.detalhe)+"'>"+esc(r.detalhe)+"</td>"+
+        "<td>"+veiculoBadge(r.veiculo)+"</td>"+
+        "<td style='text-align:center;font-weight:700;color:#58a6ff'>"+((r.pacotes||0)>0?r.pacotes:'—')+"</td>"+
+      "</tr>";
+    }).join('');
+    if(!tbodyRows) tbodyRows="<tr><td colspan='"+(ego==='TODAS'?6:5)+"' class='vazio'>Sem rotas</td></tr>";
+
+    var thEgo=ego==='TODAS'?"<th onclick='sortarTabela(\"TODAS\",0,this)'>EGO</th>":'';
+    var colOffset=ego==='TODAS'?1:0;
+
+    painéisHtml+="<div id='painel-"+esc(ego)+"' class='painel"+(pIdx===0?' ativo':'')+"'>"+
+      "<div class='kpis'>"+kpis+"</div>"+
+      "<div class='toolbar-row'><input type='text' id='busca-"+esc(ego)+"' placeholder='Buscar rota, cluster, cidade...' oninput='filtrar(\""+esc(ego)+"\")'></div>"+
+      (veics.length>1?
+        "<div class='chips-section'><span class='chip-lbl'>Veículo</span>"+
+        "<div class='chips-group' id='vchips-"+esc(ego)+"'>"+vChips+"</div>"+
+        "<span class='chip-sep'>|</span>"+
+        "<button class='chip-ctrl todos' onclick='todosChips(\"vchips-"+esc(ego)+"\",\""+esc(ego)+"\",true)'>Todos</button>"+
+        "<button class='chip-ctrl nenhum' onclick='todosChips(\"vchips-"+esc(ego)+"\",\""+esc(ego)+"\",false)'>Nenhum</button></div>":'')+
+      "<div class='card'>"+
+        "<div class='card-hdr'><span>"+esc(ego==='TODAS'?'Todas as rotas':ego)+" &mdash; <span id='count-"+esc(ego)+"'>"+linhas.length+"</span> rota(s)</span></div>"+
+        "<div style='overflow-x:auto;max-height:65vh;overflow-y:auto'>"+
+          "<table><thead><tr>"+
+            thEgo+
+            "<th onclick='sortarTabela(\""+esc(ego)+"\","+colOffset+",this)'>ROTA</th>"+
+            "<th onclick='sortarTabela(\""+esc(ego)+"\","+(colOffset+1)+",this)'>CLUSTER</th>"+
+            "<th onclick='sortarTabela(\""+esc(ego)+"\","+(colOffset+2)+",this)'>DETALHE / CIDADES</th>"+
+            "<th onclick='sortarTabela(\""+esc(ego)+"\","+(colOffset+3)+",this)'>TIPO VEÍCULO</th>"+
+            "<th onclick='sortarTabela(\""+esc(ego)+"\","+(colOffset+4)+",this)' style='text-align:center'>PACOTES</th>"+
+          "</tr></thead>"+
+          "<tbody id='body-"+esc(ego)+"'>"+tbodyRows+"</tbody>"+
+        "</table></div>"+
+      "</div>"+
+    "</div>";
+  });
+
+  document.getElementById('paineis-container').innerHTML=painéisHtml;
+  document.getElementById('rodape').textContent=
+    'Dashboard NEX · SGO3 · Goiânia · Publicado em: '+pubEm;
 }
 
  
 function buildStandby(){
-  var txt=GERADO_EM?String(GERADO_EM).split(' ')[0]:'—';
-  document.getElementById('badge-data').textContent=txt;
-  var atTxt=document.getElementById('badge-at-txt');
-  if(atTxt)atTxt.textContent='Aguardando publicação';
-  document.getElementById('kpis').innerHTML='';
-  document.getElementById('pub-footer').innerHTML='';
-  document.getElementById('grid').innerHTML=
-    '<div class="standby">'+
-      '<div class="standby-icon">⏳</div>'+
-      '<h2>Aguardando publicação</h2>'+
-      '<p>Nenhuma rota NEX encontrada.<br>'+
-      'Na planilha, use o menu 🗺️ <strong style="color:#e67e22">Publicar NEX</strong>.</p>'+
-      '<div style="font-size:11px;color:#94a3b8;margin-top:8px">SGO3 · '+esc(String(GERADO_EM||''))+'</div>'+
-    '</div>';
+  document.getElementById('ts-linha').textContent='Aguardando publicação';
+  document.getElementById('paineis-container').innerHTML=
+    "<div class='standby'>"+
+      "<div class='standby-icon'>⏳</div>"+
+      "<h2>Aguardando publicação</h2>"+
+      "<p>Nenhuma rota NEX encontrada.<br>"+
+      "Na planilha use o menu 🗺️ <strong style='color:#e67e22'>Publicar NEX</strong>.</p>"+
+      "<p style='margin-top:8px;font-size:.75rem;color:#30363d'>SGO3 · "+esc(String(GERADO_EM||''))+"</p>"+
+    "</div>";
 }
 
  
-function imprimirPDF(){
-  var t=document.title;
-  var p=(DADOS_RAW&&DADOS_RAW.publicadoEm)?DADOS_RAW.publicadoEm:GERADO_EM;
-  document.title='NEX_Programacao_SGO3_'+String(p||'').replace(/[/:]/g,'-').replace(/ /g,'_');
-  window.print();document.title=t;
-}
-
 window.addEventListener('load',function(){
-  var rows=(DADOS_RAW&&Array.isArray(DADOS_RAW.rows))?DADOS_RAW.rows:[];
+  var rows=DADOS_RAW&&Array.isArray(DADOS_RAW.rows)?DADOS_RAW.rows:[];
   if(rows.length===0){buildStandby();}else{buildUI();}
 });
 </script>
