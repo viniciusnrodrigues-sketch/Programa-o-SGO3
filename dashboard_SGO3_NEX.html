@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEX — Programação SGO3</title>
+<style>
+ 
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter','Plus Jakarta Sans',system-ui,sans-serif;
+     background:#f4f6f9;color:#1e293b;
+     height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+ 
+#hdr{background:linear-gradient(135deg,#1a1a2e,#16213e);
+     padding:11px 24px;display:flex;align-items:center;
+     justify-content:space-between;
+     border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;
+     box-shadow:0 2px 12px rgba(0,0,0,.25)}
+#hdr h1{font-size:clamp(1.2rem,1.5vw,1.75rem);font-weight:800;color:#fff}
+#hdr h1 span{color:#e67e22}
+.hdr-sub{font-size:12px;color:#64748b;margin-top:2px}
+.hdr-pub{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.badge-data{background:rgba(255,255,255,.1);color:#e2e8f0;
+            border:1px solid rgba(255,255,255,.14);border-radius:8px;
+            padding:4px 14px;font-size:clamp(.85rem,.95vw,1rem);font-weight:700;
+            letter-spacing:.3px}
+.badge-at{font-size:11px;color:#475569;display:flex;align-items:center;gap:5px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;
+          animation:live-pulse 2s ease-in-out infinite}
+@keyframes live-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}
+                       50%{opacity:.7;box-shadow:0 0 0 4px rgba(34,197,94,0)}}
+
+ 
+#kpis{display:flex;gap:8px;padding:8px 20px;flex-shrink:0}
+.kpi{background:#fff;border-radius:12px;
+     box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
+     padding:10px 18px;flex:1;min-width:0}
+.kpi-l{font-size:11px;color:#94a3b8;text-transform:uppercase;
+        letter-spacing:.08em;margin-bottom:4px;font-weight:600}
+.kpi-v{font-size:clamp(2rem,2.8vw,2.8rem);font-weight:700;color:#1e293b;line-height:1}
+
+ 
+#grid{display:flex;gap:10px;padding:0 20px 10px;flex:1;overflow-x:auto;
+      overflow-y:hidden;min-height:0;align-items:stretch}
+
+ 
+.ego-card{background:#fff;border-radius:14px;
+          box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.05);
+          display:flex;flex-direction:column;overflow:hidden;
+          min-width:240px;max-width:300px;flex:1;min-height:0;
+          transition:box-shadow .2s}
+.ego-card:hover{box-shadow:0 2px 6px rgba(0,0,0,.08),0 8px 20px rgba(0,0,0,.07)}
+
+ 
+.ec0{border-top:3px solid #3b82f6}
+.ec1{border-top:3px solid #10b981}
+.ec2{border-top:3px solid #f59e0b}
+.ec3{border-top:3px solid #8b5cf6}
+.ec4{border-top:3px solid #ef4444}
+.ec5{border-top:3px solid #06b6d4}
+.ec6{border-top:3px solid #e67e22}
+
+ 
+.ego-hdr{padding:8px 11px;display:flex;align-items:flex-start;
+          justify-content:space-between;border-bottom:1px solid #f1f5f9;
+          flex-shrink:0;background:#fafbfc;gap:4px}
+.ego-name{font-size:clamp(13px,1vw,16px);font-weight:700;color:#1e293b;line-height:1.2}
+.ego-sub{font-size:11px;color:#94a3b8;margin-top:3px;font-weight:500}
+.ego-badges{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+
+ 
+.badge-ok   {background:#dcfce7;color:#15803d;font-size:11px;padding:3px 8px;border-radius:8px;font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
+.badge-amber{background:#fef9c3;color:#a16207;font-size:11px;padding:3px 8px;border-radius:8px;font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
+.badge-red  {background:#fee2e2;color:#b91c1c;font-size:11px;padding:3px 8px;border-radius:8px;font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
+.badge-pkg  {background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;
+             font-size:10px;padding:2px 7px;border-radius:8px;
+             font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
+
+ 
+.ego-veiculos{display:flex;gap:4px;flex-wrap:wrap;
+              padding:5px 11px;border-bottom:1px solid #f1f5f9;
+              flex-shrink:0;min-height:28px;align-items:center}
+.vtag{font-size:10px;font-weight:700;border-radius:5px;
+      padding:2px 7px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
+.vtag-van    {background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd}
+.vtag-vuc    {background:#fdf4ff;color:#7c3aed;border:1px solid #e9d5ff}
+.vtag-util   {background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.vtag-carreta{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.vtag-truck  {background:#fef9c3;color:#a16207;border:1px solid #fde68a}
+.vtag-outro  {background:#f8fafc;color:#64748b;border:1px solid #e2e8f0}
+
+ 
+.rota-list{display:flex;flex-direction:column;gap:5px;
+           padding:7px;overflow-y:auto;overflow-x:hidden;
+           flex:1;min-height:0;
+           scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.08) transparent}
+.rota-list::-webkit-scrollbar{width:3px}
+.rota-list::-webkit-scrollbar-track{background:transparent}
+.rota-list::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:3px}
+
+ 
+.rota-card{background:#fff;border:1px solid #e8ecf0;
+           border-left:4px solid #e2e8f0;
+           border-radius:8px;padding:7px 8px;
+           display:flex;flex-direction:column;gap:4px;
+           cursor:default;transition:transform .15s,box-shadow .15s}
+.rota-card:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.09)}
+
+.rota-top{display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0}
+.rota-nome{font-size:clamp(11px,1.1vw,13px);font-weight:700;color:#1e293b;
+           white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+           font-variant-numeric:tabular-nums}
+.cluster-chips{display:flex;gap:3px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.cluster-chip{font-size:9px;font-weight:800;background:#e0f2fe;color:#0369a1;
+              border:1px solid #bae6fd;border-radius:4px;padding:1px 5px;
+              white-space:nowrap;line-height:1.4}
+
+.rota-detalhe{font-size:10px;color:#64748b;white-space:nowrap;overflow:hidden;
+              text-overflow:ellipsis;line-height:1.3}
+
+.rota-bottom{display:flex;align-items:center;justify-content:space-between;gap:4px}
+
+ 
+.rv-badge{font-size:10px;font-weight:700;border-radius:5px;
+          padding:2px 7px;white-space:nowrap}
+
+ 
+.rp-badge{font-size:10px;font-weight:600;color:#64748b;
+          white-space:nowrap;flex-shrink:0}
+
+ 
+.ec0 .rota-card{border-left-color:#3b82f6}
+.ec1 .rota-card{border-left-color:#10b981}
+.ec2 .rota-card{border-left-color:#f59e0b}
+.ec3 .rota-card{border-left-color:#8b5cf6}
+.ec4 .rota-card{border-left-color:#ef4444}
+.ec5 .rota-card{border-left-color:#06b6d4}
+.ec6 .rota-card{border-left-color:#e67e22}
+
+ 
+.sem-rotas{flex:1;display:flex;align-items:center;justify-content:center;
+           color:#cbd5e1;font-size:11px;font-weight:500}
+
+ 
+.standby{display:flex;flex-direction:column;align-items:center;
+         justify-content:center;flex:1;gap:12px;text-align:center}
+.standby-icon{font-size:2.5rem;animation:pulse 2s ease-in-out infinite}
+.standby h2{font-size:1.1rem;font-weight:800;color:#1e293b}
+.standby p{color:#94a3b8;font-size:.8rem;max-width:340px;line-height:1.5}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.1)}}
+
+ 
+#pub-footer{background:#fff;border-top:1px solid #e8ecf0;
+            padding:5px 20px;display:flex;gap:16px;flex-wrap:wrap;
+            align-items:center;flex-shrink:0}
+.pub-item{font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:5px}
+.pub-dot{width:5px;height:5px;border-radius:50%;background:#e67e22;flex-shrink:0}
+.pub-item strong{color:#475569;font-weight:600}
+
+ 
+.btn-print{background:rgba(230,126,34,.1);color:#c2410c;
+           border:1px solid rgba(230,126,34,.3);border-radius:8px;
+           padding:6px 13px;font-size:12px;font-weight:700;
+           cursor:pointer;display:flex;align-items:center;gap:5px;
+           transition:background .2s;white-space:nowrap;flex-shrink:0}
+.btn-print:hover{background:rgba(230,126,34,.2)}
+
+ 
+@media (max-width:680px){
+  body{height:100vh;overflow:hidden}
+  #hdr{padding:10px 14px}
+  #hdr h1{font-size:1.05rem}
+  .hdr-sub{font-size:11px}
+  .badge-data{font-size:.82rem;padding:3px 10px}
+  .btn-print{padding:5px 10px;font-size:.72rem}
+  #kpis{padding:5px 14px;gap:5px;overflow-x:auto;flex-wrap:nowrap}
+  .kpi{padding:6px 12px;min-width:88px;flex-shrink:0}
+  .kpi-l{font-size:10px}
+  .kpi-v{font-size:1.5rem}
+  #grid{padding:6px 14px 10px;gap:8px}
+  .ego-card{min-width:200px}
+  .rota-nome{font-size:11px}
+  #pub-footer{padding:4px 14px;gap:8px}
+}
+
+ 
+@media print{
+  @page{size:A3 landscape;margin:8mm}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{height:auto!important;overflow:visible!important;background:#fff!important}
+  .btn-print,#pub-footer{display:none!important}
+  #grid{flex-wrap:wrap!important;overflow:visible!important;height:auto!important}
+  .ego-card{min-width:180px!important;max-width:none!important;
+            flex:1 1 200px!important;break-inside:avoid;
+            box-shadow:none!important;border:1px solid #e2e8f0!important}
+  .rota-list{overflow:visible!important;height:auto!important;flex:none!important}
+  .rota-card{min-height:auto!important;padding:4px 6px!important}
+  .rota-nome{font-size:10px!important}
+}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div>
+    <h1>🗺️ NEX <span>Programação</span> — SGO3</h1>
+    <div class="hdr-sub">Roteirização por EGO · Goiânia / GO</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="btn-print" onclick="imprimirPDF()" title="Gerar PDF">
+      🖨️ Imprimir
+    </button>
+    <div class="hdr-pub">
+      <span class="badge-data" id="badge-data">—</span>
+      <span class="badge-at" id="badge-at">
+        <span class="live-dot"></span><span id="badge-at-txt"></span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div id="kpis"></div>
+<div id="grid"></div>
+<div id="pub-footer"></div>
+
+<script>
+var DADOS_RAW = {"columns":["Agencia","Nome","Quantidade de sacas","Pacotes","Horario de ofertas","Pacotes"],"rows":[{"Agencia":"BRNGO319","Nome":"WI INFORMATICA E SERVICOS","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_7_1), Veiculo de Passeio Extra 4h Rota (AM1_7_2), Veiculo de Passeio Extra 4h Rota (AM1_7_3)","Pacotes":"82","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO2","Nome":"CHAVEIRO SOLUÇÃO","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_3_1), Veiculo de Passeio Extra 4h Rota (AM1_3_2), Veiculo de Passeio Extra 4h Rota (AM1_3_3)","Pacotes":"88","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO363","Nome":"TIC TAC UNIFORMES","Quantidade de sacas":"Moto ME Extra Rota (AM1_5_1), Moto ME Extra Rota (AM1_5_2), Veiculo de Passeio Extra 4h Rota (AM1_5_3)","Pacotes":"90","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO557","Nome":"MASTER LAN HOUSE","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_2_1), Moto ME Extra Rota (AM1_2_2), Moto ME Extra Rota (AM1_2_3)","Pacotes":"88","Horario de ofertas":"Sat Dec 30 1899 12:00:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO953","Nome":"SMART UP","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_4_1), Veiculo de Passeio Extra 4h Rota (AM1_4_2)","Pacotes":"80","Horario de ofertas":"Sat Dec 30 1899 12:00:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO852","Nome":"MVWEB DIGITAL","Quantidade de sacas":"Veiculo de Passeio Extra 4h Rota (AM1_5_4)","Pacotes":"40","Horario de ofertas":"Sat Dec 30 1899 11:30:00 GMT-0306 (hora estándar de Brasilia)"},{"Agencia":"BRNGO740","Nome":"MAJESTIC STORE","Quantidade de sacas":"","Pacotes":"#N/A","Horario de ofertas":""},{"Agencia":"BRNGO561","Nome":"VANCEL CELULARES E INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO685","Nome":"CONSERTA SMART VILA AURORA OESTE","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO578","Nome":"CABANA DO SAPATO GOIANIA VIVA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO358","Nome":"ARARA BRASIL TECNOLOGIA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO831","Nome":"WM INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7522","Nome":"BATER CENTER BATERIAS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO260","Nome":"KOOPNOW ROLAMENTOS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO399","Nome":"CONEXAO CELULARES INFORMATICA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO215","Nome":"MKD MAIS KI DESCARTAVEIS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO622","Nome":"SD TOKINHA DO ALUNO","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO311","Nome":"100 SEDE DISTRIBUIDORA DE AGUA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO901","Nome":"RGR ENGENHARIA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO144","Nome":"NATURALLY","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO241","Nome":"JWE E CONEXÃO CONTABILIDADE","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO353","Nome":"3RICK ELETRONIC","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO519","Nome":"AGAPE CELULARES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO940","Nome":"ENGATES BR","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO821","Nome":"EXPRESS CELULARES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7449","Nome":"LEX CORP","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7466","Nome":"LC FERRAGISTA","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7475","Nome":"GMH TUBOS E CONEXÕES","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7533","Nome":"WI DESIGN","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO7534","Nome":"SUPER CÓPIAS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRDGO7539","Nome":"LACASA DELIVERY","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""},{"Agencia":"BRNGO970","Nome":"LOUCAS POR CHINELOS","Quantidade de sacas":"","Pacotes":"","Horario de ofertas":""}],"publicadoEm":"11/05/2026 23:50"};
+var GERADO_EM  = "11/05/2026 23:50";
+
+ 
+function esc(s){
+  return String(s==null?'':s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function extrairEGO(svc){
+  var m=String(svc||'').match(/EGO\s*(\d+)/i);
+  return m?'EGO'+parseInt(m[1],10):String(svc||'').trim();
+}
+
+ 
+var EGO_CORES=['ec0','ec1','ec2','ec3','ec4','ec5','ec6'];
+var EGO_ORDEM_FIXO=['EGO3','EGO7','EGO12','EGO19','EGO20','EGO21'];
+
+ 
+function badgeRoutes(n){
+  var cls=n>20?'badge-red':n>15?'badge-amber':'badge-ok';
+  return '<span class="'+cls+'">'+n+' rota'+(n!==1?'s':'')+'</span>';
+}
+
+ 
+function badgePacotes(n){
+  if(!n)return '';
+  var fmt=n>=1000?(n/1000).toFixed(1).replace('.',',')+'k':String(n);
+  return '<span class="badge-pkg">📦 '+fmt+' pkg</span>';
+}
+
+ 
+function classVeiculo(tipo){
+  var t=String(tipo||'').toLowerCase();
+  if(t.indexOf('van')>=0)    return 'vtag-van';
+  if(t.indexOf('vuc')>=0)    return 'vtag-vuc';
+  if(t.indexOf('util')>=0)   return 'vtag-util';
+  if(t.indexOf('carreta')>=0)return 'vtag-carreta';
+  if(t.indexOf('truck')>=0)  return 'vtag-truck';
+  if(t.indexOf('toco')>=0)   return 'vtag-truck';
+  return 'vtag-outro';
+}
+function iconVeiculo(tipo){
+  var t=String(tipo||'').toLowerCase();
+  if(t.indexOf('van')>=0)    return '🚗';
+  if(t.indexOf('vuc')>=0)    return '🚐';
+  if(t.indexOf('util')>=0)   return '🏎️';
+  if(t.indexOf('carreta')>=0)return '🚌';
+  if(t.indexOf('truck')>=0||t.indexOf('toco')>=0)return '🚛';
+  return '🚚';
+}
+
+ 
+function contarVeiculos(linhas){
+  var counts={};
+  linhas.forEach(function(r){
+    var v=String(r['Tipo de Veículo']||'').trim();
+    if(!v)return;
+    counts[v]=(counts[v]||0)+1;
+  });
+  return counts;
+}
+
+ 
+function clusterChips(raw){
+  if(!raw)return '';
+  var ids=String(raw).split(/[,;\s]+/).map(function(s){return s.trim();}).filter(Boolean);
+  if(!ids.length)return '';
+  return ids.slice(0,3).map(function(id){
+    return '<span class="cluster-chip">'+esc(id)+'</span>';
+  }).join('')+(ids.length>3?'<span class="cluster-chip" title="'+esc(ids.slice(3).join(', '))+'">+'+( ids.length-3)+'</span>':'');
+}
+
+ 
+function buildUI(){
+  var rows=Array.isArray(DADOS_RAW.rows)?DADOS_RAW.rows:[];
+  var pubEm=DADOS_RAW.publicadoEm||GERADO_EM;
+
+  document.getElementById('badge-data').textContent=pubEm||GERADO_EM;
+  var atTxt=document.getElementById('badge-at-txt');
+  if(atTxt)atTxt.textContent='Publicado em '+pubEm;
+
+  
+  var grupos={};
+  rows.forEach(function(row){
+    var ego=extrairEGO(row['Tipos de serviços']||'');
+    if(!ego)return;
+    if(!grupos[ego])grupos[ego]=[];
+    grupos[ego].push(row);
+  });
+
+  
+  var egosPresentes=Object.keys(grupos);
+  var egoOrder=EGO_ORDEM_FIXO.filter(function(e){return grupos[e];});
+  egosPresentes.forEach(function(e){if(egoOrder.indexOf(e)<0)egoOrder.push(e);});
+
+  
+  var totalRotas=rows.length;
+  var totalPacotes=rows.reduce(function(s,r){return s+(parseInt(r['Pacotes estimados'],10)||0);},0);
+  document.getElementById('kpis').innerHTML=
+    kpi('Total de rotas',totalRotas)+
+    kpi('EGOs ativos',egoOrder.length)+
+    kpi('Pacotes estimados',totalPacotes.toLocaleString('pt-BR'));
+
+  
+  document.getElementById('grid').innerHTML=egoOrder.map(function(ego,idx){
+    var linhas=grupos[ego]||[];
+    var cc=EGO_CORES[idx%EGO_CORES.length];
+    var pkgTotal=linhas.reduce(function(s,r){return s+(parseInt(r['Pacotes estimados'],10)||0);},0);
+    var veicCounts=contarVeiculos(linhas);
+
+    
+    var veicHtml=Object.keys(veicCounts).sort().map(function(v){
+      return '<span class="vtag '+classVeiculo(v)+'">'+
+        iconVeiculo(v)+' '+esc(v)+'<span style="opacity:.7;font-weight:600;margin-left:3px">×'+veicCounts[v]+'</span>'+
+      '</span>';
+    }).join('');
+    if(!veicHtml)veicHtml='<span style="font-size:10px;color:#cbd5e1">—</span>';
+
+    
+    var cards=linhas.map(function(row){
+      var rota=row['Rota original']||'—';
+      var cluster=row['Cluster ID']||'';
+      var detalhe=row['Detalhe do roteiro']||'';
+      var veiculo=String(row['Tipo de Veículo']||'').trim();
+      var pacotes=parseInt(row['Pacotes estimados'],10)||0;
+
+      var veicBadgeHtml=veiculo
+        ?'<span class="rv-badge '+classVeiculo(veiculo)+'">'+esc(iconVeiculo(veiculo)+' '+veiculo)+'</span>'
+        :'';
+      var pkgHtml=pacotes?'<span class="rp-badge">📦 '+pacotes+'</span>':'';
+
+      return '<div class="rota-card">'+
+               '<div class="rota-top">'+
+                 '<span class="rota-nome" title="'+esc(rota)+'">'+esc(rota)+'</span>'+
+                 '<div class="cluster-chips">'+clusterChips(cluster)+'</div>'+
+               '</div>'+
+               (detalhe?'<div class="rota-detalhe" title="'+esc(detalhe)+'">'+esc(detalhe)+'</div>':'')+
+               '<div class="rota-bottom">'+veicBadgeHtml+pkgHtml+'</div>'+
+             '</div>';
+    }).join('');
+
+    var body=linhas.length>0
+      ?'<div class="rota-list">'+cards+'</div>'
+      :'<div class="sem-rotas">Sem rotas</div>';
+
+    return '<div class="ego-card '+cc+'">'+
+             '<div class="ego-hdr">'+
+               '<div style="min-width:0">'+
+                 '<div class="ego-name">'+esc(ego)+'</div>'+
+                 '<div class="ego-sub">XPT · '+linhas.length+' rota'+(linhas.length!==1?'s':'')+'</div>'+
+               '</div>'+
+               '<div class="ego-badges">'+
+                 badgeRoutes(linhas.length)+
+                 badgePacotes(pkgTotal)+
+               '</div>'+
+             '</div>'+
+             '<div class="ego-veiculos">'+veicHtml+'</div>'+
+             body+
+           '</div>';
+  }).join('');
+
+  
+  document.getElementById('pub-footer').innerHTML=
+    '<div class="pub-item"><span class="pub-dot"></span><strong>SGO3</strong> · NEX Programação · '+esc(pubEm)+'</div>'+
+    egoOrder.map(function(ego){
+      var cnt=(grupos[ego]||[]).length;
+      return '<div class="pub-item">'+
+               '<span class="pub-dot" style="background:#64748b"></span>'+
+               '<strong>'+esc(ego)+'</strong> · '+cnt+' rota'+(cnt!==1?'s':'')+'</div>';
+    }).join('');
+}
+
+function kpi(label,value){
+  return '<div class="kpi">'+
+    '<div class="kpi-l">'+esc(label)+'</div>'+
+    '<div class="kpi-v">'+esc(String(value))+'</div>'+
+  '</div>';
+}
+
+ 
+function buildStandby(){
+  var txt=GERADO_EM?String(GERADO_EM).split(' ')[0]:'—';
+  document.getElementById('badge-data').textContent=txt;
+  var atTxt=document.getElementById('badge-at-txt');
+  if(atTxt)atTxt.textContent='Aguardando publicação';
+  document.getElementById('kpis').innerHTML='';
+  document.getElementById('pub-footer').innerHTML='';
+  document.getElementById('grid').innerHTML=
+    '<div class="standby">'+
+      '<div class="standby-icon">⏳</div>'+
+      '<h2>Aguardando publicação</h2>'+
+      '<p>Nenhuma rota NEX encontrada.<br>'+
+      'Na planilha, use o menu 🗺️ <strong style="color:#e67e22">Publicar NEX</strong>.</p>'+
+      '<div style="font-size:11px;color:#94a3b8;margin-top:8px">SGO3 · '+esc(String(GERADO_EM||''))+'</div>'+
+    '</div>';
+}
+
+ 
+function imprimirPDF(){
+  var t=document.title;
+  var p=(DADOS_RAW&&DADOS_RAW.publicadoEm)?DADOS_RAW.publicadoEm:GERADO_EM;
+  document.title='NEX_Programacao_SGO3_'+String(p||'').replace(/[/:]/g,'-').replace(/ /g,'_');
+  window.print();document.title=t;
+}
+
+window.addEventListener('load',function(){
+  var rows=(DADOS_RAW&&Array.isArray(DADOS_RAW.rows))?DADOS_RAW.rows:[];
+  if(rows.length===0){buildStandby();}else{buildUI();}
+});
+</script>
+</body>
+</html>
