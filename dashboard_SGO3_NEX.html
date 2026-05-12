@@ -7,7 +7,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#c9d1d9}
-.hero{background:linear-gradient(135deg,#0d1117,#161b27);padding:16px 24px;text-align:center;border-bottom:1px solid #21262d}
+.hero{background:linear-gradient(135deg,#0d1117,#161b27);padding:16px 24px;
+      text-align:center;border-bottom:1px solid #21262d}
 .hero h1{font-size:1.3rem;font-weight:700;color:#e6edf3;margin-bottom:2px}
 .hero h1 span{color:#e67e22}
 .hero .sub{color:#8b949e;font-size:.8rem}
@@ -46,366 +47,320 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#c9d1d9}
                    padding:7px 11px;font-size:.83rem;flex:1;min-width:200px;
                    color:#c9d1d9;outline:none}
 .toolbar-row input:focus{border-color:#e67e22}
-.chips-section{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;
-               padding:7px 10px;background:#161b27;border:1px solid #21262d;border-radius:8px}
-.chip-lbl{color:#8b949e;font-size:.72rem;font-weight:700;white-space:nowrap;
-          min-width:54px;letter-spacing:.03em}
-.chips-group{display:flex;flex-wrap:wrap;gap:5px;flex:1}
-.chip-btn{background:#21262d;border:1px solid #30363d;border-radius:20px;
-          color:#484f58;padding:4px 10px;font-size:.74rem;font-weight:700;
-          cursor:pointer;transition:all .15s;outline:none;white-space:nowrap}
-.chip-btn:hover{opacity:.8}
-.chip-btn.active{background:#2a1e10;border-color:#e67e22;color:#e67e22}
-.chip-ctrl{background:none;border:none;font-size:.72rem;cursor:pointer;padding:0 4px;white-space:nowrap}
-.chip-ctrl.todos{color:#e67e22}.chip-ctrl.nenhum{color:#484f58}
-.chip-ctrl:hover{opacity:.7}
-.chip-sep{color:#30363d;font-size:.8rem;align-self:center}
 
  
-.card{background:#161b27;border:1px solid #21262d;border-radius:10px;overflow:hidden;margin-bottom:12px}
-.card-hdr{padding:9px 14px;font-weight:700;font-size:.84rem;color:#e6edf3;
-          display:flex;justify-content:space-between;align-items:center;
-          border-bottom:1px solid #21262d;background:#1a1e2e}
-table{width:100%;border-collapse:collapse;font-size:.85rem}
-thead th{background:#1c2333;color:#8b949e;padding:8px 11px;text-align:left;
-         white-space:nowrap;position:sticky;top:0;z-index:10;font-size:.71rem;
-         text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #30363d;
-         cursor:pointer;user-select:none;transition:background .15s,color .15s}
-thead th:hover{background:#21262d;color:#c9d1d9}
-thead th.sort-desc{color:#e67e22}
-thead th.sort-asc{color:#58a6ff}
-tbody td{padding:8px 11px;border-bottom:1px solid #21262d;color:#c9d1d9;vertical-align:middle}
+.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid #21262d;background:#161b27}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead th{padding:9px 11px;background:#1c2333;color:#8b949e;font-weight:700;
+         font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;
+         white-space:nowrap;border-bottom:1px solid #21262d;cursor:pointer;
+         user-select:none}
+thead th:hover{color:#c9d1d9}
+thead th.sort-asc::after{content:' ↑'}
+thead th.sort-desc::after{content:' ↓'}
+tbody tr{border-bottom:1px solid #1a1f26;transition:background .12s}
 tbody tr:hover{background:#1c2333}
-.vazio{text-align:center;padding:28px;color:#484f58;font-style:italic}
+td{padding:9px 11px;vertical-align:top}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
 
  
-.ego-badge{border-radius:10px;padding:2px 8px;font-size:.68rem;font-weight:800;white-space:nowrap}
-.ego-EGO3  {background:#2a1e10;color:#e67e22;border:1px solid #e67e22}
-.ego-EGO7  {background:#0d1e35;color:#58a6ff;border:1px solid #58a6ff}
-.ego-EGO12 {background:#1a1226;color:#bc8cff;border:1px solid #bc8cff}
-.ego-EGO19 {background:#0d2020;color:#56d364;border:1px solid #56d364}
-.ego-EGO20 {background:#1f1215;color:#f47067;border:1px solid #f47067}
-.ego-EGO21 {background:#1a1a0f;color:#e3b341;border:1px solid #e3b341}
-.ego-outro {background:#21262d;color:#8b949e;border:1px solid #30363d}
+.ego-badge{display:inline-block;padding:2px 7px;border-radius:10px;
+           font-size:.7rem;font-weight:700;margin-right:2px;white-space:nowrap}
+.ego3  {background:rgba(230,126,34,.15);color:#e67e22}
+.ego7  {background:rgba(88,166,255,.15);color:#58a6ff}
+.ego12 {background:rgba(188,140,255,.15);color:#bc8cff}
+.ego19 {background:rgba(86,211,100,.15);color:#56d364}
+.ego20 {background:rgba(244,112,103,.15);color:#f47067}
+.ego21 {background:rgba(227,179,65,.15);color:#e3b341}
+.ego-outro{background:rgba(139,148,158,.15);color:#8b949e}
 
  
-.vbadge{border-radius:10px;padding:2px 8px;font-size:.68rem;font-weight:700;white-space:nowrap}
-.vb-van    {background:#0d1e35;color:#58a6ff;border:1px solid #388bfd}
-.vb-vuc    {background:#1a1226;color:#bc8cff;border:1px solid #8957e5}
-.vb-util   {background:#2a1e10;color:#e67e22;border:1px solid #c2410c}
-.vb-carreta{background:#0d2020;color:#56d364;border:1px solid #3fb950}
-.vb-truck  {background:#1a1a0f;color:#e3b341;border:1px solid #9e6a03}
-.vb-outro  {background:#21262d;color:#8b949e;border:1px solid #30363d}
+.rota-chip{display:inline-block;background:#0d2020;color:#56d364;border:1px solid #1a4040;
+           border-radius:4px;padding:1px 5px;font-size:.68rem;margin:1px 2px;
+           font-family:'Consolas','Courier New',monospace;white-space:nowrap}
 
  
-.cl-chip{background:#0d2020;color:#56d364;border:1px solid #238636;border-radius:6px;
-         padding:1px 5px;font-size:.65rem;font-weight:700;margin-right:2px;white-space:nowrap}
-
- 
-.standby{text-align:center;padding:60px 20px;color:#484f58}
-.standby-icon{font-size:2.5rem;margin-bottom:12px;animation:pulse 2s ease-in-out infinite}
-.standby h2{font-size:1.1rem;font-weight:700;color:#8b949e;margin-bottom:8px}
-.standby p{font-size:.85rem;line-height:1.6}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-footer{text-align:center;color:#484f58;font-size:.71rem;margin-top:18px;
-       border-top:1px solid #21262d;padding-top:12px}
-
-@media print{
-  body{background:#fff!important;color:#000!important}
-  .tabs{display:none!important}
-  .painel{display:block!important}
-  .chips-section,.toolbar-row{display:none!important}
-  thead th{background:#eee!important;color:#333!important}
-  .card{border:1px solid #ccc!important;background:#fff!important}
-  .card-hdr{background:#eee!important;color:#000!important}
-  tbody td{border-bottom:1px solid #eee!important;color:#000!important}
-}
+.standby{text-align:center;padding:80px 20px;color:#8b949e}
+.standby .icon{font-size:3rem;margin-bottom:16px}
+.standby h2{color:#c9d1d9;font-size:1.2rem;margin-bottom:8px}
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <h1>🗺️ NEX <span>Programação</span> — SGO3</h1>
-  <div class="sub">Roteirização XPT por EGO · Goiânia / GO</div>
-  <div id="ts-linha">—</div>
+  <h1>🗺️ Dashboard <span>NEX</span> — SGO3</h1>
+  <div class="sub">Programação de agências e rotas</div>
+  <div id="ts-linha">Carregando…</div>
 </div>
 
 <div class="tabs" id="tabs-container"></div>
 
-<div class="container">
-  <div id="erro-global"></div>
-  <div id="paineis-container"></div>
-</div>
-
-<footer id="rodape">Dashboard NEX · SGO3 · Goiânia · Mercado Livre Logística</footer>
+<div class="container" id="paineis-container"></div>
 
 <script>
- 
-var DADOS_RAW = {"rows":[{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":3},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":3},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":3},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":3},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":2},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":1},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0},{"rota":"","cluster":"","detalhe":"","servico":"","ego":"","veiculo":"","pacotes":0}],"publicadoEm":"12/05/2026 00:18"};
-var GERADO_EM = "12/05/2026 00:18";
 
- 
+var DADOS_RAW = {"rows":[{"agencia":"BRNGO319","nome":"WI INFORMATICA E SERVICOS","rotas":"AM1_7_1, AM1_7_2, AM1_7_3","sacas":3,"horario":"11:30","pacotes":82,"ego":"EGO7"},{"agencia":"BRNGO2","nome":"CHAVEIRO SOLUÇÃO","rotas":"AM1_3_1, AM1_3_2, AM1_3_3","sacas":3,"horario":"11:30","pacotes":88,"ego":"EGO3"},{"agencia":"BRNGO363","nome":"TIC TAC UNIFORMES","rotas":"AM1_5_1, AM1_5_2, AM1_5_3","sacas":3,"horario":"11:30","pacotes":90,"ego":"EGO5"},{"agencia":"BRNGO557","nome":"MASTER LAN HOUSE","rotas":"AM1_2_1, AM1_2_2, AM1_2_3","sacas":3,"horario":"12:00","pacotes":88,"ego":"EGO2"},{"agencia":"BRNGO953","nome":"SMART UP","rotas":"AM1_4_1, AM1_4_2","sacas":2,"horario":"12:00","pacotes":80,"ego":"EGO4"},{"agencia":"BRNGO852","nome":"MVWEB DIGITAL","rotas":"AM1_5_4","sacas":1,"horario":"11:30","pacotes":40,"ego":"EGO5"},{"agencia":"BRNGO740","nome":"MAJESTIC STORE","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO561","nome":"VANCEL CELULARES E INFORMATICA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO685","nome":"CONSERTA SMART VILA AURORA OESTE","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO578","nome":"CABANA DO SAPATO GOIANIA VIVA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO358","nome":"ARARA BRASIL TECNOLOGIA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO831","nome":"WM INFORMATICA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7522","nome":"BATER CENTER BATERIAS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO260","nome":"KOOPNOW ROLAMENTOS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO399","nome":"CONEXAO CELULARES INFORMATICA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO215","nome":"MKD MAIS KI DESCARTAVEIS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO622","nome":"SD TOKINHA DO ALUNO","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO311","nome":"100 SEDE DISTRIBUIDORA DE AGUA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO901","nome":"RGR ENGENHARIA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO144","nome":"NATURALLY","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO241","nome":"JWE E CONEXÃO CONTABILIDADE","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO353","nome":"3RICK ELETRONIC","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO519","nome":"AGAPE CELULARES","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO940","nome":"ENGATES BR","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO821","nome":"EXPRESS CELULARES","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7449","nome":"LEX CORP","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7466","nome":"LC FERRAGISTA","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7475","nome":"GMH TUBOS E CONEXÕES","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7533","nome":"WI DESIGN","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO7534","nome":"SUPER CÓPIAS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRDGO7539","nome":"LACASA DELIVERY","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""},{"agencia":"BRNGO970","nome":"LOUCAS POR CHINELOS","rotas":"","sacas":0,"horario":"","pacotes":0,"ego":""}],"publicadoEm":"12/05/2026 00:35"};
+var GERADO_EM = "12/05/2026 00:35";
+
+
+var EGO_COR = {
+  'EGO3' :'#e67e22','EGO7' :'#58a6ff','EGO12':'#bc8cff',
+  'EGO19':'#56d364','EGO20':'#f47067','EGO21':'#e3b341'
+};
 var EGO_ORDEM = ['EGO3','EGO7','EGO12','EGO19','EGO20','EGO21'];
 
- 
-function esc(s){
-  return String(s==null?'':s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
+function egoCls(ego){
+  if(!ego) return 'ego-outro';
+  var n = ego.replace(/\D/g,'');
+  return 'ego'+n;
 }
 
- 
-function trocarAba(ego, el){
-  document.querySelectorAll('.painel').forEach(function(p){p.classList.remove('ativo');});
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('ativa');});
-  var painel = document.getElementById('painel-'+ego);
-  if(painel) painel.classList.add('ativo');
-  el.classList.add('ativa');
+function egoCor(ego){
+  return EGO_COR[ego] || '#8b949e';
 }
 
- 
-function toggleChip(btn){
-  btn.classList.toggle('active');
-  filtrar(btn.getAttribute('data-ego'));
-}
-function todosChips(cid, ego, ativo){
-  var el=document.getElementById(cid); if(!el)return;
-  el.querySelectorAll('.chip-btn').forEach(function(b){
-    ativo?b.classList.add('active'):b.classList.remove('active');
-  });
-  filtrar(ego);
-}
-function okChip(cid, val){
-  var el=document.getElementById(cid); if(!el)return true;
-  var all=el.querySelectorAll('.chip-btn'); if(!all.length)return true;
-  var on=el.querySelectorAll('.chip-btn.active'); if(!on.length)return false;
-  var vs=Array.prototype.map.call(on,function(b){return b.getAttribute('data-val');});
-  return vs.indexOf(val)>=0;
+
+function fmt(n){ return (n||0).toLocaleString('pt-BR'); }
+
+
+function renderRotas(rotasStr){
+  if(!rotasStr) return '<span style="color:#8b949e">—</span>';
+  var chips = rotasStr.split(',').map(function(r){ return r.trim(); }).filter(Boolean);
+  if(chips.length === 0) return '<span style="color:#8b949e">—</span>';
+  return chips.map(function(c){ return '<span class="rota-chip">'+escHtml(c)+'</span>'; }).join('');
 }
 
- 
-function filtrar(ego){
-  var busca=((document.getElementById('busca-'+ego)||{}).value||'').toLowerCase().trim();
-  var tbody=document.getElementById('body-'+ego); if(!tbody)return;
-  var cnt=0;
-  tbody.querySelectorAll('tr').forEach(function(tr){
-    if(tr.querySelector('.vazio'))return;
-    var okB=!busca||tr.innerText.toLowerCase().indexOf(busca)>=0;
-    var okV=okChip('vchips-'+ego, tr.getAttribute('data-veiculo')||'');
-    var show=okB&&okV;
-    tr.style.display=show?'':'none';
-    if(show)cnt++;
-  });
-  var cntEl=document.getElementById('count-'+ego);
-  if(cntEl)cntEl.textContent=cnt;
+function escHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
- 
-function egoBadge(ego){
-  var cls=EGO_ORDEM.indexOf(ego)>=0?'ego-'+ego:'ego-outro';
-  return "<span class='ego-badge "+cls+"'>"+esc(ego)+"</span>";
-}
 
- 
-function vCls(v){
-  var t=String(v||'').toLowerCase();
-  if(t.indexOf('van')>=0)    return 'vb-van';
-  if(t.indexOf('vuc')>=0)    return 'vb-vuc';
-  if(t.indexOf('util')>=0)   return 'vb-util';
-  if(t.indexOf('carreta')>=0)return 'vb-carreta';
-  if(t.indexOf('truck')>=0||t.indexOf('toco')>=0)return 'vb-truck';
-  return 'vb-outro';
-}
-function vIcon(v){
-  var t=String(v||'').toLowerCase();
-  if(t.indexOf('van')>=0)    return '🚗';
-  if(t.indexOf('vuc')>=0)    return '🚐';
-  if(t.indexOf('util')>=0)   return '🏎️';
-  if(t.indexOf('carreta')>=0)return '🚌';
-  if(t.indexOf('truck')>=0||t.indexOf('toco')>=0)return '🚛';
-  return '🚚';
-}
-function veiculoBadge(v){
-  if(!v)return "<span style='color:#484f58'>—</span>";
-  return "<span class='vbadge "+vCls(v)+"'>"+vIcon(v)+" "+esc(v)+"</span>";
-}
+var sortState = {};  
 
- 
-function clusterHtml(raw){
-  if(!raw)return "<span style='color:#484f58'>—</span>";
-  var ids=String(raw).split(/[,;\s]+/).map(function(s){return s.trim();}).filter(Boolean);
-  if(!ids.length)return "<span style='color:#484f58'>—</span>";
-  return ids.slice(0,4).map(function(id){
-    return "<span class='cl-chip'>"+esc(id)+"</span>";
-  }).join('')+(ids.length>4?'<span class="cl-chip" style="opacity:.6">+'+( ids.length-4)+'</span>':'');
-}
-
- 
-function kpiCard(lbl,val,bg,cor,accent,sub){
-  var ac=accent?"<div class='kpi-accent' style='background:"+accent+"'></div>":'';
-  var sb=sub?"<div class='sub'>"+sub+"</div>":'';
-  return "<div class='kpi' style='background:"+bg+"'>"+ac
-    +"<div class='kpi-body'><div class='lbl' style='color:"+cor+"'>"+lbl+"</div>"
-    +"<div class='val' style='color:"+cor+"'>"+val+"</div>"+sb+"</div></div>";
-}
-
- 
-var _sd={};
-function sortarTabela(ego,cIdx,th){
-  var tbody=document.getElementById('body-'+ego); if(!tbody)return;
-  var key=ego+'_'+cIdx;
-  var dir=_sd[key]==='desc'?'asc':'desc'; _sd[key]=dir;
-  th.closest('thead').querySelectorAll('th').forEach(function(h){
-    h.classList.remove('sort-desc','sort-asc');
-  });
-  th.classList.add(dir==='desc'?'sort-desc':'sort-asc');
-  var rows=Array.prototype.slice.call(tbody.querySelectorAll('tr')).filter(function(tr){
-    return !tr.querySelector('.vazio') && tr.style.display!=='none';
-  });
-  rows.sort(function(a,b){
-    var ca=a.querySelectorAll('td')[cIdx];
-    var cb=b.querySelectorAll('td')[cIdx];
-    var va=ca?(ca.innerText||'').trim():'';
-    var vb=cb?(cb.innerText||'').trim():'';
-    var na=parseFloat(va.replace(/[^0-9.,\-]/g,'').replace(',','.'));
-    var nb=parseFloat(vb.replace(/[^0-9.,\-]/g,'').replace(',','.'));
-    var cmp=(!isNaN(na)&&!isNaN(nb))?(na-nb):va.localeCompare(vb,'pt-BR',{sensitivity:'base'});
-    return dir==='desc'?-cmp:cmp;
-  });
-  rows.forEach(function(r){tbody.appendChild(r);});
-}
-
- 
-function buildUI(){
-  var rows=Array.isArray(DADOS_RAW.rows)?DADOS_RAW.rows:[];
-  var pubEm=DADOS_RAW.publicadoEm||GERADO_EM;
-
-  document.getElementById('ts-linha').innerHTML=
-    'Publicado em: <strong>'+esc(pubEm)+'</strong> &nbsp;|&nbsp; Total: <strong>'+rows.length+'</strong> rotas';
-
-  
-  var grupos={};
-  rows.forEach(function(row){
-    var ego=row.ego||'—';
-    if(!grupos[ego])grupos[ego]=[];
-    grupos[ego].push(row);
-  });
-
-  
-  var egosPresentes=Object.keys(grupos);
-  var egoOrder=EGO_ORDEM.filter(function(e){return grupos[e];});
-  egosPresentes.forEach(function(e){if(egoOrder.indexOf(e)<0)egoOrder.push(e);});
-
-  var totalPacotes=rows.reduce(function(s,r){return s+(r.pacotes||0);},0);
-
-  
-  var tabsHtml=egoOrder.map(function(ego,i){
-    var cnt=(grupos[ego]||[]).length;
-    return "<div class='tab"+(i===0?' ativa':'')+"' onclick='trocarAba(\""+esc(ego)+"\",this)'>"+
-      esc(ego)+"<span class='badge-tab'>"+cnt+"</span></div>";
-  }).join('');
-  
-  tabsHtml="<div class='tab ativa' onclick='trocarAba(\"TODAS\",this)'>Todas <span class='badge-tab'>"+rows.length+"</span></div>"+
-    egoOrder.map(function(ego,i){
-      var cnt=(grupos[ego]||[]).length;
-      return "<div class='tab' onclick='trocarAba(\""+esc(ego)+"\",this)'>"+
-        esc(ego)+"<span class='badge-tab'>"+cnt+"</span></div>";
-    }).join('');
-  document.getElementById('tabs-container').innerHTML=tabsHtml;
-
-  
-  var painéisHtml='';
-  var painelEgos=['TODAS'].concat(egoOrder);
-  painelEgos.forEach(function(ego,pIdx){
-    var linhas=ego==='TODAS'?rows:(grupos[ego]||[]);
-    var pkgTotal=linhas.reduce(function(s,r){return s+(r.pacotes||0);},0);
-
-    
-    var veicSet={};
-    linhas.forEach(function(r){if(r.veiculo)veicSet[r.veiculo]=1;});
-    var veics=Object.keys(veicSet).sort();
-
-    var vChips=veics.map(function(v){
-      return "<button class='chip-btn active' data-val='"+esc(v)+"' data-ego='"+esc(ego)+"' onclick='toggleChip(this)'>"+
-        vIcon(v)+' '+esc(v)+"</button>";
-    }).join('');
-
-    
-    var kpis=kpiCard('ROTAS',linhas.length,'#161b27','#e6edf3','#e67e22','neste grupo')+
-      kpiCard('PACOTES',pkgTotal.toLocaleString('pt-BR'),'#161b27','#58a6ff','#388bfd','estimados')+
-      kpiCard('VEÍCULOS',veics.length,'#161b27','#bc8cff','#8957e5','tipos distintos');
-    if(ego==='TODAS'){
-      kpis+=kpiCard('EGOs ATIVOS',egoOrder.length,'#161b27','#56d364','#3fb950','grupos');
+function sortRows(rows, col, dir){
+  return rows.slice().sort(function(a,b){
+    var va = a[col] !== undefined ? a[col] : '';
+    var vb = b[col] !== undefined ? b[col] : '';
+    if(typeof va === 'number' && typeof vb === 'number'){
+      return dir === 'asc' ? va - vb : vb - va;
     }
+    va = String(va).toLowerCase();
+    vb = String(vb).toLowerCase();
+    if(va < vb) return dir === 'asc' ? -1 : 1;
+    if(va > vb) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
 
-    
-    var tbodyRows=linhas.map(function(r){
-      var vVal=String(r.veiculo||'');
-      return "<tr data-veiculo='"+esc(vVal)+"'>"+
-        (ego==='TODAS'?"<td>"+egoBadge(r.ego||'—')+"</td>":'')+
-        "<td style='font-weight:700;color:#e6edf3;font-family:monospace'>"+esc(r.rota)+"</td>"+
-        "<td>"+clusterHtml(r.cluster)+"</td>"+
-        "<td style='font-size:.8rem;color:#8b949e;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis' title='"+esc(r.detalhe)+"'>"+esc(r.detalhe)+"</td>"+
-        "<td>"+veiculoBadge(r.veiculo)+"</td>"+
-        "<td style='text-align:center;font-weight:700;color:#58a6ff'>"+((r.pacotes||0)>0?r.pacotes:'—')+"</td>"+
-      "</tr>";
-    }).join('');
-    if(!tbodyRows) tbodyRows="<tr><td colspan='"+(ego==='TODAS'?6:5)+"' class='vazio'>Sem rotas</td></tr>";
 
-    var thEgo=ego==='TODAS'?"<th onclick='sortarTabela(\"TODAS\",0,this)'>EGO</th>":'';
-    var colOffset=ego==='TODAS'?1:0;
+function buildTabela(painelId, rows){
+  var wrap = document.getElementById('tbl-'+painelId);
+  if(!wrap) return;
 
-    painéisHtml+="<div id='painel-"+esc(ego)+"' class='painel"+(pIdx===0?' ativo':'')+"'>"+
-      "<div class='kpis'>"+kpis+"</div>"+
-      "<div class='toolbar-row'><input type='text' id='busca-"+esc(ego)+"' placeholder='Buscar rota, cluster, cidade...' oninput='filtrar(\""+esc(ego)+"\")'></div>"+
-      (veics.length>1?
-        "<div class='chips-section'><span class='chip-lbl'>Veículo</span>"+
-        "<div class='chips-group' id='vchips-"+esc(ego)+"'>"+vChips+"</div>"+
-        "<span class='chip-sep'>|</span>"+
-        "<button class='chip-ctrl todos' onclick='todosChips(\"vchips-"+esc(ego)+"\",\""+esc(ego)+"\",true)'>Todos</button>"+
-        "<button class='chip-ctrl nenhum' onclick='todosChips(\"vchips-"+esc(ego)+"\",\""+esc(ego)+"\",false)'>Nenhum</button></div>":'')+
-      "<div class='card'>"+
-        "<div class='card-hdr'><span>"+esc(ego==='TODAS'?'Todas as rotas':ego)+" &mdash; <span id='count-"+esc(ego)+"'>"+linhas.length+"</span> rota(s)</span></div>"+
-        "<div style='overflow-x:auto;max-height:65vh;overflow-y:auto'>"+
-          "<table><thead><tr>"+
-            thEgo+
-            "<th onclick='sortarTabela(\""+esc(ego)+"\","+colOffset+",this)'>ROTA</th>"+
-            "<th onclick='sortarTabela(\""+esc(ego)+"\","+(colOffset+1)+",this)'>CLUSTER</th>"+
-            "<th onclick='sortarTabela(\""+esc(ego)+"\","+(colOffset+2)+",this)'>DETALHE / CIDADES</th>"+
-            "<th onclick='sortarTabela(\""+esc(ego)+"\","+(colOffset+3)+",this)'>TIPO VEÍCULO</th>"+
-            "<th onclick='sortarTabela(\""+esc(ego)+"\","+(colOffset+4)+",this)' style='text-align:center'>PACOTES</th>"+
-          "</tr></thead>"+
-          "<tbody id='body-"+esc(ego)+"'>"+tbodyRows+"</tbody>"+
-        "</table></div>"+
-      "</div>"+
-    "</div>";
+  var ss = sortState[painelId] || {col:'agencia', dir:'asc'};
+  var sorted = sortRows(rows.filter(function(r){ return r._visible !== false; }), ss.col, ss.dir);
+
+  var cols = [
+    {key:'ego',    label:'EGO',       cls:''},
+    {key:'agencia',label:'Agência',   cls:''},
+    {key:'nome',   label:'Nome',      cls:''},
+    {key:'rotas',  label:'Rotas',     cls:''},
+    {key:'sacas',  label:'Sacas',     cls:'num'},
+    {key:'horario',label:'Horário',   cls:''},
+    {key:'pacotes',label:'Pacotes',   cls:'num'}
+  ];
+
+  var th = cols.map(function(c){
+    var cls = '';
+    if(ss.col === c.key) cls = ' class="sort-'+ss.dir+'"';
+    return '<th'+cls+' onclick="clickSort(\''+painelId+'\',\''+c.key+'\')">'+c.label+'</th>';
+  }).join('');
+
+  var tbody = sorted.map(function(r){
+    var egoBadge = r.ego
+      ? '<span class="ego-badge '+egoCls(r.ego)+'">'+escHtml(r.ego)+'</span>'
+      : '<span class="ego-badge ego-outro">—</span>';
+    return '<tr>'
+      + '<td>'+egoBadge+'</td>'
+      + '<td><strong>'+escHtml(r.agencia)+'</strong></td>'
+      + '<td>'+escHtml(r.nome)+'</td>'
+      + '<td>'+renderRotas(r.rotas)+'</td>'
+      + '<td class="num">'+fmt(r.sacas)+'</td>'
+      + '<td>'+escHtml(r.horario||'—')+'</td>'
+      + '<td class="num"><strong>'+fmt(r.pacotes)+'</strong></td>'
+      + '</tr>';
+  }).join('');
+
+  wrap.innerHTML = sorted.length === 0
+    ? '<div style="padding:40px;text-align:center;color:#8b949e">Nenhuma agência encontrada.</div>'
+    : '<div class="tbl-wrap"><table><thead><tr>'+th+'</tr></thead><tbody>'+tbody+'</tbody></table></div>';
+}
+
+function clickSort(painelId, col){
+  var ss = sortState[painelId] || {col:'agencia', dir:'asc'};
+  if(ss.col === col){
+    ss.dir = ss.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    ss.col = col; ss.dir = 'asc';
+  }
+  sortState[painelId] = ss;
+  buildTabela(painelId, window._painelRows[painelId] || []);
+}
+
+
+function buildKpis(rows, accentColor){
+  var totalAgencias = rows.length;
+  var totalSacas    = rows.reduce(function(s,r){ return s + (r.sacas||0); }, 0);
+  var totalPacotes  = rows.reduce(function(s,r){ return s + (r.pacotes||0); }, 0);
+  var egoSet = {};
+  rows.forEach(function(r){ if(r.ego) egoSet[r.ego] = true; });
+  var totalEgos = Object.keys(egoSet).length;
+
+  var ac = accentColor || '#e67e22';
+  function card(lbl, val, sub, color){
+    return '<div class="kpi">'
+      + '<div class="kpi-accent" style="background:'+color+'"></div>'
+      + '<div class="kpi-body">'
+      + '<div class="lbl" style="color:'+color+'">'+lbl+'</div>'
+      + '<div class="val">'+val+'</div>'
+      + (sub ? '<div class="sub">'+sub+'</div>' : '')
+      + '</div></div>';
+  }
+
+  return card('Agências',  fmt(totalAgencias), 'no período',      ac)
+       + card('Sacas',     fmt(totalSacas),    'total de rotas',  '#58a6ff')
+       + card('Pacotes',   fmt(totalPacotes),  'total estimado',  '#56d364')
+       + card('EGOs',      fmt(totalEgos),     'ativos neste ciclo', '#bc8cff');
+}
+
+
+window._painelRows = {};
+
+function filtrar(painelId){
+  var q = (document.getElementById('busca-'+painelId)||{value:''}).value.trim().toLowerCase();
+  var rows = (window._painelRows[painelId]||[]).map(function(r){
+    if(!q){ r._visible = true; return r; }
+    var hay = [r.agencia, r.nome, r.rotas, r.ego, r.horario].join(' ').toLowerCase();
+    r._visible = hay.indexOf(q) >= 0;
+    return r;
+  });
+  buildTabela(painelId, rows);
+  
+  var vis = rows.filter(function(r){ return r._visible !== false; }).length;
+  var el = document.getElementById('cnt-'+painelId);
+  if(el) el.textContent = vis + ' agência' + (vis !== 1 ? 's' : '');
+}
+
+
+function buildUI(){
+  var rows = Array.isArray(DADOS_RAW.rows) ? DADOS_RAW.rows : [];
+
+  
+  if(rows.length === 0){
+    document.getElementById('tabs-container').style.display = 'none';
+    document.getElementById('paineis-container').innerHTML =
+      '<div class="standby"><div class="icon">🗺️</div>'
+      + '<h2>Dashboard NEX aguardando publicação</h2>'
+      + '<p>Use o menu <strong>🚀 Dashboard SGO3 → 🗺️ Publicar NEX</strong> na planilha.</p></div>';
+    document.getElementById('ts-linha').textContent = 'Sem dados publicados';
+    return;
+  }
+
+  document.getElementById('ts-linha').textContent = 'Atualizado em ' + GERADO_EM;
+
+  
+  var grupos = {};
+  rows.forEach(function(r){
+    var ego = r.ego || 'Outros';
+    if(!grupos[ego]) grupos[ego] = [];
+    grupos[ego].push(r);
   });
 
-  document.getElementById('paineis-container').innerHTML=painéisHtml;
-  document.getElementById('rodape').textContent=
-    'Dashboard NEX · SGO3 · Goiânia · Publicado em: '+pubEm;
+  
+  var egoKeys = Object.keys(grupos).sort(function(a,b){
+    var ia = EGO_ORDEM.indexOf(a);
+    var ib = EGO_ORDEM.indexOf(b);
+    if(ia < 0) ia = 999;
+    if(ib < 0) ib = 999;
+    return ia - ib;
+  });
+
+  var tabsEl    = document.getElementById('tabs-container');
+  var paineiEl  = document.getElementById('paineis-container');
+  tabsEl.innerHTML   = '';
+  paineiEl.innerHTML = '';
+
+  
+  var todasId = 'todas';
+  window._painelRows[todasId] = rows.map(function(r){ r._visible=true; return r; });
+
+  var tabTodas = document.createElement('div');
+  tabTodas.className = 'tab ativa';
+  tabTodas.id = 'tab-'+todasId;
+  tabTodas.innerHTML = 'Todas <span class="badge-tab">'+rows.length+'</span>';
+  tabTodas.onclick = function(){ ativarTab(todasId); };
+  tabsEl.appendChild(tabTodas);
+
+  var painelTodas = document.createElement('div');
+  painelTodas.className = 'painel ativo';
+  painelTodas.id = 'painel-'+todasId;
+  painelTodas.innerHTML =
+    '<div class="kpis">'+buildKpis(rows, '#e67e22')+'</div>'
+    + '<div class="toolbar-row">'
+    + '<input type="text" id="busca-'+todasId+'" placeholder="Buscar agência, rota, EGO…" oninput="filtrar(\''+todasId+'\')">'
+    + '<span id="cnt-'+todasId+'" style="color:#8b949e;font-size:.8rem;white-space:nowrap">'+rows.length+' agências</span>'
+    + '</div>'
+    + '<div id="tbl-'+todasId+'"></div>';
+  paineiEl.appendChild(painelTodas);
+  buildTabela(todasId, rows);
+
+  
+  egoKeys.forEach(function(ego){
+    var gr = grupos[ego];
+    var id = 'ego_'+ego.replace(/\W/g,'');
+    var cor = egoCor(ego);
+    window._painelRows[id] = gr.map(function(r){ r._visible=true; return r; });
+
+    var tab = document.createElement('div');
+    tab.className = 'tab';
+    tab.id = 'tab-'+id;
+    tab.innerHTML = escHtml(ego) + ' <span class="badge-tab">'+gr.length+'</span>';
+    tab.style.setProperty('--ego-cor', cor);
+    tab.onclick = (function(eid){ return function(){ ativarTab(eid); }; })(id);
+    tabsEl.appendChild(tab);
+
+    var painel = document.createElement('div');
+    painel.className = 'painel';
+    painel.id = 'painel-'+id;
+    painel.innerHTML =
+      '<div class="kpis">'+buildKpis(gr, cor)+'</div>'
+      + '<div class="toolbar-row">'
+      + '<input type="text" id="busca-'+id+'" placeholder="Buscar agência, rota…" oninput="filtrar(\''+id+'\')">'
+      + '<span id="cnt-'+id+'" style="color:#8b949e;font-size:.8rem;white-space:nowrap">'+gr.length+' agências</span>'
+      + '</div>'
+      + '<div id="tbl-'+id+'"></div>';
+    paineiEl.appendChild(painel);
+    buildTabela(id, gr);
+  });
 }
 
- 
-function buildStandby(){
-  document.getElementById('ts-linha').textContent='Aguardando publicação';
-  document.getElementById('paineis-container').innerHTML=
-    "<div class='standby'>"+
-      "<div class='standby-icon'>⏳</div>"+
-      "<h2>Aguardando publicação</h2>"+
-      "<p>Nenhuma rota NEX encontrada.<br>"+
-      "Na planilha use o menu 🗺️ <strong style='color:#e67e22'>Publicar NEX</strong>.</p>"+
-      "<p style='margin-top:8px;font-size:.75rem;color:#30363d'>SGO3 · "+esc(String(GERADO_EM||''))+"</p>"+
-    "</div>";
+var _tabAtiva = 'todas';
+function ativarTab(id){
+  
+  var oldTab = document.getElementById('tab-'+_tabAtiva);
+  var oldPan = document.getElementById('painel-'+_tabAtiva);
+  if(oldTab) oldTab.classList.remove('ativa');
+  if(oldPan) oldPan.classList.remove('ativo');
+  
+  var newTab = document.getElementById('tab-'+id);
+  var newPan = document.getElementById('painel-'+id);
+  if(newTab){ newTab.classList.add('ativa'); }
+  if(newPan){ newPan.classList.add('ativo'); }
+  _tabAtiva = id;
 }
 
- 
-window.addEventListener('load',function(){
-  var rows=DADOS_RAW&&Array.isArray(DADOS_RAW.rows)?DADOS_RAW.rows:[];
-  if(rows.length===0){buildStandby();}else{buildUI();}
-});
+
+buildUI();
 </script>
 </body>
 </html>
