@@ -62,6 +62,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e2e8f
 .share-pct{font-size:.68rem;color:#475569;white-space:nowrap;min-width:32px;text-align:right}
 
  
+.veic-header-row{display:grid;grid-template-columns:minmax(180px,2fr) 110px 110px 90px;gap:10px;padding-bottom:6px;border-bottom:1px solid #1e2a3a;margin-bottom:6px}
+.veic-row{display:grid;grid-template-columns:minmax(180px,2fr) 110px 110px 90px;align-items:center;gap:10px;padding:4px 0}
+.veic-name{font-size:.78rem;font-weight:700;color:#cbd5e1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.veic-val{font-size:.82rem;font-weight:800;color:#38bdf8;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.veic-val.amber{color:#f59e0b}
+.veic-rotas{font-size:.72rem;color:#64748b;text-align:right;white-space:nowrap}
+
+ 
 .filter-bar{background:#131826;border:1px solid #1e2a3a;border-radius:10px;padding:10px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .filter-label{font-size:.76rem;color:#94a3b8;font-weight:600;white-space:nowrap}
 .filter-sel{background:#0d1117;border:1px solid #1e2a3a;border-radius:7px;color:#e2e8f0;padding:6px 10px;font-size:.8rem;outline:none;cursor:pointer;min-width:220px;transition:.2s}
@@ -125,6 +133,8 @@ tr:hover td{background:rgba(0,184,148,.06)}
   .kpi-val{font-size:1.35rem}
   .share-header-row,.share-row{grid-template-columns:1fr 60px}
   .share-bar-outer,.share-rotas{display:none}
+  .veic-header-row,.veic-row{grid-template-columns:1fr 80px 80px}
+  .veic-rotas{display:none}
   .onda-card{min-width:94px;padding:6px 10px}
   .onda-h{font-size:.78rem}
   .tbl-wrap{max-height:calc(100vh - 280px)}
@@ -150,8 +160,8 @@ tr:hover td{background:rgba(0,184,148,.06)}
 
 <script>
 
-const CICLOS_RAW = {"AM":{"dados":{"columns":["s","ID da Rota","Rota otimizada","Rota original","Doca","Transportadora","Placa","Tipo de veículo","Tipo de rota","Bairro","Pacotes","Paradas","Cluster id","Antender com:","Região"],"rows":[{"s":"Onda 2","ID da Rota":"500504000000","Rota otimizada":"D3_AM1","Rota original":"AM1_43","Doca":"8","Transportadora":"COOPMETRO","Placa":"","Tipo de veículo":"Utilitários SDD","Tipo de rota":"","Bairro":"Risco - Comercial - Distante","Pacotes":"153","Paradas":"137","Cluster id":"2,5","Antender com:":"VUC","Região":"Aparecida de Goiânia - Setor dos Afonsos (39),Aparecida de Goiânia - Jardim Luz (30),Aparecida de Goiânia - Vila Brasília (22)"}]},"publicadoEm":"14/05/2026 23:44","ciclo":"AM"},"_mlpName":"COOPMETRO"};
-const GERADO_EM  = '"14/05/2026 23:44"';
+const CICLOS_RAW = {"AM":{"dados":{"columns":["s","ID da Rota","Rota otimizada","Rota original","Doca","Transportadora","Placa","Tipo de veículo","Tipo de rota","Bairro","Pacotes","Paradas","Cluster id","Antender com:","Região"],"rows":[{"s":"Onda 2","ID da Rota":"500504000000","Rota otimizada":"D3_AM1","Rota original":"AM1_43","Doca":"8","Transportadora":"COOPMETRO","Placa":"","Tipo de veículo":"Utilitários SDD","Tipo de rota":"","Bairro":"Risco - Comercial - Distante","Pacotes":"153","Paradas":"137","Cluster id":"2,5","Antender com:":"VUC","Região":"Aparecida de Goiânia - Setor dos Afonsos (39),Aparecida de Goiânia - Jardim Luz (30),Aparecida de Goiânia - Vila Brasília (22)"}]},"publicadoEm":"15/05/2026 06:17","ciclo":"AM"},"_mlpName":"COOPMETRO"};
+const GERADO_EM  = '"15/05/2026 06:17"';
 const ABAS_ORDEM = ['AM','PM','SD','XPT'];
 
 
@@ -211,6 +221,8 @@ function detectarConfig(cols){
 }
 function detectarPktIdx(cols){return findCol(cols,['Pacotes','pacotes','Qtd Pacotes','QTD_PACOTES','QTDE_PACOTES','Qtde Pacotes']);}
 function detectarTranspIdx(cols){return findCol(cols,['Transportadora','Transportadoras','MLP']);}
+function detectarParadasIdx(cols){return findCol(cols,['Paradas','paradas','Qtd Paradas','QTD_PARADAS','Qtde Paradas']);}
+function detectarVeiculoIdx(cols){return findCol(cols,['Tipo de Veículo','Tipo de veículo','Tipo de Veiculo','Tipo de veiculo','Tipo veículo','Tipos de serviços']);}
 
 
 function renderKPIs(id){
@@ -261,7 +273,6 @@ function renderShare(id){
     agg[t].pkts+=pkt; agg[t].rotas++; totalPktGlobal+=pkt; totalRotasGlobal++;
   });
   var sorted=Object.keys(agg).map(function(k){return{name:k,pkts:agg[k].pkts,rotas:agg[k].rotas};});
-  
   sorted.sort(function(a,b){return b.rotas-a.rotas;});
   var maxRotas=sorted.length?sorted[0].rotas:1;
   var rowsHtml=sorted.map(function(s){
@@ -298,6 +309,66 @@ function renderShare(id){
 function toggleShare(id){
   var body=document.getElementById('share-body-'+id);
   var btn=document.getElementById('share-btn-'+id);
+  if(!body)return;
+  var open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  if(btn)btn.textContent=open?'▼ Expandir':'▲ Recolher';
+}
+
+
+
+
+
+function renderVeiculos(id){
+  if(!D[id]||!D[id].rows.length)return '';
+  var rows=D[id].rows, cols=D[id].cols;
+  var pi=detectarPktIdx(cols), pari=detectarParadasIdx(cols), vi=detectarVeiculoIdx(cols);
+  if(vi<0||(pi<0&&pari<0))return '';
+  var agg={};
+  rows.forEach(function(r){
+    var v=String(r[vi]||'').trim()||'(sem tipo)';
+    var pkt = pi >=0 ? (parseFloat(String(r[pi]).replace(/[^\d.]/g,''))  || 0) : 0;
+    var par = pari>=0 ? (parseFloat(String(r[pari]).replace(/[^\d.]/g,'')) || 0) : 0;
+    if(!agg[v])agg[v]={pkts:0,paradas:0,rotas:0};
+    agg[v].pkts+=pkt; agg[v].paradas+=par; agg[v].rotas++;
+  });
+  var sorted=Object.keys(agg).map(function(k){
+    return {
+      name:k,
+      mediaPkt: agg[k].rotas>0 ? (agg[k].pkts   /agg[k].rotas) : 0,
+      mediaPar: agg[k].rotas>0 ? (agg[k].paradas/agg[k].rotas) : 0,
+      rotas: agg[k].rotas
+    };
+  });
+  sorted.sort(function(a,b){return b.rotas-a.rotas;});
+  var rowsHtml=sorted.map(function(s){
+    return '<div class="veic-row">'+
+      '<span class="veic-name" title="'+esc(s.name)+'">'+esc(s.name)+'</span>'+
+      '<span class="veic-val amber">'+esc(s.mediaPar.toFixed(1))+'</span>'+
+      '<span class="veic-val">'+esc(s.mediaPkt.toFixed(1))+'</span>'+
+      '<span class="veic-rotas">'+s.rotas+' rota'+(s.rotas!==1?'s':'')+'</span>'+
+    '</div>';
+  }).join('');
+  return '<div class="share-section">'+
+    '<div class="share-head" onclick="toggleVeic(\''+id+'\')">'+
+      '<span class="share-title">🚚 Médias por Tipo de Veículo — '+id+
+        ' <span style="font-size:.7rem;color:#475569;font-weight:400">('+sorted.length+' tipos)</span></span>'+
+      '<button class="share-toggle" id="veic-btn-'+id+'">▼ Expandir</button>'+
+    '</div>'+
+    '<div class="share-body" id="veic-body-'+id+'">'+
+      '<div class="veic-header-row">'+
+        '<span class="share-hcol">Tipo de Veículo</span>'+
+        '<span class="share-hcol r">Méd. Paradas</span>'+
+        '<span class="share-hcol r">Méd. Pacotes</span>'+
+        '<span class="share-hcol r">Rotas</span>'+
+      '</div>'+
+      '<div>'+rowsHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+function toggleVeic(id){
+  var body=document.getElementById('veic-body-'+id);
+  var btn =document.getElementById('veic-btn-'+id);
   if(!body)return;
   var open=body.classList.contains('open');
   body.classList.toggle('open',!open);
@@ -424,6 +495,7 @@ function buildUI(){
           renderOndas(id)+
           renderKPIs(id)+
           renderShare(id)+
+          renderVeiculos(id)+
           filterBar+
           '<div class="tbl-card">'+
             '<div class="tbl-header">'+
