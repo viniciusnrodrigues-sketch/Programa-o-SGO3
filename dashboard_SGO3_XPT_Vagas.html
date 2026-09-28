@@ -3,583 +3,540 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XPT — Docas SGO3</title>
+<title>Programação SGO3</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter','Plus Jakarta Sans',system-ui,sans-serif;background:#f4f6f9;color:#1e293b;height:100vh;overflow:hidden;display:flex;flex-direction:column}
-#hdr{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-#hdr h1{font-size:clamp(1.2rem,1.5vw,1.75rem);font-weight:800;color:#fff}
-#hdr h1 span{color:#e67e22}
-.hdr-sub{font-size:12px;color:#64748b;margin-top:2px}
-.hdr-pub{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
-.badge-data{background:rgba(255,255,255,.1);color:#e2e8f0;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:4px 14px;font-size:clamp(.85rem,.95vw,1rem);font-weight:700;letter-spacing:.3px}
-.badge-at{font-size:11px;color:#475569;display:flex;align-items:center;gap:5px}
-.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0;animation:live-pulse 2s ease-in-out infinite}
-@keyframes live-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{opacity:.7;box-shadow:0 0 0 4px rgba(34,197,94,0)}}
-#kpis{display:flex;gap:8px;padding:8px 20px;flex-shrink:0}
-.kpi{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);padding:10px 18px;flex:1;min-width:0}
-.kpi-l{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:600}
-.kpi-v{font-size:clamp(2rem,2.8vw,2.8rem);font-weight:700;color:#1e293b;line-height:1}
-#legenda{display:flex;gap:14px;padding:0 20px 6px;flex-shrink:0;align-items:center}
-.leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#64748b;font-weight:600}
-.leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.leg-dot.am{background:#f59e0b}
-.leg-dot.pm{background:#3b82f6}
-.leg-dot.comp{background:linear-gradient(135deg,#e67e22,#f59e0b)}
-#mobile-nav{display:none}
-#grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;grid-template-rows:1fr;gap:12px;padding:0 20px 10px;flex:1;overflow:hidden;min-height:0}
-.vcard{background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.05);display:flex;flex-direction:column;overflow:hidden;min-height:0;transition:box-shadow .2s}
-.vcard:hover{box-shadow:0 2px 6px rgba(0,0,0,.08),0 8px 20px rgba(0,0,0,.07)}
-.vc0{border-top:3px solid #3b82f6}
-.vc1{border-top:3px solid #10b981}
-.vc2{border-top:3px solid #f59e0b}
-.vc3{border-top:3px solid #8b5cf6}
-.vc4{border-top:3px solid #ef4444}
-.vc5{border-top:3px solid #06b6d4}
-.vc6{border-top:3px solid #e67e22}
-.vcard-hdr{padding:8px 11px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #f1f5f9;flex-shrink:0;background:#fafbfc;gap:4px}
-.vcard-name{font-size:clamp(13px,1vw,16px);font-weight:600;color:#1e293b;line-height:1.2}
-.vcard-sub{font-size:11px;color:#94a3b8;margin-top:3px;font-weight:500}
-.vcard-cidade{font-size:10px;color:#3b82f6;font-weight:700;display:flex;align-items:center;gap:3px;margin-top:3px;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vcard-badge{font-size:11px;padding:3px 8px;border-radius:8px;font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
-.badge-ok{background:#dcfce7;color:#15803d}
-.badge-amber{background:#fef9c3;color:#a16207}
-.badge-red{background:#fee2e2;color:#b91c1c}
-.badge-pkg{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:700;flex-shrink:0;white-space:nowrap;margin-top:1px}
-.vcard-badges{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
-.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:7px;overflow-y:auto;overflow-x:hidden;flex:1;min-height:0;align-content:start;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.08) transparent}
-.id-grid::-webkit-scrollbar{width:3px}
-.id-grid::-webkit-scrollbar-track{background:transparent}
-.id-grid::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:3px}
-.id-card{background:#fff;border:1px solid #e8ecf0;border-left:4px solid #e2e8f0;border-radius:8px;padding:7px 8px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;width:100%;min-width:0;min-height:52px;gap:4px;cursor:default;transition:transform .15s,box-shadow .15s}
-.id-card:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.09)}
-.id-text{font-size:clamp(11px,1.1vw,13px);font-weight:600;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;font-variant-numeric:tabular-nums}
-.ciclo-tag{font-size:10px;font-weight:800;border-radius:4px;padding:2px 6px;flex-shrink:0;letter-spacing:.05em;align-self:flex-start}
-.c-AM .id-card{border-left-color:#f59e0b}
-.c-AM .ciclo-tag{background:#fef3c7;color:#92400e}
-.c-PM .id-card{border-left-color:#3b82f6}
-.c-PM .ciclo-tag{background:#dbeafe;color:#1e40af}
-.c-SD .id-card{border-left-color:#10b981}
-.c-SD .ciclo-tag{background:#d1fae5;color:#065f46}
-.c-XPT .id-card{border-left-color:#e67e22}
-.c-XPT .ciclo-tag{background:#ffedd5;color:#9a3412}
-.vcard-bloqueada{background:repeating-linear-gradient(-45deg,#f1f5f9,#f1f5f9 5px,#e4e9f0 5px,#e4e9f0 10px);border:1px dashed #cbd5e1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;min-height:0;gap:6px;padding:8px 0}
-.bloq-num{font-size:12px;font-weight:800;color:#94a3b8;writing-mode:vertical-lr;text-orientation:mixed}
-.bloq-label{font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.1em;writing-mode:vertical-lr;text-orientation:mixed}
-.bloq-icon{font-size:14px;opacity:.3}
-.vcard-veiculo{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:5px 11px;border-bottom:1px solid #f1f5f9;flex-shrink:0;min-height:28px}
-.vv-ok{background:#f0fdf4}
-.vv-warn{background:#fffbeb}
-.vv-danger{background:#fff1f2}
-.vv-chip{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;border-radius:5px;padding:2px 7px;white-space:nowrap;line-height:1.4}
-.chip-green{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
-.chip-amber{background:#fef9c3;color:#a16207;border:1px solid #fde68a}
-.chip-red{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca}
-.chip-warn{background:#fef3c7;color:#b45309;border:1px solid #fde68a}
-.vv-sep{font-size:11px;color:#94a3b8;font-weight:700;flex-shrink:0}
-.vv-nbadge{font-size:9px;font-weight:800;border-radius:4px;padding:2px 6px;margin-left:auto;flex-shrink:0;white-space:nowrap}
-.vv-nbadge.ok{background:#dcfce7;color:#15803d}
-.vv-nbadge.warn{background:#fef3c7;color:#92400e}
-.vv-nbadge.over{background:#fee2e2;color:#b91c1c}
-.vv-bar-wrap{width:100%;height:3px;background:#e8ecf0;border-radius:2px;margin-top:3px;overflow:hidden}
-.vv-bar{height:100%;border-radius:2px;transition:width .3s}
-.vv-bar.green{background:#22c55e}
-.vv-bar.amber{background:#f59e0b}
-.vv-bar.red{background:#ef4444}
-.sem-rotas{flex:1;display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:11px;font-weight:500}
-.vcard-shared{border-top:none!important;border:2px solid #e67e22;box-shadow:0 0 0 3px rgba(230,126,34,.15),0 4px 16px rgba(230,126,34,.12),0 1px 3px rgba(0,0,0,.06);animation:shared-glow 3s ease-in-out infinite}
-@keyframes shared-glow{0%,100%{box-shadow:0 0 0 3px rgba(230,126,34,.15),0 4px 16px rgba(230,126,34,.12)}50%{box-shadow:0 0 0 5px rgba(230,126,34,.28),0 6px 22px rgba(230,126,34,.22)}}
-.vcard-shared:hover{box-shadow:0 0 0 4px rgba(230,126,34,.3),0 8px 24px rgba(230,126,34,.2)}
-.shared-header{background:linear-gradient(135deg,#fff7ed,#ffedd5);padding:8px 11px;border-bottom:2px dashed #fed7aa;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;gap:6px}
-.shared-header .vcard-name{font-size:clamp(13px,1vw,15px);font-weight:800;color:#1e293b}
-.shared-header-left{display:flex;flex-direction:column;gap:2px;min-width:0}
-.shared-sub{font-size:11px;font-weight:700;color:#c2410c;display:flex;align-items:center;gap:4px}
-.shared-badge{background:linear-gradient(135deg,#e67e22,#f59e0b);color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:6px;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;white-space:nowrap;box-shadow:0 2px 6px rgba(230,126,34,.35)}
-.shared-total{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0}
-.shared-body{display:flex;flex:1;min-height:0;overflow:hidden}
-.shared-lane{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-.shared-lane+.shared-lane{border-left:2px dashed #fed7aa}
-.shared-lane-hdr{padding:5px 8px;border-bottom:1px solid #e8ecf0;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;gap:4px}
-.shared-lane-hdr.lane-ego{background:#fafbfc}
-.shared-lane-hdr.lane-edf{background:#fdf4ff}
-.shared-lane-name{font-size:12px;font-weight:800;color:#1e293b;white-space:nowrap}
-.shared-lane-sub{font-size:9px;color:#64748b;font-weight:500;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px}
-.tag-edf{display:inline-flex;align-items:center;gap:2px;background:#fae8ff;color:#7e22ce;border:1px solid #e9d5ff;border-radius:4px;font-size:9px;font-weight:800;padding:1px 5px;margin-top:2px;letter-spacing:.04em}
-.tag-ego{display:inline-flex;align-items:center;gap:2px;background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;border-radius:4px;font-size:9px;font-weight:800;padding:1px 5px;margin-top:2px;letter-spacing:.04em}
-.shared-lane .id-grid{grid-template-columns:1fr;padding:5px;gap:4px}
-.shared-alert{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:#92400e;background:#fffbeb;border-top:1px solid #fde68a;padding:4px 11px;flex-shrink:0}
-.standby{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;text-align:center;grid-column:1/-1}
-.standby-icon{font-size:2.5rem;animation:pulse 2s ease-in-out infinite}
-.standby h2{font-size:1.1rem;font-weight:800;color:#1e293b}
-.standby p{color:#94a3b8;font-size:.8rem;max-width:340px;line-height:1.5}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.1)}}
-#pub-footer{background:#fff;border-top:1px solid #e8ecf0;padding:5px 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;flex-shrink:0}
-.pub-item{font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:5px}
-.pub-dot{width:5px;height:5px;border-radius:50%;background:#e67e22;flex-shrink:0}
-.pub-item strong{color:#475569;font-weight:600}
-.btn-print{background:rgba(230,126,34,.1);color:#c2410c;border:1px solid rgba(230,126,34,.3);border-radius:8px;padding:6px 13px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .2s;white-space:nowrap;flex-shrink:0}
-.btn-print:hover{background:rgba(230,126,34,.2)}
-.btn-audit{background:rgba(16,185,129,.1);color:#065f46;border:1px solid rgba(16,185,129,.35);border-radius:8px;padding:6px 13px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap;flex-shrink:0}
-.btn-audit:hover{background:rgba(16,185,129,.2)}
-.btn-audit.ativo{background:#10b981;color:#fff;border-color:#059669;box-shadow:0 0 0 3px rgba(16,185,129,.25)}
-#audit-banner{display:none;background:#f0fdf4;border-bottom:2px solid #10b981;padding:5px 20px;font-size:12px;color:#065f46;align-items:center;gap:10px;flex-shrink:0}
-#audit-banner.visivel{display:flex}
-#audit-prog{font-weight:800;color:#059669;font-size:13px}
-.btn-audit-zerar{background:transparent;color:#dc2626;border:1px solid #fca5a5;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;margin-left:auto;flex-shrink:0;transition:background .2s}
-.btn-audit-zerar:hover{background:#fee2e2}
-body.audit-mode .id-card{cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .12s,box-shadow .12s}
-body.audit-mode .id-card.pressing{transform:scale(.94);box-shadow:0 0 0 3px #10b981 inset;animation:press-charge 0.55s linear forwards}
-@keyframes press-charge{0%{box-shadow:0 0 0 2px rgba(16,185,129,.4) inset}100%{box-shadow:0 0 0 3px #10b981 inset;background:#d1fae5}}
-.id-card.auditado{background:#d1fae5!important;border-left-color:#10b981!important;border-color:#a7f3d0!important;position:relative}
-.id-card.auditado .id-text{color:#064e3b!important}
-.id-card.auditado .ciclo-tag{background:#10b981!important;color:#fff!important}
-.id-card.auditado::after{content:'✓';position:absolute;top:-7px;right:-7px;background:#10b981;color:#fff;border-radius:50%;width:18px;height:18px;font-size:.75rem;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.2);pointer-events:none}
-@media (max-width:680px){
-  body{height:100vh;overflow:hidden}
-  #hdr{padding:10px 14px}
-  #hdr h1{font-size:1.05rem}
-  .hdr-sub{font-size:11px}
-  .badge-data{font-size:.82rem;padding:3px 10px}
-  .btn-print,.btn-audit{padding:5px 10px;font-size:.72rem}
-  #kpis{padding:5px 14px;gap:5px;overflow-x:auto;flex-wrap:nowrap}
-  .kpi{padding:6px 12px;min-width:88px;flex-shrink:0}
-  .kpi-l{font-size:10px}
-  .kpi-v{font-size:1.5rem}
-  #legenda{padding:2px 14px 4px;gap:10px}
-  #mobile-nav{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;background:#fff;border-bottom:1px solid #e8ecf0;flex-shrink:0;gap:8px}
-  .nav-btn{background:#1e293b;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:1.1rem;font-weight:800;cursor:pointer;flex-shrink:0;transition:background .15s}
-  .nav-btn:active{background:#3b82f6}
-  .nav-btn:disabled{background:#e2e8f0;color:#94a3b8;cursor:default}
-  #carousel-info{flex:1;text-align:center}
-  #carousel-doca{font-size:1rem;font-weight:800;color:#1e293b}
-  #carousel-ego{font-size:.72rem;color:#64748b;margin-top:1px}
-  #carousel-dots{display:flex;gap:4px;justify-content:center;margin-top:4px}
-  .cdot{width:6px;height:6px;border-radius:50%;background:#cbd5e1;transition:all .2s}
-  .cdot.active{background:#e67e22;width:14px;border-radius:4px}
-  .cdot.bloq{background:#e2e8f0}
-  .cdot.comp{background:#e67e22}
-  #grid{display:block;padding:8px 14px 10px;flex:1;overflow:hidden;min-height:0}
-  #grid>*{display:none;height:100%;border-radius:14px}
-  #grid>.carousel-active{display:flex}
-  .vcard.carousel-active,.vcard-bloqueada.carousel-active{height:100%;min-height:0}
-  .id-grid{overflow-y:auto;flex:1;min-height:0}
-  .id-card{min-height:44px}
-  .id-text{font-size:12px}
-  #pub-footer{padding:4px 14px;gap:8px}
-  .vcard-shared.carousel-active .shared-body{flex-direction:column}
-  .vcard-shared .shared-lane+.shared-lane{border-left:none;border-top:2px dashed #fed7aa}
-}
-@media print{
-  @page{size:A3 landscape;margin:8mm}
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  body{height:auto!important;overflow:visible!important;background:#fff!important}
-  .btn-print,.btn-audit,#audit-banner,#pub-footer,#mobile-nav{display:none!important}
-  #grid{flex:none!important;height:auto!important;overflow:visible!important;display:grid!important;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr!important;gap:6px!important;padding:4px 14px!important}
-  #grid>*{display:flex!important}
-  .vcard,.vcard-bloqueada{overflow:visible!important;break-inside:avoid;box-shadow:none!important;border:1px solid #e2e8f0!important}
-  .vcard-shared{border:2px solid #e67e22!important;animation:none!important}
-  .id-grid{overflow:visible!important;height:auto!important;flex:none!important}
-  .id-card{min-height:auto!important;padding:4px 6px!important}
-  .id-text{font-size:10px!important}
-  .ciclo-tag{font-size:9px!important;padding:1px 4px!important}
-  .id-card.auditado{background:#d1fae5!important}
-  .id-card.auditado::after{display:flex!important}
-  .vcard-veiculo{font-size:9px!important;padding:3px 8px!important}
-  .vv-detail{display:none!important}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e2e8f0;min-height:100vh}
+#header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #00b894;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+#header h1{font-size:1.4rem;font-weight:800;letter-spacing:.5px}
+#header h1 span{color:#00b894}
+.hdr-sub{font-size:.8rem;color:#94a3b8;margin-top:3px}
+.hdr-right{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.badge-data{background:rgba(0,184,148,.15);color:#00b894;border:1px solid rgba(0,184,148,.3);border-radius:20px;padding:4px 13px;font-size:.8rem;font-weight:700}
+.badge-at{font-size:.72rem;color:#64748b}
+
+#tabs-bar{background:#131826;border-bottom:1px solid #1e2a3a;padding:0 28px;display:flex;gap:2px;overflow-x:auto}
+.tab-btn{padding:12px 18px;background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:.86rem;font-weight:600;border-bottom:3px solid transparent;transition:.2s;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:#e2e8f0;background:rgba(255,255,255,.04)}
+.tab-btn.active{color:#00b894;border-bottom-color:#00b894}
+.tab-badge{font-size:.7rem;padding:2px 8px;border-radius:10px;font-weight:700}
+.tab-badge.ok{background:rgba(0,184,148,.15);color:#00b894}
+.tab-badge.wait{background:rgba(245,158,11,.12);color:#f59e0b}
+.tab-badge.sem{background:rgba(100,116,139,.15);color:#64748b}
+
+.tab-pane{display:none;padding:20px 28px}
+.tab-pane.active{display:block}
+
+ 
+.kpi-strip{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.kpi-card{flex:1;min-width:130px;background:#131826;border:1px solid #1e2a3a;border-radius:12px;overflow:hidden}
+.kpi-top{height:3px}
+.kpi-body{padding:14px 16px}
+.kpi-icon{font-size:1.25rem;margin-bottom:6px}
+.kpi-val{font-size:1.75rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi-lbl{font-size:.66rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.kpi-sub{font-size:.68rem;color:#475569;margin-top:2px}
+.kpi-card.c-green .kpi-top{background:#00b894}.kpi-card.c-green .kpi-val{color:#00b894}
+.kpi-card.c-blue  .kpi-top{background:#38bdf8}.kpi-card.c-blue  .kpi-val{color:#38bdf8}
+.kpi-card.c-amber .kpi-top{background:#f59e0b}.kpi-card.c-amber .kpi-val{color:#f59e0b}
+.kpi-card.c-violet.kpi-top{background:#a78bfa}.kpi-card.c-violet .kpi-val{color:#a78bfa}
+
+ 
+.share-section{background:#131826;border:1px solid #1e2a3a;border-radius:12px;margin-bottom:16px;overflow:hidden}
+.share-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none}
+.share-head:hover{background:rgba(255,255,255,.03)}
+.share-title{font-size:.82rem;font-weight:700;color:#e2e8f0;display:flex;align-items:center;gap:8px}
+.share-toggle{font-size:.7rem;color:#475569;background:#0d1117;border:1px solid #1e2a3a;border-radius:6px;padding:3px 9px;cursor:pointer}
+.share-body{padding:0 16px 14px;display:none}
+.share-body.open{display:block}
+.share-header-row{display:grid;grid-template-columns:minmax(130px,2fr) 70px 60px 1fr;gap:10px;padding-bottom:6px;border-bottom:1px solid #1e2a3a;margin-bottom:6px}
+.share-hcol{font-size:.62rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.06em}
+.share-hcol.r{text-align:right}
+.share-row{display:grid;grid-template-columns:minmax(130px,2fr) 70px 60px 1fr;align-items:center;gap:10px;padding:4px 0}
+.share-name{font-size:.78rem;font-weight:700;color:#cbd5e1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.share-pkts{font-size:.78rem;font-weight:800;color:#00b894;text-align:right;white-space:nowrap}
+.share-rotas{font-size:.72rem;color:#64748b;text-align:right;white-space:nowrap}
+.share-bar-outer{display:flex;align-items:center;gap:6px}
+.share-bar-wrap{flex:1;background:#0d1117;border-radius:20px;height:7px;overflow:hidden}
+.share-bar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#00b894,#06d6a0)}
+.share-pct{font-size:.68rem;color:#475569;white-space:nowrap;min-width:32px;text-align:right}
+
+ 
+.veic-header-row{display:grid;grid-template-columns:minmax(180px,2fr) 110px 110px 90px;gap:10px;padding-bottom:6px;border-bottom:1px solid #1e2a3a;margin-bottom:6px}
+.veic-row{display:grid;grid-template-columns:minmax(180px,2fr) 110px 110px 90px;align-items:center;gap:10px;padding:4px 0}
+.veic-name{font-size:.78rem;font-weight:700;color:#cbd5e1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.veic-val{font-size:.82rem;font-weight:800;color:#38bdf8;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.veic-val.amber{color:#f59e0b}
+.veic-rotas{font-size:.72rem;color:#64748b;text-align:right;white-space:nowrap}
+
+ 
+.filter-bar{background:#131826;border:1px solid #1e2a3a;border-radius:10px;padding:10px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.filter-label{font-size:.76rem;color:#94a3b8;font-weight:600;white-space:nowrap}
+.filter-sel{background:#0d1117;border:1px solid #1e2a3a;border-radius:7px;color:#e2e8f0;padding:6px 10px;font-size:.8rem;outline:none;cursor:pointer;min-width:220px;transition:.2s}
+.filter-sel:focus{border-color:#00b894;box-shadow:0 0 0 3px rgba(0,184,148,.1)}
+.filter-sel option{background:#131826}
+.filter-badge{font-size:.7rem;padding:3px 10px;border-radius:10px;background:rgba(0,184,148,.12);color:#00b894;font-weight:700;white-space:nowrap}
+.tbl-card{background:#1a2035;border:1px solid #1e2a3a;border-radius:12px;padding:18px}
+.tbl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px}
+.tbl-title{font-size:.88rem;font-weight:700;color:#e2e8f0}
+.tbl-hint{font-size:.68rem;color:#475569;font-weight:400;margin-left:6px}
+.tbl-actions{display:flex;gap:8px;align-items:center}
+input[type=search]{background:#0d1117;border:1px solid #1e2a3a;border-radius:8px;color:#e2e8f0;padding:6px 11px;font-size:.8rem;width:220px;outline:none;transition:.2s}
+input[type=search]:focus{border-color:#00b894;box-shadow:0 0 0 3px rgba(0,184,148,.1)}
+input[type=search]::placeholder{color:#475569}
+.btn-csv{background:rgba(0,184,148,.1);color:#00b894;border:1px solid rgba(0,184,148,.3);border-radius:8px;padding:6px 13px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s;white-space:nowrap}
+.btn-csv:hover{background:rgba(0,184,148,.22)}
+.tbl-wrap{overflow-x:auto;overflow-y:auto;border-radius:8px;border:1px solid #1e2a3a;max-height:calc(100vh - 480px);min-height:180px}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+thead{position:sticky;top:0;z-index:2}
+th{background:#0d1117;color:#64748b;font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;padding:10px 12px;white-space:nowrap;border-bottom:1px solid #1e2a3a;cursor:pointer;user-select:none;transition:color .15s,background .15s}
+th:hover{color:#c0cfe0;background:#0f1622}
+th::after{content:' ↕';color:#2d3748;font-size:.65rem}
+th[data-sort="asc"]::after{content:' ↑';color:#00b894}
+th[data-sort="desc"]::after{content:' ↓';color:#00b894}
+th[data-sort="asc"],th[data-sort="desc"]{color:#00b894}
+td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:#cbd5e1;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(0,184,148,.06)}
+.tbl-count{font-size:.72rem;color:#475569;margin-top:8px}
+.pub-bar{background:#131826;border-top:1px solid #1e2a3a;padding:9px 28px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.15)}}
+.pub-item{font-size:.72rem;color:#64748b;display:flex;align-items:center;gap:6px}
+.pub-item strong{color:#94a3b8}
+.pub-dot{width:6px;height:6px;border-radius:50%;background:#00b894;flex-shrink:0}
+.pub-dot.wait{background:#f59e0b}
+.wait-pane{text-align:center;padding:64px 20px}
+.wait-icon{font-size:3rem;margin-bottom:14px}
+.wait-pane h3{font-size:1rem;color:#94a3b8;margin-bottom:6px;font-weight:700}
+.wait-pane p{color:#475569;font-size:.83rem}
+
+ 
+.ondas-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.ondas-label{font-size:.72rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;margin-right:4px}
+.onda-card{background:#131826;border:1px solid #1e2a3a;border-radius:8px;padding:7px 14px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:114px;transition:all .25s}
+.onda-n{font-size:.68rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.onda-h{font-size:.88rem;color:#cbd5e1;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.onda-card.ativa{background:rgba(0,184,148,.12);border-color:rgba(0,184,148,.45);box-shadow:0 0 0 2px rgba(0,184,148,.12)}
+.onda-card.ativa .onda-n,.onda-card.ativa .onda-h{color:#00b894}
+.onda-card.proxima{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.35)}
+.onda-card.proxima .onda-n{color:#f59e0b}.onda-card.proxima .onda-h{color:#fbbf24}
+.onda-card.passada .onda-n,.onda-card.passada .onda-h{opacity:.38}
+.onda-pill{display:inline-block;font-size:.55rem;font-weight:800;border-radius:4px;padding:1px 5px;margin-top:2px;vertical-align:middle;letter-spacing:.04em}
+.pill-ao-vivo{background:#00b894;color:#fff}
+.pill-em-breve{background:#f59e0b;color:#fff}
+
+@media(max-width:768px){
+  .tab-pane{padding:14px}
+  #header{padding:14px;flex-direction:column;gap:10px;align-items:flex-start}
+  .hdr-right{align-items:flex-start}
+  .kpi-strip{gap:8px}
+  .kpi-val{font-size:1.35rem}
+  .share-header-row,.share-row{grid-template-columns:1fr 60px}
+  .share-bar-outer,.share-rotas{display:none}
+  .veic-header-row,.veic-row{grid-template-columns:1fr 80px 80px}
+  .veic-rotas{display:none}
+  .onda-card{min-width:94px;padding:6px 10px}
+  .onda-h{font-size:.78rem}
+  .tbl-wrap{max-height:calc(100vh - 280px)}
 }
 </style>
 </head>
 <body>
-<div id="hdr">
+
+<div id="header">
   <div>
-    <h1>📦 XPT <span>Docas</span> — SGO3</h1>
-    <div class="hdr-sub">Distribuição por tipo de serviço · Goiânia / GO</div>
+    <h1>📦 Programação <span>SGO3</span></h1>
+    <div class="hdr-sub">Controle de expedição diária · Hidrolândia / GO</div>
   </div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <button class="btn-audit" id="btn-audit" onclick="toggleAuditoria()" title="Segure nos cards para confirmar rotas">🔍 Auditar</button>
-    <button class="btn-print" onclick="imprimirPDF()" title="Gerar PDF">🖨️ Imprimir</button>
-    <div class="hdr-pub">
-      <span class="badge-data" id="badge-data">—</span>
-      <span class="badge-at" id="badge-at"><span class="live-dot"></span><span id="badge-at-txt"></span></span>
-    </div>
+  <div class="hdr-right">
+    <span class="badge-data" id="badge-data"></span>
+    <span class="badge-at"   id="badge-at"></span>
   </div>
 </div>
-<div id="kpis"></div>
-<div id="legenda">
-  <span style="font-size:11px;color:#94a3b8;font-weight:600;margin-right:2px">Ciclos:</span>
-  <span class="leg-item"><span class="leg-dot am"></span>AM</span>
-  <span class="leg-item"><span class="leg-dot pm"></span>PM</span>
-  <span class="leg-item" style="margin-left:8px;border-left:1px solid #e2e8f0;padding-left:10px"><span class="leg-dot comp"></span><span style="color:#c2410c">Doca Compartilhada</span></span>
-  <span style="font-size:10px;color:#f59e0b;font-weight:700;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:2px 8px;margin-left:4px">⚠️ Atenção: Docas 15, 18, 20 e 21 operam com serviços compartilhados</span>
-</div>
-<div id="audit-banner">
-  <span>🔍 Auditoria ativa —</span><span id="audit-hint">segure para confirmar uma rota</span><span id="audit-prog">0 / 0</span>
-  <button class="btn-audit-zerar" onclick="reiniciarAuditoria()">↺ Zerar</button>
-</div>
-<div id="mobile-nav">
-  <button class="nav-btn" id="nav-prev" onclick="navDoca(-1)">&#8592;</button>
-  <div id="carousel-info"><div id="carousel-doca">—</div><div id="carousel-ego">—</div><div id="carousel-dots"></div></div>
-  <button class="nav-btn" id="nav-next" onclick="navDoca(1)">&#8594;</button>
-</div>
-<div id="grid"></div>
-<div id="pub-footer"></div>
+
+<div id="tabs-bar"></div>
+<div id="content"></div>
+<div class="pub-bar" id="pub-bar"></div>
+
 <script>
-var DADOS_RAW = {"columns":["Rota original","ID Otimizado","Paradas","Cidades","Tipos de serviços","-","Tipo de Veículo","Pacotes estimados","Bulky","CUBAGEM (M³)"],"rows":[{"Rota original":"AM1_234","ID Otimizado":"'=H24_AM1","Paradas":"18","Cidades":"Unaí - Centro (29),Unaí - Barroca (11),Unaí - Capim Branco II (9)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"53","Bulky":"","CUBAGEM (M³)":"1.09"},{"Rota original":"AM1_240","ID Otimizado":"'=H25_AM1","Paradas":"28","Cidades":"Unaí - Centro (26),Unaí - Barroca (20)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"46","Bulky":"","CUBAGEM (M³)":"0.27"},{"Rota original":"AM1_239","ID Otimizado":"'=H26_AM1","Paradas":"34","Cidades":"Unaí - Cachoeira (24),Unaí - Centro (3),Unaí - Primavera 5 (3)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"40","Bulky":"","CUBAGEM (M³)":"0.14"},{"Rota original":"AM1_238","ID Otimizado":"'=H27_AM1","Paradas":"25","Cidades":"Unaí - Centro (25),Unaí - Barroca (6),Unaí - Nova Divinéia (3)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"39","Bulky":"","CUBAGEM (M³)":"0.3"},{"Rota original":"AM1_237","ID Otimizado":"'=H28_AM1","Paradas":"26","Cidades":"Unaí - Centro (20),Unaí - Capim Branco (5),Unaí - Itapuã (4)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"38","Bulky":"","CUBAGEM (M³)":"1.98"},{"Rota original":"AM1_241","ID Otimizado":"'=H29_AM1","Paradas":"26","Cidades":"Unaí - Centro (29),Unaí - Barroca (1)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"30","Bulky":"","CUBAGEM (M³)":"0.13"},{"Rota original":"AM1_228","ID Otimizado":"'=H30_AM1","Paradas":"18","Cidades":"Unaí - Centro (12),Unaí - Barroca (6),Unaí - Capim Branco II (3)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"25","Bulky":"","CUBAGEM (M³)":"1.98"},{"Rota original":"AM1_229","ID Otimizado":"'=H31_AM1","Paradas":"14","Cidades":"Unaí - Centro (181),Unaí - Barroca (6),Unaí - Parque Canabrava (1)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"188","Bulky":"","CUBAGEM (M³)":"1.98"},{"Rota original":"AM1_231","ID Otimizado":"'=H32_AM1","Paradas":"119","Cidades":"Unaí - Divinéia (46),Unaí - Primavera (30),Unaí - Centro (16)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"154","Bulky":"","CUBAGEM (M³)":"1.64"},{"Rota original":"AM1_235","ID Otimizado":"'=H33_AM1","Paradas":"118","Cidades":"Unaí - Cachoeira (63),Unaí - Centro (34),Unaí - Canabrava (14)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"152","Bulky":"","CUBAGEM (M³)":"1.69"},{"Rota original":"AM1_233","ID Otimizado":"'=H34_AM1","Paradas":"106","Cidades":"Unaí - Centro (63),Unaí - Barroca (18),Unaí - Cruzeiro (11)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"144","Bulky":"","CUBAGEM (M³)":"1.7"},{"Rota original":"AM1_232","ID Otimizado":"'=H35_AM1","Paradas":"15","Cidades":"Unaí - Centro (86),Unaí - Cachoeira (3),Unaí - Nova Canaã (2)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"96","Bulky":"","CUBAGEM (M³)":"1.89"},{"Rota original":"AM1_230","ID Otimizado":"'=H36_AM1","Paradas":"64","Cidades":"Unaí - Novo Horizonte (19),Unaí - Nova Canaã (14),Unaí - de Lourdes (13)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"85","Bulky":"","CUBAGEM (M³)":"0.61"},{"Rota original":"AM1_236","ID Otimizado":"'=H37_AM1","Paradas":"49","Cidades":"Unaí - Centro (16),Unaí - Distrito Industrial (11),Unaí - Residencial Curva do Rio (10)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"81","Bulky":"","CUBAGEM (M³)":"1.92"},{"Rota original":"AM1_227","ID Otimizado":"'=H38_AM1","Paradas":"49","Cidades":"Unaí - Centro (29),Unaí - Cachoeira (11),Unaí - Capim Branco (8)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"62","Bulky":"","CUBAGEM (M³)":"0.33"},{"Rota original":"AM1_314","ID Otimizado":"'=I33_AM1","Paradas":"30","Cidades":"Posse - Guarani (105),Posse - Setor Central (26),Posse - Augusto José Valente (18)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"159","Bulky":"","CUBAGEM (M³)":"1.37"},{"Rota original":"AM1_311","ID Otimizado":"'=I34_AM1","Paradas":"120","Cidades":"Posse - Mãe Bela (45),Posse - Bela Vista (35),Posse - Bela Vista I (19)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"153","Bulky":"","CUBAGEM (M³)":"1.09"},{"Rota original":"AM1_312","ID Otimizado":"'=I35_AM1","Paradas":"122","Cidades":"Posse - Santa Luzia (80),Posse - Augusto José Valente (29),Posse - Guarani (19)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"151","Bulky":"","CUBAGEM (M³)":"1.49"},{"Rota original":"AM1_313","ID Otimizado":"'=I36_AM1","Paradas":"111","Cidades":"Posse - Augusto José Valente (40),Posse - Setor Central (37),Posse - Funcionários (31)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"143","Bulky":"","CUBAGEM (M³)":"1.47"},{"Rota original":"AM1_310","ID Otimizado":"'=I37_AM1","Paradas":"114","Cidades":"Iaciara - Centro (91),Iaciara - Outro (8),Iaciara - Iaciara (4)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"136","Bulky":"","CUBAGEM (M³)":"0.88"},{"Rota original":"AM1_307","ID Otimizado":"'=I38_AM1","Paradas":"92","Cidades":"Mambaí - Centro (80),Mambaí - Outro (9),Mambaí - Novo Mambaí (7)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"111","Bulky":"","CUBAGEM (M³)":"1.21"},{"Rota original":"AM1_303","ID Otimizado":"'=I39_AM1","Paradas":"63","Cidades":"Damianópolis - Centro (28),Sítio D'Abadia - Centro (20),Sítio D'Abadia - centro (3)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"84","Bulky":"","CUBAGEM (M³)":"0.43"},{"Rota original":"AM1_302","ID Otimizado":"'=I40_AM1","Paradas":"26","Cidades":"Posse - Augusto José Valente (5),Posse - Guarani (3),Posse - Setor Central (3)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"31","Bulky":"","CUBAGEM (M³)":"2.67"},{"Rota original":"AM1_308","ID Otimizado":"'=I41_AM1","Paradas":"93","Cidades":"Alvorada do Norte - Ipiranga (73),Alvorada do Norte - Outro (23),Alvorada do Norte - Alvoradinha (8)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"127","Bulky":"","CUBAGEM (M³)":"1.22"},{"Rota original":"AM1_305","ID Otimizado":"'=I42_AM1","Paradas":"87","Cidades":"São Domingos - Centro (40),São Domingos - Setor Leste (28),São Domingos - Outro (12)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"122","Bulky":"","CUBAGEM (M³)":"0.82"},{"Rota original":"AM1_309","ID Otimizado":"'=I43_AM1","Paradas":"72","Cidades":"Simolândia - Centro (41),Buritinópolis - Centro (14),Simolândia - Jardim Brasil (5)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"83","Bulky":"","CUBAGEM (M³)":"0.63"},{"Rota original":"AM1_315","ID Otimizado":"'=I44_AM1","Paradas":"18","Cidades":"Posse - Setor Central (53),Posse - Augusto José Valente (15),Posse - Funcionários (5)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"74","Bulky":"","CUBAGEM (M³)":"0.63"},{"Rota original":"AM1_316","ID Otimizado":"'=I45_AM1","Paradas":"45","Cidades":"Posse - Setor Central (47),Posse - Vila Morena (8),Posse - Dom Prudêncio (3)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"60","Bulky":"","CUBAGEM (M³)":"0.38"},{"Rota original":"AM1_304","ID Otimizado":"'=I46_AM1","Paradas":"50","Cidades":"Divinópolis de Goiás - Centro (17),Divinópolis de Goiás - Outro (11),Divinópolis de Goiás - Setor Alvorada (5)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"56","Bulky":"","CUBAGEM (M³)":"0.81"},{"Rota original":"AM1_306","ID Otimizado":"'=I47_AM1","Paradas":"36","Cidades":"Mambaí - Centro (35),Mambaí - centro (6),Mambaí - CENTRO (3)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"54","Bulky":"","CUBAGEM (M³)":"0.55"},{"Rota original":"AM1_317","ID Otimizado":"'=I48_AM1","Paradas":"35","Cidades":"Posse - Residencial Brisas da Serra (22),Posse - Residencial Estrela Dalva (20),Posse - Setor Industrial (8)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"53","Bulky":"","CUBAGEM (M³)":"0.43"},{"Rota original":"AM1_318","ID Otimizado":"'=I49_AM1","Paradas":"28","Cidades":"Guarani de Goiás - Centro (29),Guarani de Goiás - centro (2),Guarani de Goiás - Panorama II (2)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"36","Bulky":"","CUBAGEM (M³)":"0.33"},{"Rota original":"AM1_206","ID Otimizado":"'=J10_AM1","Paradas":"98","Cidades":"Porangatu - Centro (22),Porangatu - Jardim Sol Nascente (17),Porangatu - Vila Record (9)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"122","Bulky":"","CUBAGEM (M³)":"0.98"},{"Rota original":"AM1_52","ID Otimizado":"'=J11_AM1","Paradas":"102","Cidades":"Uruaçu - Setor Central (90),Uruaçu - Outro (7),Uruaçu - São Vicente (6)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"136","Bulky":"","CUBAGEM (M³)":"1.25"},{"Rota original":"AM1_50","ID Otimizado":"'=J1_AM1","Paradas":"95","Cidades":"Uruaçu - Centro (76),Uruaçu - Setor Central (49),Uruaçu - Outro (7)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"178","Bulky":"","CUBAGEM (M³)":"1.4"},{"Rota original":"AM1_214","ID Otimizado":"'=J28_AM1","Paradas":"53","Cidades":"Porangatu - Centro (210),Porangatu - Setor Nossa Senhora da Piedade (13),Porangatu - Setor Oeste (6)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"239","Bulky":"","CUBAGEM (M³)":"2.31"},{"Rota original":"AM1_210","ID Otimizado":"'=J29_AM1","Paradas":"102","Cidades":"Mara Rosa - Setor Central (89),Mara Rosa - Outro (12),Mara Rosa - AC Mara Rosa Clique e Retire (8)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"132","Bulky":"","CUBAGEM (M³)":"1.26"},{"Rota original":"AM1_49","ID Otimizado":"'=J2_AM1","Paradas":"25","Cidades":"Uruaçu - Setor Central (25),Uruaçu - São Sebastião (3),Uruaçu - Loteamento Santana (1)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"32","Bulky":"","CUBAGEM (M³)":"0.26"},{"Rota original":"AM1_46","ID Otimizado":"'=J30_AM1","Paradas":"103","Cidades":"Niquelândia - Centro (82),Niquelândia - Outro (17),Niquelândia - Alvorada (6)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"131","Bulky":"","CUBAGEM (M³)":"1.23"},{"Rota original":"AM1_207","ID Otimizado":"'=J31_AM1","Paradas":"96","Cidades":"Porangatu - Setor Leste (24),Porangatu - Centro (19),Porangatu - Jardim Brasília (15)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"120","Bulky":"","CUBAGEM (M³)":"1.02"},{"Rota original":"AM1_215","ID Otimizado":"'=J32_AM1","Paradas":"64","Cidades":"Porangatu - Centro (93),Porangatu - Setor Leste (5),Porangatu - Setor do Lago (4)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"115","Bulky":"","CUBAGEM (M³)":"4.41"},{"Rota original":"AM1_51","ID Otimizado":"'=J33_AM1","Paradas":"68","Cidades":"Uruaçu - Setor Central (48),Uruaçu - Outro (11),Uruaçu - São Sebastião (10)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"104","Bulky":"","CUBAGEM (M³)":"0.85"},{"Rota original":"AM1_216","ID Otimizado":"'=J34_AM1","Paradas":"57","Cidades":"Mara Rosa - Setor Central (33),Mara Rosa - Outro (19),Mara Rosa - Setor Oeste (4)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"83","Bulky":"","CUBAGEM (M³)":"1.19"},{"Rota original":"AM1_47","ID Otimizado":"'=J35_AM1","Paradas":"53","Cidades":"Uruaçu - Outro (17),Uruaçu - Setor Sul II (11),Uruaçu - Novo Rio (6)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"75","Bulky":"","CUBAGEM (M³)":"0.81"},{"Rota original":"AM1_209","ID Otimizado":"'=J36_AM1","Paradas":"58","Cidades":"Santa Tereza de Goiás - Setor Central (13),Formoso - Setor Central (5),Santa Tereza de Goiás - Outro (5)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"66","Bulky":"","CUBAGEM (M³)":"0.59"},{"Rota original":"AM1_54","ID Otimizado":"'=J37_AM1","Paradas":"26","Cidades":"Uruaçu - Setor Central (11),Uruaçu - Centro (6),Uruaçu - Outro (3)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"35","Bulky":"","CUBAGEM (M³)":"1.87"},{"Rota original":"AM1_213","ID Otimizado":"'=J38_AM1","Paradas":"22","Cidades":"Mara Rosa - Setor Central (17),Mara Rosa - AC Mara Rosa Clique e Retire (3),Mara Rosa - vila nova (2)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Motocicleta","Pacotes estimados":"25","Bulky":"","CUBAGEM (M³)":"0.04"},{"Rota original":"AM1_45","ID Otimizado":"'=J3_AM1","Paradas":"95","Cidades":"Niquelândia - Centro (65),Niquelândia - Outro (13),Niquelândia - Niquelândia (4)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"119","Bulky":"","CUBAGEM (M³)":"0.98"},{"Rota original":"AM1_48","ID Otimizado":"'=J4_AM1","Paradas":"89","Cidades":"Uruaçu - Setor Central (36),Uruaçu - Outro (12),Uruaçu - Vale do Sol (5)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"108","Bulky":"","CUBAGEM (M³)":"0.97"},{"Rota original":"AM1_211","ID Otimizado":"'=J5_AM1","Paradas":"96","Cidades":"Campinorte - Centro (40),Campinorte - Setor Central (25),Campinorte - NOVO HORIZONTE (13)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"132","Bulky":"","CUBAGEM (M³)":"1.67"},{"Rota original":"AM1_208","ID Otimizado":"'=J6_AM1","Paradas":"56","Cidades":"Porangatu - Setor Bom Jesus (13),Porangatu - Residencial Marlene Vaz (7),Porangatu - Setor Leste (6)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"66","Bulky":"","CUBAGEM (M³)":"0.54"},{"Rota original":"AM1_212","ID Otimizado":"'=J7_AM1","Paradas":"57","Cidades":"Campinorte - Centro (18),Campinorte - Setor Central (12),Campinorte - Nova Campinorte (8)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"77","Bulky":"","CUBAGEM (M³)":"0.83"},{"Rota original":"AM1_53","ID Otimizado":"'=J8_AM1","Paradas":"60","Cidades":"Niquelândia - Outro (17),Niquelândia - Centro (17),Niquelândia - Niquelândia (4)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"69","Bulky":"","CUBAGEM (M³)":"0.44"},{"Rota original":"AM1_44","ID Otimizado":"'=J9_AM1","Paradas":"63","Cidades":"Niquelândia - Centro (26),Niquelândia - Outro (20),Niquelândia - Vila Taveira (6)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"85","Bulky":"","CUBAGEM (M³)":"0.93"},{"Rota original":"AM1_185","ID Otimizado":"'=K10_AM1","Paradas":"97","Cidades":"Goianésia - Carrilho (214),Goianésia - Setor Oeste (16),Goianésia - São Cristóvão (16)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VUC PP ( até 10 m3)","Pacotes estimados":"297","Bulky":"","CUBAGEM (M³)":"2.71"},{"Rota original":"AM1_170","ID Otimizado":"'=K11_AM1","Paradas":"76","Cidades":"Jaraguá - Jaraguá (128),Jaraguá - Centro (30),Jaraguá - REGINA PARK 2 (12)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"226","Bulky":"","CUBAGEM (M³)":"2.92"},{"Rota original":"AM1_169","ID Otimizado":"'=K12_AM1","Paradas":"72","Cidades":"Jaraguá - Setor Aeroporto (72),Jaraguá - Jardim Aeroporto (18),Jaraguá - Vila Dona Izabel (7)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"161","Bulky":"","CUBAGEM (M³)":"1.66"},{"Rota original":"AM1_167","ID Otimizado":"'=K13_AM1","Paradas":"93","Cidades":"Jaraguá - DHEMA DA MATA (21),Jaraguá - Residencial Primavera (9),Jaraguá - Jaraguá (8)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"145","Bulky":"","CUBAGEM (M³)":"1.04"},{"Rota original":"AM1_168","ID Otimizado":"'=K14_AM1","Paradas":"37","Cidades":"Jaraguá - Jardim Aeroporto III (52),Jaraguá - jardim das vivendas (28),Jaraguá - Jardim das vivendas (18)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"139","Bulky":"","CUBAGEM (M³)":"0.73"},{"Rota original":"AM1_186","ID Otimizado":"'=K15_AM1","Paradas":"105","Cidades":"Goianésia - Centro (55),Goianésia - Setor Sul (47),Goianésia - Santa Luzia (14)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VUC PP ( até 10 m3)","Pacotes estimados":"139","Bulky":"","CUBAGEM (M³)":"1.17"},{"Rota original":"AM1_181","ID Otimizado":"'=K16_AM1","Paradas":"81","Cidades":"Goianésia - São Cristóvão (33),Goianésia - Carrilho (17),Goianésia - Dona Fiica (9)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"128","Bulky":"","CUBAGEM (M³)":"4.07"},{"Rota original":"AM1_172","ID Otimizado":"'=K17_AM1","Paradas":"94","Cidades":"Itapaci - Setor Central (30),Itapaci - Outro (25),Itapaci - centro (14)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"117","Bulky":"","CUBAGEM (M³)":"0.82"},{"Rota original":"AM1_180","ID Otimizado":"'=K18_AM1","Paradas":"33","Cidades":"Goianésia - Carrilho (9),Goianésia - São Cristóvão (7),Goianésia - Residencial Laurentino Martins (5)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"46","Bulky":"","CUBAGEM (M³)":"1"},{"Rota original":"AM1_177","ID Otimizado":"'=K19_AM1","Paradas":"50","Cidades":"Ceres - Centro (25),Rialma - Setor Central (24),Rialma - Outro (6)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"75","Bulky":"","CUBAGEM (M³)":"0.57"},{"Rota original":"AM1_178","ID Otimizado":"'=K1_AM1","Paradas":"96","Cidades":"Ceres - Centro (93),Ceres - Residencial Aldeia do Vale (9),Ceres - Jardim Sara Ribeiro (6)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"135","Bulky":"","CUBAGEM (M³)":"1.79"},{"Rota original":"AM1_174","ID Otimizado":"'=K20_AM1","Paradas":"59","Cidades":"Itapaci - Setor Central (16),Itapaci - Outro (16),Itapaci - Setor Boa Vista (3)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"69","Bulky":"","CUBAGEM (M³)":"0.82"},{"Rota original":"AM1_173","ID Otimizado":"'=K21_AM1","Paradas":"59","Cidades":"Nova Glória - Centro (23),Nova Glória - Jardim Paulista (7),Nova Glória - Parque Estrela Dalva (4)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"67","Bulky":"","CUBAGEM (M³)":"0.6"},{"Rota original":"AM1_20","ID Otimizado":"'=K22_AM1","Paradas":"45","Cidades":"São Luíz do Norte - Setor Central (14),Guarinos - Setor Central (9),Guarinos - Centro (8)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VUC PP ( até 10 m3)","Pacotes estimados":"60","Bulky":"","CUBAGEM (M³)":"0.67"},{"Rota original":"AM1_182","ID Otimizado":"'=K23_AM1","Paradas":"30","Cidades":"Goianésia - Residencial Granville (12),Goianésia - Centro (9),Goianésia - Eurípedes Barsanulfo (5)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"40","Bulky":"","CUBAGEM (M³)":"0.53"},{"Rota original":"AM1_165","ID Otimizado":"'=K24_AM1","Paradas":"28","Cidades":"Carmo do Rio Verde - Outro (5),Rubiataba - Centro (4),Rubiataba - Setor Central (3)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"38","Bulky":"","CUBAGEM (M³)":"3.74"},{"Rota original":"AM1_188","ID Otimizado":"'=K25_AM1","Paradas":"26","Cidades":"Goianésia - Carrilho (18),Goianésia - Centro (9),Goianésia - Área Rural de Goianésia (2)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"30","Bulky":"","CUBAGEM (M³)":"0.22"},{"Rota original":"AM1_190","ID Otimizado":"'=K26_AM1","Paradas":"21","Cidades":"Vila Propício - Setor Central (10),Vila Propício - centro (4),Vila Propício - Outro (4)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"25","Bulky":"","CUBAGEM (M³)":"0.23"},{"Rota original":"AM1_189","ID Otimizado":"'=K27_AM1","Paradas":"19","Cidades":"Vila Propício - Assunção de Goiás (13),Vila Propício - Assunçao de Goias (3),Vila Propício - ASSUNÇÃO DE GOIÁS (2)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"23","Bulky":"","CUBAGEM (M³)":"0.1"},{"Rota original":"AM1_179","ID Otimizado":"'=K29_AM1","Paradas":"49","Cidades":"Rialma - Planalto (136),Rialma - Outro (15),Rialma - Setor Central (7)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"198","Bulky":"","CUBAGEM (M³)":"1.56"},{"Rota original":"AM1_176","ID Otimizado":"'=K2_AM1","Paradas":"97","Cidades":"Ceres - Centro (32),Ceres - Jardim Petrópolis (12),Ceres - Setor Vila Nova (12)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"125","Bulky":"","CUBAGEM (M³)":"0.93"},{"Rota original":"AM1_187","ID Otimizado":"'=K3_AM1","Paradas":"100","Cidades":"Barro Alto - Setor Central (40),Barro Alto - Outro (18),Barro Alto - Barro Alto (10)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"121","Bulky":"","CUBAGEM (M³)":"0.74"},{"Rota original":"AM1_175","ID Otimizado":"'=K4_AM1","Paradas":"92","Cidades":"Rubiataba - Setor Belas Vista (28),Rubiataba - Setor Jardins (15),Rubiataba - Setor Bougainville (15)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"113","Bulky":"","CUBAGEM (M³)":"0.86"},{"Rota original":"AM1_184","ID Otimizado":"'=K5_AM1","Paradas":"90","Cidades":"Goianésia - Setor Universitário (33),Goianésia - Residencial Parque das Palmeiras (12),Goianésia - Santa Cecília (9)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"105","Bulky":"","CUBAGEM (M³)":"1.01"},{"Rota original":"AM1_164","ID Otimizado":"'=K6_AM1","Paradas":"79","Cidades":"Rubiataba - Centro (44),Rubiataba - Setor Aeroporto (15),Nova América - centro (9)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"95","Bulky":"","CUBAGEM (M³)":"0.93"},{"Rota original":"AM1_166","ID Otimizado":"'=K7_AM1","Paradas":"69","Cidades":"Carmo do Rio Verde - Setor Central (44),Ceres - Centro (11),Carmo do Rio Verde - Vila Reis (6)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"95","Bulky":"","CUBAGEM (M³)":"1.1"},{"Rota original":"AM1_171","ID Otimizado":"'=K8_AM1","Paradas":"40","Cidades":"Jaraguá - Regina Park II (16),Jaraguá - Setor Aeroporto (14),Jaraguá - Jaraguá (10)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"88","Bulky":"","CUBAGEM (M³)":"3.54"},{"Rota original":"AM1_183","ID Otimizado":"'=K9_AM1","Paradas":"68","Cidades":"Goianésia - Residencial Bougainville (13),Goianésia - Colina Park Residencial (13),Goianésia - Setor Sul (10)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"83","Bulky":"","CUBAGEM (M³)":"0.84"},{"Rota original":"AM1_30","ID Otimizado":"'=L29_AM1","Paradas":"27","Cidades":"Buritis - Centro (38),Buritis - vila São Pedro (2),Buritis - Buritis (2)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"47","Bulky":"","CUBAGEM (M³)":"0.35"},{"Rota original":"AM1_27","ID Otimizado":"'=L30_AM1","Paradas":"29","Cidades":"Uruana de Minas - Centro (16),Buritis - ZONA RURAL (6),Uruana de Minas - Outro (3)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"38","Bulky":"","CUBAGEM (M³)":"0.56"},{"Rota original":"AM1_28","ID Otimizado":"'=L31_AM1","Paradas":"28","Cidades":"Buritis - Centro (24),Buritis - Outro (2),Brasília - Asa Norte (1)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"34","Bulky":"","CUBAGEM (M³)":"0.2"},{"Rota original":"AM1_35","ID Otimizado":"'=L32_AM1","Paradas":"114","Cidades":"Arinos - Centro (114),Arinos - Outro (26),Arinos - Primavera 1 (9)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"162","Bulky":"","CUBAGEM (M³)":"1.53"},{"Rota original":"AM1_31","ID Otimizado":"'=L33_AM1","Paradas":"128","Cidades":"Buritis - Centro (80),Buritis - Outro (44),Buritis - Taboquinha (8)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"161","Bulky":"","CUBAGEM (M³)":"1.55"},{"Rota original":"AM1_29","ID Otimizado":"'=L34_AM1","Paradas":"105","Cidades":"Buritis - Centro (122),Buritis - Outro (10),Buritis - Buritis (5)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"150","Bulky":"","CUBAGEM (M³)":"1.36"},{"Rota original":"AM1_34","ID Otimizado":"'=L35_AM1","Paradas":"78","Cidades":"Riachinho - Centro (70),Riachinho - AC Riachinho Clique e Retire (8),Arinos - Centro (6)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"94","Bulky":"","CUBAGEM (M³)":"1.57"},{"Rota original":"AM1_33","ID Otimizado":"'=L36_AM1","Paradas":"77","Cidades":"Bonfinópolis de Minas - Centro (63),Bonfinópolis de Minas - Outro (10),Bonfinópolis de Minas - AC Bonfinópolis de Minas Clique e Retire (4)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"91","Bulky":"","CUBAGEM (M³)":"0.76"},{"Rota original":"AM1_32","ID Otimizado":"'=L37_AM1","Paradas":"46","Cidades":"Arinos - Centro (32),Riachinho - Centro (9),Arinos - Outro (6)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"58","Bulky":"","CUBAGEM (M³)":"0.3"},{"Rota original":"AM1_203","ID Otimizado":"'=M17_AM1","Paradas":"98","Cidades":"Gurupi - Setor Central (194),Gurupi - Vila São José (8),Gurupi - Setor Leste (5)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"220","Bulky":"","CUBAGEM (M³)":"1.48"},{"Rota original":"AM1_194","ID Otimizado":"'=M18_AM1","Paradas":"52","Cidades":"Araguaçu - centro (61),Araguaçu - Centro (42),Alvorada - Setor Central (40)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"180","Bulky":"","CUBAGEM (M³)":"1.65"},{"Rota original":"AM1_201","ID Otimizado":"'=M19_AM1","Paradas":"101","Cidades":"Gurupi - Setor Central (44),Gurupi - Parque Residencial Nova Fronteira (43),Gurupi - Setor Novo Horizonte (14)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"127","Bulky":"","CUBAGEM (M³)":"0.99"},{"Rota original":"AM1_191","ID Otimizado":"'=M20_AM1","Paradas":"101","Cidades":"Gurupi - Parque Sol Nascente (17),Gurupi - Jardim Medeiros (15),Gurupi - Jardim Eldorado (15)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"114","Bulky":"","CUBAGEM (M³)":"0.47"},{"Rota original":"AM1_196","ID Otimizado":"'=M21_AM1","Paradas":"90","Cidades":"Formoso do Araguaia - Setor Central (63),Formoso do Araguaia - Outro (13),Formoso do Araguaia - AC Formoso do Araguaia Clique e Retire (7)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"112","Bulky":"","CUBAGEM (M³)":"0.82"},{"Rota original":"AM1_204","ID Otimizado":"'=M22_AM1","Paradas":"94","Cidades":"Gurupi - Setor Central (28),Gurupi - Alto da Boa Vista (17),Gurupi - Waldir Lins I (15)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"108","Bulky":"","CUBAGEM (M³)":"0.83"},{"Rota original":"AM1_192","ID Otimizado":"'=M23_AM1","Paradas":"80","Cidades":"Lagoa da Confusão - Setor Central (57),Lagoa da Confusão - Outro (13),Lagoa da Confusão - Centro (7)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"95","Bulky":"","CUBAGEM (M³)":"1.04"},{"Rota original":"AM1_193","ID Otimizado":"'=M24_AM1","Paradas":"67","Cidades":"Peixe - Setor Central (23),São Valério da Natividade - Setor Central (11),São Valério da Natividade - Outro (6)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"82","Bulky":"","CUBAGEM (M³)":"0.53"},{"Rota original":"AM1_200","ID Otimizado":"'=M25_AM1","Paradas":"58","Cidades":"Gurupi - Setor Central (22),Gurupi - Setor Aeroporto (11),Gurupi - Setor Canaã (7)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"69","Bulky":"","CUBAGEM (M³)":"0.59"},{"Rota original":"AM1_202","ID Otimizado":"'=M26_AM1","Paradas":"40","Cidades":"Gurupi - Jardim das Bandeiras (14),Cariri do Tocantins - Setor Central (12),Gurupi - Waldir Lins I (6)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"55","Bulky":"","CUBAGEM (M³)":"1.13"},{"Rota original":"AM1_199","ID Otimizado":"'=M27_AM1","Paradas":"39","Cidades":"Aliança do Tocantins - Centro (17),Crixás do Tocantins - Setor Central (9),Crixás do Tocantins - centro (3)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"43","Bulky":"","CUBAGEM (M³)":"0.3"},{"Rota original":"AM1_205","ID Otimizado":"'=M28_AM1","Paradas":"37","Cidades":"Gurupi - Setor Central (15),Gurupi - Alto da Boa Vista (4),Peixe - Setor Central (3)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Frota Fixa Large Master","Pacotes estimados":"43","Bulky":"","CUBAGEM (M³)":"2.32"},{"Rota original":"AM1_198","ID Otimizado":"'=M29_AM1","Paradas":"36","Cidades":"Figueirópolis - Setor Central (22),Figueirópolis - centro (4),Sucupira - Centro (3)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"41","Bulky":"","CUBAGEM (M³)":"0.25"},{"Rota original":"AM1_197","ID Otimizado":"'=M30_AM1","Paradas":"22","Cidades":"Duerê - Setor Central (16),Lagoa da Confusão - Setor Central (5),Duerê - centro (3)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"30","Bulky":"","CUBAGEM (M³)":"0.35"},{"Rota original":"AM1_195","ID Otimizado":"'=M31_AM1","Paradas":"23","Cidades":"Alvorada - Setor Central (9),Alvorada - Outro (5),Alvorada - Santa Ângela (3)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"24","Bulky":"","CUBAGEM (M³)":"1.64"},{"Rota original":"AM1_106","ID Otimizado":"'=N10_AM1","Paradas":"29","Cidades":"Iporá - Centro (11),Amorinópolis - Setor Central (8),Amorinópolis - centro (5)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"38","Bulky":"","CUBAGEM (M³)":"0.28"},{"Rota original":"AM1_108","ID Otimizado":"'=N11_AM1","Paradas":"28","Cidades":"Iporá - Centro (27),Iporá - Mato Grosso (5),Iporá - Pedro Gonçalves Filho (2)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"37","Bulky":"","CUBAGEM (M³)":"0.14"},{"Rota original":"AM1_110","ID Otimizado":"'=N12_AM1","Paradas":"25","Cidades":"Iporá - Centro (12),Iporá - Loteamento Califórnia (5),Iporá - Jardim Monte Alto (4)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"33","Bulky":"","CUBAGEM (M³)":"0.29"},{"Rota original":"AM1_105","ID Otimizado":"'=N1_AM1","Paradas":"110","Cidades":"Iporá - Bela Vista (43),Iporá - Centro (31),Iporá - Vila Brasília (22)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"176","Bulky":"","CUBAGEM (M³)":"1.96"},{"Rota original":"AM1_107","ID Otimizado":"'=N2_AM1","Paradas":"111","Cidades":"Iporá - Centro (95),Iporá - Mato Grosso (8),Iporá - Parque das Estrelas (7)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"138","Bulky":"","CUBAGEM (M³)":"1.38"},{"Rota original":"AM1_99","ID Otimizado":"'=N3_AM1","Paradas":"97","Cidades":"Caiapônia - Setor Central (60),Caiapônia - Outro (18),Caiapônia - Caiapônia (17)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"124","Bulky":"","CUBAGEM (M³)":"1.28"},{"Rota original":"AM1_101","ID Otimizado":"'=N4_AM1","Paradas":"84","Cidades":"Piranhas - Centro (29),Piranhas - Sudoeste (14),Piranhas - Palmares (14)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"120","Bulky":"","CUBAGEM (M³)":"1.16"},{"Rota original":"AM1_102","ID Otimizado":"'=N5_AM1","Paradas":"71","Cidades":"Montes Claros de Goiás - Setor Central (39),Montes Claros de Goiás - Outro (8),Montes Claros de Goiás - Aparecida do Rio Claro (8)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"88","Bulky":"","CUBAGEM (M³)":"0.78"},{"Rota original":"AM1_100","ID Otimizado":"'=N6_AM1","Paradas":"61","Cidades":"Caiapônia - Setor Central (38),Caiapônia - Outro (13),Caiapônia - Caiapônia (5)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"81","Bulky":"","CUBAGEM (M³)":"0.74"},{"Rota original":"AM1_104","ID Otimizado":"'=N7_AM1","Paradas":"56","Cidades":"Iporá - Centro (10),Piranhas - Serra Azul (8),Iporá - Jardim Novo Horizonte I (7)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"71","Bulky":"","CUBAGEM (M³)":"1.82"},{"Rota original":"AM1_109","ID Otimizado":"'=N8_AM1","Paradas":"38","Cidades":"Iporá - Centro (32),Iporá - Mato Grosso (4),Diorama - Centro (3)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"49","Bulky":"","CUBAGEM (M³)":"0.32"},{"Rota original":"AM1_103","ID Otimizado":"'=N9_AM1","Paradas":"35","Cidades":"Fazenda Nova - Setor Central (11),Fazenda Nova - Outro (6),Fazenda Nova - Fazenda Nova (5)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"42","Bulky":"","CUBAGEM (M³)":"0.36"},{"Rota original":"AM1_114","ID Otimizado":"'=P10_AM1","Paradas":"106","Cidades":"Nerópolis - Centro (75),Nerópolis - Parque das Américas (19),Nerópolis - Bairro Botafogo I (11)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"159","Bulky":"","CUBAGEM (M³)":"1.25"},{"Rota original":"AM1_124","ID Otimizado":"'=P11_AM1","Paradas":"29","Cidades":"Inhumas - Centro (108),Inhumas - Residencial Maurivan Pucci (18),Damolândia - Vila São Sebastião (7)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"VUC PP ( até 10 m3)","Pacotes estimados":"156","Bulky":"","CUBAGEM (M³)":"1.36"},{"Rota original":"AM1_122","ID Otimizado":"'=P12_AM1","Paradas":"90","Cidades":"Santo Antônio de Goiás - Setor Sul (39),Santo Antônio de Goiás - Vila Florença (25),Nova Veneza - Setor Central (17)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"VUC PP ( até 10 m3)","Pacotes estimados":"152","Bulky":"","CUBAGEM (M³)":"2"},{"Rota original":"AM1_112","ID Otimizado":"'=P13_AM1","Paradas":"84","Cidades":"Goianira - Residencial Triunfo (59),Goianira - Residencial Solar das Paineiras (11),Goianira - Residencial Triunfo II Etapa (7)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"129","Bulky":"","CUBAGEM (M³)":"0.77"},{"Rota original":"AM1_121","ID Otimizado":"'=P14_AM1","Paradas":"104","Cidades":"Inhumas - Centro (13),Inhumas - Vila Santa Terezinha (10),Inhumas - Setor Vale das Goiabeiras (8)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"125","Bulky":"","CUBAGEM (M³)":"0.77"},{"Rota original":"AM1_118","ID Otimizado":"'=P15_AM1","Paradas":"74","Cidades":"Goianira - Setor Sul (29),Goianira - Setor Cora Coralina (15),Goianira - Parque Solimões (12)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"114","Bulky":"","CUBAGEM (M³)":"0.87"},{"Rota original":"AM1_111","ID Otimizado":"'=P16_AM1","Paradas":"63","Cidades":"Inhumas - Centro (36),Goianira - Recanto das Águas (11),Goianira - Parque Boa Vista (7)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"105","Bulky":"","CUBAGEM (M³)":"3.35"},{"Rota original":"AM1_123","ID Otimizado":"'=P1_AM1","Paradas":"81","Cidades":"Nerópolis - Residencial Dona Alda de Araújo Tavares (15),Nerópolis - Setor Alto da Boa Vista (14),Nova Veneza - Setor Central (11)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"VUC PP ( até 10 m3)","Pacotes estimados":"96","Bulky":"","CUBAGEM (M³)":"0.95"},{"Rota original":"AM1_113","ID Otimizado":"'=P2_AM1","Paradas":"64","Cidades":"Campo Limpo de Goiás - Setor Central (24),Campo Limpo de Goiás - Outro (17),Nerópolis - Recanto do Bosque (4)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"86","Bulky":"","CUBAGEM (M³)":"0.77"},{"Rota original":"AM1_116","ID Otimizado":"'=P3_AM1","Paradas":"50","Cidades":"Petrolina de Goiás - Setor Central (22),Petrolina de Goiás - Setor Gonçalves (4),Jesúpolis - Água da Vida (3)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"55","Bulky":"","CUBAGEM (M³)":"0.35"},{"Rota original":"AM1_125","ID Otimizado":"'=P4_AM1","Paradas":"40","Cidades":"Nerópolis - Residencial Vale dos Sonhos (6),Brazabrantes - Setor Central (5),Santo Antônio de Goiás - Setor Sul (5)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"48","Bulky":"","CUBAGEM (M³)":"1.92"},{"Rota original":"AM1_115","ID Otimizado":"'=P5_AM1","Paradas":"38","Cidades":"Santa Bárbara de Goiás - Setor Central (10),Goianira - Residencial Fonte das Águas II (6),Goianira - Residencial Triunfo II (3)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"48","Bulky":"","CUBAGEM (M³)":"0.33"},{"Rota original":"AM1_119","ID Otimizado":"'=P6_AM1","Paradas":"29","Cidades":"Caturaí - Centro (10),Araçu - Outro (6),Araçu - Centro (5)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"45","Bulky":"","CUBAGEM (M³)":"0.21"},{"Rota original":"AM1_126","ID Otimizado":"'=P7_AM1","Paradas":"18","Cidades":"Inhumas - Parque São Jorge (4),Inhumas - Residencial Clotildes Essado (4),Inhumas - Setor Sol Nascente (3)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"23","Bulky":"","CUBAGEM (M³)":"0.36"},{"Rota original":"AM1_120","ID Otimizado":"'=P8_AM1","Paradas":"104","Cidades":"Inhumas - Centro (149),Inhumas - Vila Heitor de Paula (8),Inhumas - Residencial Porto Seguro (8)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"230","Bulky":"","CUBAGEM (M³)":"1.71"},{"Rota original":"AM1_117","ID Otimizado":"'=P9_AM1","Paradas":"96","Cidades":"Goianira - Parque Boa Vista (54),Goianira - Vila Klérea (16),Goianira - Vila Padre Pelágio (12)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"164","Bulky":"","CUBAGEM (M³)":"1.16"},{"Rota original":"AM1_128","ID Otimizado":"'=Q10_AM1","Paradas":"25","Cidades":"Itumbiara - Centro (20),Araporã - Centro (9),Araporã - Outro (6)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"40","Bulky":"","CUBAGEM (M³)":"0.23"},{"Rota original":"AM1_147","ID Otimizado":"'=Q11_AM1","Paradas":"33","Cidades":"Itumbiara - Dona Marolina (5),Itumbiara - Centro (5),Bom Jesus de Goiás - Setor Central (5)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"37","Bulky":"","CUBAGEM (M³)":"2.98"},{"Rota original":"AM1_132","ID Otimizado":"'=Q12_AM1","Paradas":"130","Cidades":"Bom Jesus de Goiás - Setor Central (125),Bom Jesus de Goiás - Outro (13),Bom Jesus de Goiás - Olímpia (10)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"160","Bulky":"","CUBAGEM (M³)":"1.13"},{"Rota original":"AM1_133","ID Otimizado":"'=Q13_AM1","Paradas":"131","Cidades":"Goiatuba - Centro (107),Goiatuba - centro (7),Goiatuba - Vila Garcia (5)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"160","Bulky":"","CUBAGEM (M³)":"0.94"},{"Rota original":"AM1_142","ID Otimizado":"'=Q14_AM1","Paradas":"108","Cidades":"Itumbiara - Centro (28),Itumbiara - Paranaíba (17),Itumbiara - Nossa Senhora da Saúde (15)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"137","Bulky":"","CUBAGEM (M³)":"0.97"},{"Rota original":"AM1_134","ID Otimizado":"'=Q15_AM1","Paradas":"118","Cidades":"Buriti Alegre - Setor Central (55),Buriti Alegre - Outro (12),Buriti Alegre - Parque dos Buritis (6)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"134","Bulky":"","CUBAGEM (M³)":"0.86"},{"Rota original":"AM1_129","ID Otimizado":"'=Q16_AM1","Paradas":"85","Cidades":"Vicentinópolis - Setor Central (23),Vicentinópolis - Centro (19),Marcianópolis - Marcianópolis (12)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"122","Bulky":"","CUBAGEM (M³)":"0.89"},{"Rota original":"AM1_143","ID Otimizado":"'=Q17_AM1","Paradas":"117","Cidades":"Itumbiara - Afonso Pena (28),Itumbiara - Parque Vale dos Buritys I (20),Itumbiara - Parque Vale dos Buritys III (19)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"145","Bulky":"","CUBAGEM (M³)":"0.95"},{"Rota original":"AM1_145","ID Otimizado":"'=Q18_AM1","Paradas":"58","Cidades":"Joviânia - Setor Central (65),Joviânia - Outro (5),Joviânia - Centro (5)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"87","Bulky":"","CUBAGEM (M³)":"0.64"},{"Rota original":"AM1_135","ID Otimizado":"'=Q19_AM1","Paradas":"59","Cidades":"Cachoeira Dourada - Setor Nordeste (21),Cachoeira Dourada - Setor Suleste (14),Almerindonópolis - Almerindonópolis (10)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"66","Bulky":"","CUBAGEM (M³)":"0.44"},{"Rota original":"AM1_139","ID Otimizado":"'=Q1_AM1","Paradas":"129","Cidades":"Itumbiara - Centro (37),Itumbiara - Residencial Jardim Primavera (26),Itumbiara - Condomínio Horizontal Paraíso (23)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"175","Bulky":"","CUBAGEM (M³)":"1.43"},{"Rota original":"AM1_127","ID Otimizado":"'=Q20_AM1","Paradas":"34","Cidades":"Itumbiara - Santos Dumont (16),Itumbiara - Prefeito José Moisés (5),Itumbiara - Social (5)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"40","Bulky":"","CUBAGEM (M³)":"0.17"},{"Rota original":"AM1_144","ID Otimizado":"'=Q21_AM1","Paradas":"65","Cidades":"Araporã - Centro (35),Araporã - Outro (11),Itumbiara - Santos Dumont (9)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"77","Bulky":"","CUBAGEM (M³)":"0.4"},{"Rota original":"AM1_148","ID Otimizado":"'=Q22_AM1","Paradas":"36","Cidades":"Goiatuba - Centro (8),Itumbiara - Afonso Pena (5),Goiatuba - Setor Casego (3)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"45","Bulky":"","CUBAGEM (M³)":"2.18"},{"Rota original":"AM1_141","ID Otimizado":"'=Q2_AM1","Paradas":"112","Cidades":"Itumbiara - Afonso Pena (34),Itumbiara - Alto da Boa Vista (26),Itumbiara - Jardim América (25)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"158","Bulky":"","CUBAGEM (M³)":"1.11"},{"Rota original":"AM1_140","ID Otimizado":"'=Q3_AM1","Paradas":"120","Cidades":"Itumbiara - Cidade Jardim (26),Itumbiara - Novo Horizonte (25),Itumbiara - Setor Planalto (23)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"144","Bulky":"","CUBAGEM (M³)":"1.04"},{"Rota original":"AM1_138","ID Otimizado":"'=Q4_AM1","Paradas":"104","Cidades":"Itumbiara - Residencial Alto do Trindade (23),Itumbiara - Dona Marolina (18),Itumbiara - Residencial Sonho Verde (17)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"136","Bulky":"","CUBAGEM (M³)":"1.13"},{"Rota original":"AM1_131","ID Otimizado":"'=Q5_AM1","Paradas":"99","Cidades":"Goiatuba - João Vicente (13),Goiatuba - Setor Oeste (12),Goiatuba - Centro (11)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"128","Bulky":"","CUBAGEM (M³)":"1"},{"Rota original":"AM1_146","ID Otimizado":"'=Q6_AM1","Paradas":"84","Cidades":"Inaciolândia - Setor Central (40),Gouvelândia - Setor Central (21),Inaciolândia - Outro (19)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"114","Bulky":"","CUBAGEM (M³)":"0.81"},{"Rota original":"AM1_130","ID Otimizado":"'=Q7_AM1","Paradas":"87","Cidades":"Bom Jesus de Goiás - Setor Central (62),Bom Jesus de Goiás - Outro (31),Bom Jesus de Goiás - Centro (3)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"103","Bulky":"","CUBAGEM (M³)":"0.9"},{"Rota original":"AM1_136","ID Otimizado":"'=Q8_AM1","Paradas":"60","Cidades":"Goiatuba - Centro (14),Panamá - Setor Central (6),Goiatuba - Serra Dourada (6)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"71","Bulky":"","CUBAGEM (M³)":"0.5"},{"Rota original":"AM1_137","ID Otimizado":"'=Q9_AM1","Paradas":"60","Cidades":"Centralina - Centro (44),Centralina - Outro (8),Centralina - Centralina (5)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"65","Bulky":"","CUBAGEM (M³)":"0.76"},{"Rota original":"AM1_277","ID Otimizado":"'=R12_AM1","Paradas":"93","Cidades":"Itapuranga - Vila Barrinha (20),Itapuranga - São Sebastião do Xixá (20),Itapuranga - Joaquim da Silva Moreira (16)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"128","Bulky":"","CUBAGEM (M³)":"0.94"},{"Rota original":"AM1_271","ID Otimizado":"'=R13_AM1","Paradas":"91","Cidades":"Goiás - Setor Central (26),Goiás - Outro (20),Goiás - Goiás (13)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"116","Bulky":"","CUBAGEM (M³)":"0.99"},{"Rota original":"AM1_284","ID Otimizado":"'=R14_AM1","Paradas":"115","Cidades":"Itaberaí - Vila Progresso (20),Itaberaí - Vila Leonor (18),Itaberaí - Centro (16)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"133","Bulky":"","CUBAGEM (M³)":"0.66"},{"Rota original":"AM1_278","ID Otimizado":"'=R16_AM1","Paradas":"87","Cidades":"Itapuranga - Parque Alvorada (15),Itapuranga - Joaquim da Silva Moreira (13),Itapuranga - Jardim Conde dos Arcos (11)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"108","Bulky":"","CUBAGEM (M³)":"1.09"},{"Rota original":"AM1_276","ID Otimizado":"'=R17_AM1","Paradas":"76","Cidades":"Uruana - Setor Central (37),Uruana - Centro (26),Uruana - Outro (9)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"109","Bulky":"","CUBAGEM (M³)":"1.22"},{"Rota original":"AM1_281","ID Otimizado":"'=R18_AM1","Paradas":"67","Cidades":"Itaberaí - Centro (27),Itaberaí - Vila Progresso (14),Itaberaí - Jardim Cristina (8)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"87","Bulky":"","CUBAGEM (M³)":"0.69"},{"Rota original":"AM1_283","ID Otimizado":"'=R19_AM1","Paradas":"85","Cidades":"Itaberaí - Vila Comunitária (10),Itaberaí - Setor Central (9),Itaberaí - Fernanda Park (7)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"99","Bulky":"","CUBAGEM (M³)":"0.95"},{"Rota original":"AM1_270","ID Otimizado":"'=R1_AM1","Paradas":"39","Cidades":"Itapuranga - Setor Marista (14),Itapuranga - Vila Barrinha (5),Itapuranga - Joaquim Cardoso (5)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"64","Bulky":"","CUBAGEM (M³)":"1.18"},{"Rota original":"AM1_279","ID Otimizado":"'=R20_AM1","Paradas":"47","Cidades":"Heitoraí - Heitoraí (8),Itaguaru - Setor Central (7),Heitoraí - Setor Central (6)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"60","Bulky":"","CUBAGEM (M³)":"0.52"},{"Rota original":"AM1_280","ID Otimizado":"'=R2_AM1","Paradas":"49","Cidades":"Itaguari - Setor Central (24),Taquaral de Goiás - Setor Central (8),Itaguari - centro (6)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"59","Bulky":"","CUBAGEM (M³)":"0.43"},{"Rota original":"AM1_274","ID Otimizado":"'=R3_AM1","Paradas":"45","Cidades":"Americano do Brasil - Setor Central (8),Americano do Brasil - Outro (5),Americano do Brasil - vila nova (4)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"49","Bulky":"","CUBAGEM (M³)":"0.66"},{"Rota original":"AM1_272","ID Otimizado":"'=R4_AM1","Paradas":"42","Cidades":"Itauçu - Setor Central (20),Itauçu - Itauçu (7),Itauçu - centro (4)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"49","Bulky":"","CUBAGEM (M³)":"0.37"},{"Rota original":"AM1_273","ID Otimizado":"'=R5_AM1","Paradas":"35","Cidades":"Itaberaí - Itaberaí (16),Goiás - Setor Central (3),Itaberaí - vila Leonor II (3)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"53","Bulky":"","CUBAGEM (M³)":"2.23"},{"Rota original":"AM1_275","ID Otimizado":"'=R6_AM1","Paradas":"80","Cidades":"Goiás - Setor Central (33),Goiás - Outro (11),Goiás - Centro (7)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"89","Bulky":"","CUBAGEM (M³)":"0.66"},{"Rota original":"AM1_282","ID Otimizado":"'=R7_AM1","Paradas":"110","Cidades":"Itaberaí - Jardim Cabral (31),Itaberaí - Vila Progresso (23),Itaberaí - Setor Sul (11)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"143","Bulky":"","CUBAGEM (M³)":"1.15"},{"Rota original":"AM1_269","ID Otimizado":"'=T10_AM1","Paradas":"39","Cidades":"São Luís de Montes Belos - Residencial Alto da Boa Vista (4),Aurilândia - Setor Central (4),Sanclerlândia - Setor Central (4)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"47","Bulky":"","CUBAGEM (M³)":"2.34"},{"Rota original":"AM1_262","ID Otimizado":"'=T11_AM1","Paradas":"21","Cidades":"Ivolândia - Centro (4),Moiporá - Setor Central (3),São Luís de Montes Belos - Residencial Graciosa (2)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"22","Bulky":"","CUBAGEM (M³)":"0.26"},{"Rota original":"AM1_268","ID Otimizado":"'=T12_AM1","Paradas":"17","Cidades":"Adelândia - Centro (5),Anicuns - setor leste (3),Adelândia - Jardim Progresso (3)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"18","Bulky":"","CUBAGEM (M³)":"0.33"},{"Rota original":"AM1_261","ID Otimizado":"'=T1_AM1","Paradas":"80","Cidades":"Sanclerlândia - SETOR ORS (30),Sanclerlândia - Setor ORS (14),Sanclerlândia - Outro (13)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"132","Bulky":"","CUBAGEM (M³)":"1.01"},{"Rota original":"AM1_263","ID Otimizado":"'=T2_AM1","Paradas":"102","Cidades":"São Luís de Montes Belos - Setor Montes Belos (20),São Luís de Montes Belos - Setor Rodoviário (13),São Luís de Montes Belos - Setor Inicial (12)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"117","Bulky":"","CUBAGEM (M³)":"0.82"},{"Rota original":"AM1_258","ID Otimizado":"'=T3_AM1","Paradas":"86","Cidades":"Anicuns - Setor Central (54),Anicuns - Outro (11),Anicuns - Anicuns (5)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"108","Bulky":"","CUBAGEM (M³)":"0.82"},{"Rota original":"AM1_264","ID Otimizado":"'=T4_AM1","Paradas":"67","Cidades":"São Luís de Montes Belos - Setor Bela Vista (16),São Luís de Montes Belos - Residencial Califórnia (13),Córrego do Ouro - Centro (10)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"84","Bulky":"","CUBAGEM (M³)":"0.71"},{"Rota original":"AM1_267","ID Otimizado":"'=T5_AM1","Paradas":"62","Cidades":"São Luís de Montes Belos - Setor Inicial (19),São Luís de Montes Belos - Residencial Pedro Miguel (8),São Luís de Montes Belos - Residencial São Caetano (7)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"81","Bulky":"","CUBAGEM (M³)":"0.77"},{"Rota original":"AM1_266","ID Otimizado":"'=T6_AM1","Paradas":"59","Cidades":"Firminópolis - Setor Central (18),São Luís de Montes Belos - Setor Inicial (8),Firminópolis - Outro (7)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"80","Bulky":"","CUBAGEM (M³)":"0.75"},{"Rota original":"AM1_260","ID Otimizado":"'=T7_AM1","Paradas":"43","Cidades":"Turvânia - Setor Central (12),Turvânia - Centro (8),Palminópolis - Setor Central (6)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"58","Bulky":"","CUBAGEM (M³)":"0.7"},{"Rota original":"AM1_265","ID Otimizado":"'=T8_AM1","Paradas":"50","Cidades":"São Luís de Montes Belos - Setor São José (11),São João da Paraúna - Setor Central (7),São Luís de Montes Belos - Parque Industrial - II Etapa (4)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"57","Bulky":"","CUBAGEM (M³)":"0.44"},{"Rota original":"AM1_259","ID Otimizado":"'=T9_AM1","Paradas":"46","Cidades":"Nazário - Setor Central (22),Nazário - Centro (10),Nazário - Outro (5)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"50","Bulky":"","CUBAGEM (M³)":"0.32"},{"Rota original":"AM1_152","ID Otimizado":"'=U1_AM1","Paradas":"78","Cidades":"Jussara - Setor Central (52),Jussara - Outro (12),Jussara - centro (5)","Tipos de serviços":"XPT - EGO21","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"97","Bulky":"","CUBAGEM (M³)":"0.85"},{"Rota original":"AM1_151","ID Otimizado":"'=U2_AM1","Paradas":"78","Cidades":"Jussara - Setor Central (35),Jussara - Outro (22),Jussara - Jussara (5)","Tipos de serviços":"XPT - EGO21","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"95","Bulky":"","CUBAGEM (M³)":"0.77"},{"Rota original":"AM1_149","ID Otimizado":"'=U3_AM1","Paradas":"54","Cidades":"Matrinchã - Setor Central (13),Itapirapuã - Setor Central (10),Matrinchã - Centro (8)","Tipos de serviços":"XPT - EGO21","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"71","Bulky":"","CUBAGEM (M³)":"0.56"},{"Rota original":"AM1_153","ID Otimizado":"'=U4_AM1","Paradas":"59","Cidades":"Jussara - Setor Central (11),Itapirapuã - Setor Central (8),Jussara - Outro (6)","Tipos de serviços":"XPT - EGO21","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"70","Bulky":"","CUBAGEM (M³)":"1.31"},{"Rota original":"AM1_150","ID Otimizado":"'=U5_AM1","Paradas":"22","Cidades":"Santa Fé de Goiás - Setor Central (8),Jussara - Setor Central (3),Santa Fé de Goiás - Outro (3)","Tipos de serviços":"XPT - EGO21","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"25","Bulky":"","CUBAGEM (M³)":"0.18"},{"Rota original":"AM1_217","ID Otimizado":"'=V10_AM1","Paradas":"97","Cidades":"Piracanjuba - Setor Aeroporto (27),Piracanjuba - Jardim Goiás (17),Piracanjuba - Centro (16)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"117","Bulky":"","CUBAGEM (M³)":"1.25"},{"Rota original":"AM1_159","ID Otimizado":"'=V11_AM1","Paradas":"75","Cidades":"Campo Alegre de Goiás - Setor Central (51),Campo Alegre de Goiás - Outro (16),Campo Alegre de Goiás - Santa Catarina (4)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"92","Bulky":"","CUBAGEM (M³)":"0.59"},{"Rota original":"AM1_250","ID Otimizado":"'=V12_AM1","Paradas":"62","Cidades":"Caldas Novas - Centro (26),Caldas Novas - Residencial Primavera (17),Caldas Novas - Mansões Águas Quentes (13)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"89","Bulky":"","CUBAGEM (M³)":"1.1"},{"Rota original":"AM1_247","ID Otimizado":"'=V13_AM1","Paradas":"55","Cidades":"Caldas Novas - Jardim Privê das Caldas (22),Caldas Novas - Nova Vila (14),Caldas Novas - Centro (12)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"68","Bulky":"","CUBAGEM (M³)":"0.2"},{"Rota original":"AM1_243","ID Otimizado":"'=V14_AM1","Paradas":"53","Cidades":"Caldas Novas - Jardim Metodista (14),Caldas Novas - Estância Itaici (7),Caldas Novas - Parque das Brisas I (5)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Van","Pacotes estimados":"64","Bulky":"","CUBAGEM (M³)":"1.22"},{"Rota original":"AM1_160","ID Otimizado":"'=V15_AM1","Paradas":"54","Cidades":"Orizona - Centro (17),Orizona - Campo Formoso (15),Orizona - Santa Maria I (8)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"62","Bulky":"","CUBAGEM (M³)":"0.3"},{"Rota original":"AM1_224","ID Otimizado":"'=V16_AM1","Paradas":"26","Cidades":"Piracanjuba - Centro (32),Piracanjuba - Setor Magalhães (6),Piracanjuba - Setor Norte (3)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"51","Bulky":"","CUBAGEM (M³)":"0.39"},{"Rota original":"AM1_154","ID Otimizado":"'=V17_AM1","Paradas":"26","Cidades":"Pires do Rio - Setor Central (11),Ipameri - Centro (11),Ipameri - Setor Central (10)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"48","Bulky":"","CUBAGEM (M³)":"2.85"},{"Rota original":"AM1_225","ID Otimizado":"'=V18_AM1","Paradas":"32","Cidades":"Morrinhos - Setor Aeroporto (14),Pontalina - Setor Central (6),Morrinhos - Setor Felício Chaves (6)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"47","Bulky":"","CUBAGEM (M³)":"0.34"},{"Rota original":"AM1_254","ID Otimizado":"'=V1_AM1","Paradas":"19","Cidades":"Caldas Novas - Jardim Hanashiro (171),Caldas Novas - Estância Itanhangá (20),Caldas Novas - Portal das Águas Quentes (4)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"197","Bulky":"","CUBAGEM (M³)":"2.26"},{"Rota original":"AM1_251","ID Otimizado":"'=V2_AM1","Paradas":"114","Cidades":"Caldas Novas - Estância Itanhangá (57),Caldas Novas - Bandeirante (33),Caldas Novas - Setor Oeste (17)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"142","Bulky":"","CUBAGEM (M³)":"0.91"},{"Rota original":"AM1_163","ID Otimizado":"'=V3_AM1","Paradas":"115","Cidades":"Ipameri - Setor Central (45),Ipameri - Centro (18),Ipameri - Outro (18)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"139","Bulky":"","CUBAGEM (M³)":"1.02"},{"Rota original":"AM1_252","ID Otimizado":"'=V4_AM1","Paradas":"104","Cidades":"Caldas Novas - Mansões Águas Quentes (22),Caldas Novas - Do Turista 2ª Etapa (17),Caldas Novas - Vila Olegário Pinto (13)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"137","Bulky":"","CUBAGEM (M³)":"1.72"},{"Rota original":"AM1_226","ID Otimizado":"'=V5_AM1","Paradas":"106","Cidades":"Morrinhos - Centro (39),Morrinhos - Jardim Romano (35),Morrinhos - Jardim Vera Cruz (11)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"134","Bulky":"","CUBAGEM (M³)":"0.99"},{"Rota original":"AM1_248","ID Otimizado":"'=V6_AM1","Paradas":"104","Cidades":"Corumbaíba - Setor Central (38),Corumbaíba - Outro (15),Corumbaíba - centro (7)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"132","Bulky":"","CUBAGEM (M³)":"0.79"},{"Rota original":"AM1_221","ID Otimizado":"'=V7_AM1","Paradas":"105","Cidades":"Morrinhos - Setor Aeroporto (48),Morrinhos - Cristina Park (22),Morrinhos - Vila Bela (7)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Van","Pacotes estimados":"130","Bulky":"","CUBAGEM (M³)":"0.89"},{"Rota original":"AM1_222","ID Otimizado":"'=V8_AM1","Paradas":"104","Cidades":"Morrinhos - Centro (23),Morrinhos - Setor Oeste (16),Morrinhos - Setor Cristo Redentor (16)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VUC PP ( até 10 m3)","Pacotes estimados":"126","Bulky":"","CUBAGEM (M³)":"0.87"},{"Rota original":"AM1_218","ID Otimizado":"'=V9_AM1","Paradas":"94","Cidades":"Piracanjuba - Centro (37),Piracanjuba - Setor Lima (11),Piracanjuba - Setor Bueno (11)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"124","Bulky":"","CUBAGEM (M³)":"1.04"},{"Rota original":"AM1_223","ID Otimizado":"'=W10_AM1","Paradas":"99","Cidades":"Pontalina - Setor Central (63),Pontalina - Outro (7),Pontalina - Centro (5)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"118","Bulky":"","CUBAGEM (M³)":"1"},{"Rota original":"AM1_158","ID Otimizado":"'=W11_AM1","Paradas":"67","Cidades":"Pires do Rio - Setor Central (34),Pires do Rio - Outro (31),Pires do Rio - Pires do Rio (6)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VUC PP ( até 10 m3)","Pacotes estimados":"102","Bulky":"","CUBAGEM (M³)":"1.31"},{"Rota original":"AM1_249","ID Otimizado":"'=W12_AM1","Paradas":"48","Cidades":"Caldas Novas - Do Turista 2ª Etapa (27),Rio Quente - Esplanada (12),Rio Quente - Outro (6)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"82","Bulky":"","CUBAGEM (M³)":"0.72"},{"Rota original":"AM1_219","ID Otimizado":"'=W13_AM1","Paradas":"50","Cidades":"Morrinhos - Jardim Santa Terezinha (19),Pontalina - Setor Central (11),Pontalina - Outro (11)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"72","Bulky":"","CUBAGEM (M³)":"2.35"},{"Rota original":"AM1_242","ID Otimizado":"'=W14_AM1","Paradas":"38","Cidades":"Caldas Novas - Jardim Hanashiro (21),Caldas Novas - Jardim Privê das Caldas (7),Caldas Novas - Centro (7)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"67","Bulky":"","CUBAGEM (M³)":"4.22"},{"Rota original":"AM1_244","ID Otimizado":"'=W15_AM1","Paradas":"48","Cidades":"Caldas Novas - Estância Itaguaí (19),Caldas Novas - Estância Itanhangá (15),Caldas Novas - Jardim Serrano (13)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"56","Bulky":"","CUBAGEM (M³)":"0.22"},{"Rota original":"AM1_245","ID Otimizado":"'=W16_AM1","Paradas":"42","Cidades":"Caldas Novas - Estância Itaguaí (19),Caldas Novas - Estância Itajá (12),Caldas Novas - Jardim dos Turistas (11)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"54","Bulky":"","CUBAGEM (M³)":"0.24"},{"Rota original":"AM1_161","ID Otimizado":"'=W17_AM1","Paradas":"36","Cidades":"Pires do Rio - Setor Central (14),Pires do Rio - Outro (9),Pires do Rio - Santa Cecília (6)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"49","Bulky":"","CUBAGEM (M³)":"0.45"},{"Rota original":"AM1_246","ID Otimizado":"'=W18_AM1","Paradas":"30","Cidades":"Caldas Novas - Caldas do Oeste (15),Caldas Novas - Jardim Esmeralda (5),Caldas Novas - Setor Serrinha (5)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"35","Bulky":"","CUBAGEM (M³)":"0.11"},{"Rota original":"AM1_155","ID Otimizado":"'=W1_AM1","Paradas":"94","Cidades":"Ipameri - Setor Central (50),Ipameri - Centro (37),Ipameri - Setor Aeroporto (20)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Van","Pacotes estimados":"178","Bulky":"","CUBAGEM (M³)":"3.69"},{"Rota original":"AM1_256","ID Otimizado":"'=W2_AM1","Paradas":"117","Cidades":"Caldas Novas - Residencial Caminho do Lago (31),Caldas Novas - Santa Efigênia (29),Caldas Novas - Nova Vila (11)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"144","Bulky":"","CUBAGEM (M³)":"1.21"},{"Rota original":"AM1_257","ID Otimizado":"'=W3_AM1","Paradas":"111","Cidades":"Caldas Novas - Nova Vila (29),Caldas Novas - Centro (21),Caldas Novas - Caldas do Oeste (19)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"140","Bulky":"","CUBAGEM (M³)":"1.29"},{"Rota original":"AM1_253","ID Otimizado":"'=W4_AM1","Paradas":"100","Cidades":"Caldas Novas - Do Turista (44),Caldas Novas - Centro (33),Caldas Novas - Portal das Águas Quentes (20)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"138","Bulky":"","CUBAGEM (M³)":"1.21"},{"Rota original":"AM1_157","ID Otimizado":"'=W5_AM1","Paradas":"105","Cidades":"Pires do Rio - Setor Central (85),Pires do Rio - Outro (16),Pires do Rio - Centro (7)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"135","Bulky":"","CUBAGEM (M³)":"1.38"},{"Rota original":"AM1_255","ID Otimizado":"'=W6_AM1","Paradas":"113","Cidades":"Caldas Novas - Estância Itaici (35),Caldas Novas - Estância Itaguaí (32),Caldas Novas - Parque das Brisas I (15)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"134","Bulky":"","CUBAGEM (M³)":"0.98"},{"Rota original":"AM1_162","ID Otimizado":"'=W7_AM1","Paradas":"104","Cidades":"Pires do Rio - Setor Central (61),Pires do Rio - Outro (24),Pires do Rio - centro (5)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"131","Bulky":"","CUBAGEM (M³)":"1.07"},{"Rota original":"AM1_220","ID Otimizado":"'=W8_AM1","Paradas":"98","Cidades":"Morrinhos - Centro (95),Morrinhos - Jardim América (9),Morrinhos - Jardim Romano II (2)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"128","Bulky":"","CUBAGEM (M³)":"1.47"},{"Rota original":"AM1_156","ID Otimizado":"'=W9_AM1","Paradas":"90","Cidades":"Orizona - Centro (52),Orizona - Campo Formoso (23),Orizona - Santa Maria I (14)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"124","Bulky":"","CUBAGEM (M³)":"1.23"},{"Rota original":"AM1_19","ID Otimizado":"'=Y10_AM1","Paradas":"29","Cidades":"Nova Iguaçu de Goiás - Setor Central (16),Alto Horizonte - Setor Central (6),Alto Horizonte - Outro (5)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"35","Bulky":"","CUBAGEM (M³)":"0.8"},{"Rota original":"AM1_5","ID Otimizado":"'=Y1_AM1","Paradas":"103","Cidades":"Crixás - Outro (43),Crixás - Setor Central (21),Crixás - Crixás (8)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"124","Bulky":"","CUBAGEM (M³)":"1.06"},{"Rota original":"AM1_8","ID Otimizado":"'=Y2_AM1","Paradas":"91","Cidades":"Nova Crixás - Outro (43),Nova Crixás - Setor Central (32),Nova Crixás - Nova Crixás (6)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"116","Bulky":"","CUBAGEM (M³)":"0.75"},{"Rota original":"AM1_1","ID Otimizado":"'=Y3_AM1","Paradas":"83","Cidades":"Nova Crixás - Setor Central (34),Nova Crixás - Outro (26),Nova Crixás - Setor Santo Antônio (17)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"116","Bulky":"","CUBAGEM (M³)":"2.63"},{"Rota original":"AM1_2","ID Otimizado":"'=Y4_AM1","Paradas":"86","Cidades":"Santa Terezinha de Goiás - Setor Central (68),Santa Terezinha de Goiás - Santa Terezinha de Goiás (5),Santa Terezinha de Goiás - Outro (5)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"100","Bulky":"","CUBAGEM (M³)":"0.97"},{"Rota original":"AM1_4","ID Otimizado":"'=Y5_AM1","Paradas":"76","Cidades":"Crixás - Setor Central (31),Crixás - Outro (15),Uirapuru - Centro (6)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"89","Bulky":"","CUBAGEM (M³)":"0.88"},{"Rota original":"AM1_7","ID Otimizado":"'=Y6_AM1","Paradas":"61","Cidades":"Mundo Novo - Setor Central (34),Vila Sertaneja - Vila Sertaneja (13),Mundo Novo - Outro (5)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Veículo de Passeio","Pacotes estimados":"82","Bulky":"","CUBAGEM (M³)":"0.81"},{"Rota original":"AM1_18","ID Otimizado":"'=Y7_AM1","Paradas":"87","Cidades":"Alto Horizonte - Setor Central (91),Alto Horizonte - Outro (16),Alto Horizonte - Residencial Sul (7)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"137","Bulky":"","CUBAGEM (M³)":"1.1"},{"Rota original":"AM1_6","ID Otimizado":"'=Y8_AM1","Paradas":"25","Cidades":"Crixás - Vila Nova (27),Crixás - Setor Central (5),Uirapuru - Setor Central (4)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Vuc","Pacotes estimados":"49","Bulky":"","CUBAGEM (M³)":"2.3"},{"Rota original":"AM1_3","ID Otimizado":"'=Y9_AM1","Paradas":"47","Cidades":"Campos Verdes - Setor Central (13),Santa Terezinha de Goiás - Setor Central (12),Campos Verdes - centro (8)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"66","Bulky":"","CUBAGEM (M³)":"0.51"},{"Rota original":"AM1_17","ID Otimizado":"'=Z1_AM1","Paradas":"92","Cidades":"Mozarlândia - Centro (63),Mozarlândia - Setor Camões (14),Mozarlândia - Setor Santa Mônica (11)","Tipos de serviços":"XPT - EGO11","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"112","Bulky":"","CUBAGEM (M³)":"0.94"},{"Rota original":"AM1_12","ID Otimizado":"'=Z2_AM1","Paradas":"63","Cidades":"Britânia - Centro (45),Britânia - Vila Rica (7),Britânia - Vera Cruz (7)","Tipos de serviços":"XPT - EGO11","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"81","Bulky":"","CUBAGEM (M³)":"0.69"},{"Rota original":"AM1_16","ID Otimizado":"'=Z3_AM1","Paradas":"27","Cidades":"Mozarlândia - Setor Nova Mozarlândia I (12),Mozarlândia - Centro (11),Mozarlândia - Setor Paranoá (8)","Tipos de serviços":"XPT - EGO11","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"42","Bulky":"","CUBAGEM (M³)":"0.61"},{"Rota original":"AM1_13","ID Otimizado":"'=Z4_AM1","Paradas":"63","Cidades":"Araguapaz - Centro (24),Araguapaz - Jardim Piauí (14),Araguapaz - Sol Nascente (8)","Tipos de serviços":"XPT - EGO11","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"74","Bulky":"","CUBAGEM (M³)":"0.44"},{"Rota original":"AM1_15","ID Otimizado":"'=Z5_AM1","Paradas":"16","Cidades":"Mozarlândia - Centro (8),Mozarlândia - Setor Santa Mônica (4),Mozarlândia - Setor Camões (2)","Tipos de serviços":"XPT - EGO11","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"19","Bulky":"","CUBAGEM (M³)":"0.15"},{"Rota original":"AM1_14","ID Otimizado":"'=Z6_AM1","Paradas":"69","Cidades":"Aruanã - Setor Central (24),Aruanã - Outro (13),Aruanã - centro (4)","Tipos de serviços":"XPT - EGO11","-":"0","Tipo de Veículo":"Utilitários","Pacotes estimados":"78","Bulky":"","CUBAGEM (M³)":"1"},{"Rota original":"PM1_56","ID Otimizado":"C1_PM1","Paradas":"67","Cidades":"Unaí - Centro (59),Unaí - Cachoeira (13),Unaí - Mamoeiro (8)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"100","Bulky":"","CUBAGEM (M³)":"1.06"},{"Rota original":"PM1_53","ID Otimizado":"C2_PM1","Paradas":"78","Cidades":"Unaí - Divinéia (12),Unaí - Santa Luzia (11),Unaí - Centro (10)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"85","Bulky":"","CUBAGEM (M³)":"1.16"},{"Rota original":"PM1_55","ID Otimizado":"C3_PM1","Paradas":"63","Cidades":"Unaí - Centro (13),Unaí - Barroca (10),Unaí - Divinéia (10)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"72","Bulky":"","CUBAGEM (M³)":"1.17"},{"Rota original":"PM1_54","ID Otimizado":"C4_PM1","Paradas":"38","Cidades":"Unaí - Centro (17),Garapuava - Garapuava (6),Unaí - Cachoeira (6)","Tipos de serviços":"XPT - EDF13","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"44","Bulky":"","CUBAGEM (M³)":"1.2"},{"Rota original":"PM1_5","ID Otimizado":"D1_PM1","Paradas":"66","Cidades":"Posse - Santa Luzia (21),Posse - Augusto José Valente (15),Posse - Mãe Bela (10)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"83","Bulky":"","CUBAGEM (M³)":"1.04"},{"Rota original":"PM1_4","ID Otimizado":"D2_PM1","Paradas":"59","Cidades":"Posse - Guarani (27),Posse - Setor Central (15),Posse - Augusto José Valente (10)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"76","Bulky":"","CUBAGEM (M³)":"0.76"},{"Rota original":"PM1_3","ID Otimizado":"D3_PM1","Paradas":"32","Cidades":"Mambaí - Centro (19),Damianópolis - Centro (7),Damianópolis - setor Bueno (2)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"37","Bulky":"","CUBAGEM (M³)":"0.22"},{"Rota original":"PM1_1","ID Otimizado":"D4_PM1","Paradas":"28","Cidades":"São Domingos - Setor Leste (9),São Domingos - Centro (5),Divinópolis de Goiás - ginete (2)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"31","Bulky":"","CUBAGEM (M³)":"0.25"},{"Rota original":"PM1_2","ID Otimizado":"D5_PM1","Paradas":"27","Cidades":"Alvorada do Norte - Ipiranga (8),Alvorada do Norte - Outro (5),Simolândia - Centro (4)","Tipos de serviços":"XPT - EDF4","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"30","Bulky":"","CUBAGEM (M³)":"1.27"},{"Rota original":"PM1_63","ID Otimizado":"F1_PM1","Paradas":"55","Cidades":"Iporá - Centro (21),Iporá - Mato Grosso (8),Iporá - Jardim Novo Horizonte II (5)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"60","Bulky":"","CUBAGEM (M³)":"1.26"},{"Rota original":"PM1_60","ID Otimizado":"F2_PM1","Paradas":"28","Cidades":"Montes Claros de Goiás - Setor Central (10),Montes Claros de Goiás - centro (4),Diorama - Diorama (2)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"29","Bulky":"","CUBAGEM (M³)":"0.19"},{"Rota original":"PM1_62","ID Otimizado":"F3_PM1","Paradas":"27","Cidades":"Caiapônia - Setor Central (13),Caiapônia - Outro (8),Caiapônia - Nova Caiapônia (2)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"29","Bulky":"","CUBAGEM (M³)":"0.21"},{"Rota original":"PM1_61","ID Otimizado":"F4_PM1","Paradas":"22","Cidades":"Fazenda Nova - Centro (4),Iporá - Parque das Estrelas (3),Iporá - Jardim Arco Íris (3)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"23","Bulky":"","CUBAGEM (M³)":"0.22"},{"Rota original":"PM1_59","ID Otimizado":"F5_PM1","Paradas":"17","Cidades":"Piranhas - Centro (9),Piranhas - Eldorado (2),Piranhas - Sudoeste (2)","Tipos de serviços":"XPT - EGO12","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"20","Bulky":"","CUBAGEM (M³)":"0.1"},{"Rota original":"PM1_23","ID Otimizado":"G1_PM1","Paradas":"62","Cidades":"Uruaçu - Setor Central (51),Uruaçu - São Vicente (3),Uruaçu - Outro (3)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"77","Bulky":"","CUBAGEM (M³)":"0.88"},{"Rota original":"PM1_72","ID Otimizado":"G2_PM1","Paradas":"36","Cidades":"Porangatu - Centro (53),Porangatu - Setor Aeroporto - 2ª Etapa (6),Porangatu - Setor Leste (3)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"62","Bulky":"","CUBAGEM (M³)":"1.16"},{"Rota original":"PM1_24","ID Otimizado":"G3_PM1","Paradas":"57","Cidades":"Niquelândia - Centro (25),Niquelândia - Outro (10),Niquelândia - Niquelândia (4)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"58","Bulky":"","CUBAGEM (M³)":"0.48"},{"Rota original":"PM1_22","ID Otimizado":"G4_PM1","Paradas":"48","Cidades":"Uruaçu - Setor Central (22),Uruaçu - Outro (7),Uruaçu - Setor Sul II (4)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"57","Bulky":"","CUBAGEM (M³)":"0.39"},{"Rota original":"PM1_69","ID Otimizado":"G5_PM1","Paradas":"35","Cidades":"Campinorte - Setor Central (8),Campinorte - Centro (6),Campinorte - Novo Horizonte (4)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"40","Bulky":"","CUBAGEM (M³)":"0.85"},{"Rota original":"PM1_20","ID Otimizado":"G6_PM1","Paradas":"14","Cidades":"Uruaçu - Centro (78),Niquelândia - Outro (4),Niquelândia - Vila Taveira (3)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"18","Bulky":"","CUBAGEM (M³)":"0.81"},{"Rota original":"PM1_70","ID Otimizado":"G7_PM1","Paradas":"40","Cidades":"Porangatu - Jardim Brasília (6),Porangatu - Residencial Cidade Jardim (5),Porangatu - Setor Bom Jesus (4)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"43","Bulky":"","CUBAGEM (M³)":"0.87"},{"Rota original":"PM1_71","ID Otimizado":"G8_PM1","Paradas":"37","Cidades":"Mara Rosa - Setor Central (26),Mara Rosa - Outro (9),Mara Rosa - Setor Oeste (2)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"42","Bulky":"","CUBAGEM (M³)":"0.25"},{"Rota original":"PM1_21","ID Otimizado":"G9_PM1","Paradas":"25","Cidades":"Uruaçu - Setor Central (8),Uruaçu - Outro (5),Uruaçu - SETOR JK (2)","Tipos de serviços":"XPT - EDF7","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"28","Bulky":"","CUBAGEM (M³)":"0.73"},{"Rota original":"PM1_27","ID Otimizado":"H1_PM1","Paradas":"83","Cidades":"Buritis - Centro (63),Buritis - Outro (13),Buritis - Buritis (2)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"Van","Pacotes estimados":"90","Bulky":"","CUBAGEM (M³)":"0.75"},{"Rota original":"PM1_25","ID Otimizado":"H2_PM1","Paradas":"61","Cidades":"Arinos - Centro (47),Arinos - Outro (13),Arinos - planalto (1)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"65","Bulky":"","CUBAGEM (M³)":"0.48"},{"Rota original":"PM1_26","ID Otimizado":"H3_PM1","Paradas":"44","Cidades":"Riachinho - Centro (22),Bonfinópolis de Minas - Centro (12),Riachinho - centro (5)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"47","Bulky":"","CUBAGEM (M³)":"0.3"},{"Rota original":"PM1_28","ID Otimizado":"H4_PM1","Paradas":"12","Cidades":"Uruana de Minas - Centro (6),Buritis - Outro (3),Buritis - Centro (2)","Tipos de serviços":"XPT - EDF8","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"12","Bulky":"","CUBAGEM (M³)":"0.12"},{"Rota original":"PM1_66","ID Otimizado":"I1_PM1","Paradas":"46","Cidades":"Goianira - Residencial Triunfo (9),Goianira - Residencial Solar das Paineiras (3),Santa Bárbara de Goiás - Outro (3)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"VUC PP ( atÃ© 10 m3)","Pacotes estimados":"48","Bulky":"","CUBAGEM (M³)":"0.86"},{"Rota original":"PM1_68","ID Otimizado":"I2_PM1","Paradas":"38","Cidades":"Inhumas - Centro (17),Petrolina de Goiás - Setor Central (5),Inhumas - Setor Alegrino Lelis (3)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"45","Bulky":"","CUBAGEM (M³)":"0.4"},{"Rota original":"PM1_64","ID Otimizado":"I3_PM1","Paradas":"51","Cidades":"Nerópolis - Centro (6),Nerópolis - Bairro Botafogo II (5),Nerópolis - Residencial Dona Alda de Araújo Tavares (3)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"VUC PP ( atÃ© 10 m3)","Pacotes estimados":"55","Bulky":"","CUBAGEM (M³)":"0.76"},{"Rota original":"PM1_67","ID Otimizado":"I4_PM1","Paradas":"43","Cidades":"Goianira - Centro (6),Goianira - Parque Boa Vista (5),Nova Veneza - Centro (4)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"51","Bulky":"","CUBAGEM (M³)":"0.23"},{"Rota original":"PM1_65","ID Otimizado":"I5_PM1","Paradas":"56","Cidades":"Inhumas - Centro (16),Inhumas - Residencial Clotildes Essado (3),Inhumas - Residencial Vale Azul (3)","Tipos de serviços":"XPT - EGO19","-":"0","Tipo de Veículo":"VUC PP ( atÃ© 10 m3)","Pacotes estimados":"65","Bulky":"","CUBAGEM (M³)":"0.61"},{"Rota original":"PM1_79","ID Otimizado":"K1_PM1","Paradas":"81","Cidades":"Itumbiara - Centro (14),Itumbiara - Paranaíba (9),Itumbiara - Santa Inês (9)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"95","Bulky":"","CUBAGEM (M³)":"1.95"},{"Rota original":"PM1_77","ID Otimizado":"K2_PM1","Paradas":"49","Cidades":"Centralina - Centro (13),Araporã - Centro (13),Itumbiara - Nova Aurora (4)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"56","Bulky":"","CUBAGEM (M³)":"0.34"},{"Rota original":"PM1_75","ID Otimizado":"K3_PM1","Paradas":"47","Cidades":"Bom Jesus de Goiás - Setor Central (33),Bom Jesus de Goiás - Outro (6),Bom Jesus de Goiás - Centro (4)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"48","Bulky":"","CUBAGEM (M³)":"0.28"},{"Rota original":"PM1_74","ID Otimizado":"K4_PM1","Paradas":"31","Cidades":"Inaciolândia - Setor Central (9),Cachoeira Dourada - Setor Nordeste (6),Cachoeira Dourada - Setor Suleste (6)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"34","Bulky":"","CUBAGEM (M³)":"0.31"},{"Rota original":"PM1_73","ID Otimizado":"K5_PM1","Paradas":"33","Cidades":"Buriti Alegre - Setor Central (19),Buriti Alegre - Outro (4),Buriti Alegre - Centro (2)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"34","Bulky":"","CUBAGEM (M³)":"1.03"},{"Rota original":"PM1_80","ID Otimizado":"K6_PM1","Paradas":"80","Cidades":"Itumbiara - Centro (21),Itumbiara - Afonso Pena (15),Itumbiara - Condomínio Horizontal Paraíso (7)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"97","Bulky":"","CUBAGEM (M³)":"0.86"},{"Rota original":"PM1_78","ID Otimizado":"K7_PM1","Paradas":"76","Cidades":"Goiatuba - Centro (35),Goiatuba - Setor Central (6),Goiatuba - Goiatuba (6)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"93","Bulky":"","CUBAGEM (M³)":"0.69"},{"Rota original":"PM1_76","ID Otimizado":"K8_PM1","Paradas":"50","Cidades":"Joviânia - Setor Central (32),Vicentinópolis - Outro (4),Vicentinópolis - Centro (4)","Tipos de serviços":"XPT - EGO2","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"66","Bulky":"","CUBAGEM (M³)":"0.96"},{"Rota original":"PM1_85","ID Otimizado":"L1_PM1","Paradas":"55","Cidades":"São Luís de Montes Belos - Setor Inicial (11),São Luís de Montes Belos - Residencial Califórnia (6),São Luís de Montes Belos - Residencial Thaís (4)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"60","Bulky":"","CUBAGEM (M³)":"1.46"},{"Rota original":"PM1_82","ID Otimizado":"L2_PM1","Paradas":"19","Cidades":"São Luís de Montes Belos - Setor Montes Belos (4),São Luís de Montes Belos - Residencial Serra Verde I (2),Aurilândia - centro (2)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"22","Bulky":"","CUBAGEM (M³)":"0.31"},{"Rota original":"PM1_81","ID Otimizado":"L3_PM1","Paradas":"28","Cidades":"Sanclerlândia - Setor Central (9),Córrego do Ouro - Centro (6),Mossâmedes - centro (2)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"34","Bulky":"","CUBAGEM (M³)":"0.29"},{"Rota original":"PM1_83","ID Otimizado":"L4_PM1","Paradas":"30","Cidades":"Anicuns - Setor Central (9),Anicuns - Outro (4),Adelândia - Centro (4)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"33","Bulky":"","CUBAGEM (M³)":"0.89"},{"Rota original":"PM1_84","ID Otimizado":"L5_PM1","Paradas":"28","Cidades":"Nazário - Setor Central (6),Firminópolis - Setor Central (3),Nazário - Outro (2)","Tipos de serviços":"XPT - EGO20","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"30","Bulky":"","CUBAGEM (M³)":"0.33"},{"Rota original":"PM1_87","ID Otimizado":"M1_PM1","Paradas":"14","Cidades":"Matrinchã - Setor Central (5),Matrinchã - Centro (3),Matrinchã - Outro (2)","Tipos de serviços":"XPT - EGO21","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"17","Bulky":"","CUBAGEM (M³)":"1.1"},{"Rota original":"PM1_86","ID Otimizado":"M2_PM1","Paradas":"45","Cidades":"Jussara - Setor Central (18),Jussara - Outro (7),Itapirapuã - Setor Central (2)","Tipos de serviços":"XPT - EGO21","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"48","Bulky":"","CUBAGEM (M³)":"0.89"},{"Rota original":"PM1_91","ID Otimizado":"N10_PM1","Paradas":"51","Cidades":"Pires do Rio - Setor Central (18),Pires do Rio - Outro (10),Pires do Rio - Pires do Rio (3)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"53","Bulky":"","CUBAGEM (M³)":"0.45"},{"Rota original":"PM1_90","ID Otimizado":"N11_PM1","Paradas":"49","Cidades":"Ipameri - Setor Central (13),Ipameri - Outro (6),Ipameri - Centro (6)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"53","Bulky":"","CUBAGEM (M³)":"0.48"},{"Rota original":"PM1_94","ID Otimizado":"N12_PM1","Paradas":"33","Cidades":"Piracanjuba - Setor Aeroporto (11),Piracanjuba - Centro (4),Piracanjuba - Setor Pouso Alto - 2ª Etapa (2)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"35","Bulky":"","CUBAGEM (M³)":"0.19"},{"Rota original":"PM1_97","ID Otimizado":"N1_PM1","Paradas":"68","Cidades":"Caldas Novas - Estância Itaguaí (14),Caldas Novas - Estância Itanhangá (12),Caldas Novas - Jardim Serrano (11)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"77","Bulky":"","CUBAGEM (M³)":"0.77"},{"Rota original":"PM1_98","ID Otimizado":"N2_PM1","Paradas":"74","Cidades":"Caldas Novas - Centro (16),Caldas Novas - Caldas do Oeste (10),Caldas Novas - Vila Olegário Pinto (5)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"75","Bulky":"","CUBAGEM (M³)":"0.73"},{"Rota original":"PM1_99","ID Otimizado":"N3_PM1","Paradas":"68","Cidades":"Morrinhos - Centro (18),Morrinhos - Setor Aeroporto (15),Morrinhos - Setor Cristo Redentor (6)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"72","Bulky":"","CUBAGEM (M³)":"0.7"},{"Rota original":"PM1_89","ID Otimizado":"N4_PM1","Paradas":"23","Cidades":"Orizona - Santa Maria I (7),Orizona - Campo Formoso (5),Orizona - Nossa Senhora de Fátima (5)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"25","Bulky":"","CUBAGEM (M³)":"0.72"},{"Rota original":"PM1_88","ID Otimizado":"N5_PM1","Paradas":"17","Cidades":"Campo Alegre de Goiás - Setor Central (6),Campo Alegre de Goiás - Outro (5),Campo Alegre de Goiás - Vila satélite (2)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"18","Bulky":"","CUBAGEM (M³)":"0.62"},{"Rota original":"PM1_93","ID Otimizado":"N6_PM1","Paradas":"14","Cidades":"Corumbaíba - Setor Central (3),Corumbaíba - Outro (2),Marzagão - Outro (2)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"15","Bulky":"","CUBAGEM (M³)":"0.07"},{"Rota original":"PM1_95","ID Otimizado":"N7_PM1","Paradas":"28","Cidades":"Morrinhos - Jardim Romano (3),Pontalina - Setor Central (3),Pontalina - Centro (3)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"31","Bulky":"","CUBAGEM (M³)":"0.64"},{"Rota original":"PM1_96","ID Otimizado":"N8_PM1","Paradas":"49","Cidades":"Caldas Novas - Residencial Primavera (8),Caldas Novas - Jardim Esmeralda (6),Caldas Novas - Santa Efigênia (6)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"57","Bulky":"","CUBAGEM (M³)":"1.02"},{"Rota original":"PM1_92","ID Otimizado":"N9_PM1","Paradas":"45","Cidades":"Caldas Novas - Jardim Hanashiro (18),Caldas Novas - Residencial Aldeia das Thermas (8),Caldas Novas - Mansões Águas Quentes (7)","Tipos de serviços":"XPT - EGO3","-":"0","Tipo de Veículo":"HR","Pacotes estimados":"62","Bulky":"","CUBAGEM (M³)":"2.54"},{"Rota original":"PM1_49","ID Otimizado":"P1_PM1","Paradas":"61","Cidades":"Goianésia - Carrilho (27),Goianésia - Centro (10),Goianésia - Setor Universitário (9)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"82","Bulky":"","CUBAGEM (M³)":"1.07"},{"Rota original":"PM1_42","ID Otimizado":"P2_PM1","Paradas":"40","Cidades":"Jaraguá - Jaraguá (10),Jaraguá - Centro (7),Jaraguá - Setor Aeroporto (3)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"53","Bulky":"","CUBAGEM (M³)":"0.95"},{"Rota original":"PM1_44","ID Otimizado":"P3_PM1","Paradas":"37","Cidades":"Itapaci - Setor Central (10),Itapaci - Outro (5),Itapaci - AC Itapaci Clique e Retire (3)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"38","Bulky":"","CUBAGEM (M³)":"0.33"},{"Rota original":"PM1_45","ID Otimizado":"P4_PM1","Paradas":"53","Cidades":"Ceres - Centro (13),Rialma - Setor Central (4),Ceres - Setor Central (4)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"55","Bulky":"","CUBAGEM (M³)":"0.4"},{"Rota original":"PM1_43","ID Otimizado":"P5_PM1","Paradas":"39","Cidades":"Rubiataba - Centro (8),Rubiataba - Setor Belas Vista (5),Rubiataba - Setor Rubiatabinha (4)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"43","Bulky":"","CUBAGEM (M³)":"0.83"},{"Rota original":"PM1_47","ID Otimizado":"P6_PM1","Paradas":"27","Cidades":"Goianésia - São Cristóvão (6),Goianésia - Nossa Senhora da Penha (4),Goianésia - Santa Luzia (4)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"30","Bulky":"","CUBAGEM (M³)":"0.21"},{"Rota original":"PM1_46","ID Otimizado":"P7_PM1","Paradas":"23","Cidades":"Rialma - Planalto (18),Carmo do Rio Verde - Setor Central (5),Nova Glória - Centro (5)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"35","Bulky":"","CUBAGEM (M³)":"0.33"},{"Rota original":"PM1_48","ID Otimizado":"P8_PM1","Paradas":"27","Cidades":"Barro Alto - Setor Central (6),Barro Alto - Outro (5),Vila Propício - Assunção de Goiás (3)","Tipos de serviços":"XPT - EGO6","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"28","Bulky":"","CUBAGEM (M³)":"0.17"},{"Rota original":"PM1_41","ID Otimizado":"Q1_PM1","Paradas":"66","Cidades":"Itaberaí - Centro (12),Itaberaí - Vila Progresso (6),Americano do Brasil - Setor Central (5)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"70","Bulky":"","CUBAGEM (M³)":"0.57"},{"Rota original":"PM1_40","ID Otimizado":"Q2_PM1","Paradas":"56","Cidades":"Itapuranga - São Sebastião do Xixá (9),Itapuranga - Parque Alvorada (5),Itapuranga - Joaquim da Silva Moreira (5)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"62","Bulky":"","CUBAGEM (M³)":"0.67"},{"Rota original":"PM1_38","ID Otimizado":"Q3_PM1","Paradas":"39","Cidades":"Itaberaí - Vila Progresso (6),Itauçu - Setor Central (4),Itaguari - Centro (3)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"43","Bulky":"","CUBAGEM (M³)":"1.13"},{"Rota original":"PM1_39","ID Otimizado":"Q4_PM1","Paradas":"37","Cidades":"Goiás - Setor Central (12),Goiás - Outro (9),Goiás - Aeroporto (2)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"37","Bulky":"","CUBAGEM (M³)":"0.27"},{"Rota original":"PM1_37","ID Otimizado":"Q5_PM1","Paradas":"29","Cidades":"Uruana - Setor Central (9),Uruana - Centro (3),Uruana - centro (3)","Tipos de serviços":"XPT - EGO7","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"31","Bulky":"","CUBAGEM (M³)":"0.17"},{"Rota original":"PM1_36","ID Otimizado":"R1_PM1","Paradas":"41","Cidades":"Nova Crixás - Setor Central (15),Mundo Novo - Setor Central (6),Nova Crixás - Setor Santo Antônio (3)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"44","Bulky":"","CUBAGEM (M³)":"0.32"},{"Rota original":"PM1_34","ID Otimizado":"R2_PM1","Paradas":"39","Cidades":"Crixás - Outro (13),Crixás - Setor Central (7),Crixás - Crixás (3)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"41","Bulky":"","CUBAGEM (M³)":"0.22"},{"Rota original":"PM1_33","ID Otimizado":"R3_PM1","Paradas":"18","Cidades":"Alto Horizonte - Setor Central (7),Nova Iguaçu de Goiás - Setor Central (4),Alto Horizonte - Outro (3)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"20","Bulky":"","CUBAGEM (M³)":"0.58"},{"Rota original":"PM1_35","ID Otimizado":"R4_PM1","Paradas":"32","Cidades":"Santa Terezinha de Goiás - Setor Central (12),Campos Verdes - Setor Central (3),Campos Verdes - Centro (2)","Tipos de serviços":"XPT - EGO8","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"33","Bulky":"","CUBAGEM (M³)":"0.15"},{"Rota original":"PM1_7","ID Otimizado":"S1_PM1","Paradas":"20","Cidades":"Alvorada - Outro (4),Figueirópolis - Setor Central (4),Alvorada - Setor Central (3)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"22","Bulky":"","CUBAGEM (M³)":"0.18"},{"Rota original":"PM1_6","ID Otimizado":"S2_PM1","Paradas":"22","Cidades":"Formoso do Araguaia - Setor Central (12),Formoso do Araguaia - Formoso do Araguaia (2),Formoso do Araguaia - Outro (2)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"22","Bulky":"","CUBAGEM (M³)":"0.17"},{"Rota original":"PM1_9","ID Otimizado":"S3_PM1","Paradas":"44","Cidades":"Gurupi - Setor Central (20),Gurupi - Parque Residencial Nova Fronteira (6),Peixe - Setor Central (5)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"49","Bulky":"","CUBAGEM (M³)":"0.36"},{"Rota original":"PM1_8","ID Otimizado":"S4_PM1","Paradas":"36","Cidades":"Lagoa da Confusão - Setor Central (7),Gurupi - Alto da Boa Vista (7),Gurupi - Setor Central (6)","Tipos de serviços":"XPT - ETO1","-":"0","Tipo de Veículo":"VeÃ­culo de Passeio","Pacotes estimados":"41","Bulky":"","CUBAGEM (M³)":"0.4"},{"Rota original":"PM1_58","ID Otimizado":"T1_PM1","Paradas":"27","Cidades":"Britânia - Centro (5),Britânia - Vera Cruz (4),Britânia - Setor Central (3)","Tipos de serviços":"XPT - EGO11","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"29","Bulky":"","CUBAGEM (M³)":"0.68"},{"Rota original":"PM1_57","ID Otimizado":"T2_PM1","Paradas":"27","Cidades":"Mozarlândia - Setor Nova Mozarlândia I (8),Mozarlândia - Centro (8),Araguapaz - Jardim Piauí (2)","Tipos de serviços":"XPT - EGO11","-":"0","Tipo de Veículo":"UtilitÃ¡rios","Pacotes estimados":"30","Bulky":"","CUBAGEM (M³)":"0.19"}],"publicadoEm":"27/09/2026 10:02"};
-var GERADO_EM  = "27/09/2026 10:02";
 
-function esc(s){
-  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function extrairEGO(svc){
-  var s=String(svc||'');
-  var m=s.match(/EGO\s*(\d+)/i);
-  if(m)return'EGO'+parseInt(m[1],10);
-  var mEto=s.match(/ETO\s*1/i);
-  if(mEto)return'ETO1';
-  var m2=s.match(/EDF\s*(\d+)/i);
-  if(m2)return'EDF'+parseInt(m2[1],10);
-  return s.trim();
-}
-function extrairCiclo(id){
-  var s=String(id||'').toUpperCase();
-  if(s.indexOf('_AM')>=0)return'AM';
-  if(s.indexOf('_PM')>=0)return'PM';
-  if(s.indexOf('_SD')>=0)return'SD';
-  return'XPT';
-}
+const CICLOS_RAW = {"_mlpName":"XPT_Vagas"};
+const GERADO_EM  = '27/09/2026 22:00';
+const ABAS_ORDEM = ['AM','PM','SD','XPT'];
 
-var DOCA_MAP={
-  'ETO1':12,'EGO7':15,'EGO19':15,'EGO12':13,'EGO20':14,
-  'EGO3':16,
-  'EDF8':18,'EDF13':18,
-  'EDF7':19,
-  'EGO11':20,'EGO21':20,
-  'EGO8':21,'EDF4':21,
-  'EGO6':22,'EGO2':23
-};
-var DOCA_EXTRA={17:'EGO3'};
-var DOCA_CICLO={16:'AM',17:'PM'};
-var DOCAS_BLOQUEADAS=[];
-var DOCAS_INATIVAS=[];
-var DOCAS_ORDEM=[12,13,14,15,16,17,18,19,20,21,22,23];
 
-var DOCA_COMPARTILHADAS={
-  15:['EGO19','EGO7'],
-  18:['EDF8','EDF13'],
-  20:['EGO11','EGO21'],
-  21:['EGO8','EDF4']
+var ONDAS = {
+  AM:[{n:1,ini:'06:30',fim:'07:52'},{n:2,ini:'07:45',fim:'08:37'},{n:3,ini:'08:30',fim:'09:12'},{n:4,ini:'09:05',fim:'09:37'}],
+  PM:[{n:1,ini:'13:40',fim:'14:47'},{n:2,ini:'14:40',fim:'15:17'},{n:3,ini:'15:10',fim:'15:47'},{n:4,ini:'15:40',fim:'16:17'},{n:5,ini:'16:10',fim:'16:37'}],
+  SD:[{n:1,ini:'16:20',fim:'17:07'},{n:2,ini:'17:00',fim:'17:27'}]
 };
 
-var CIDADE_MAP={
-  'EGO11':'Mozarlândia',
-  'EGO3':'Caldas Novas',
-  'EGO7':'Itaberaí',
-  'EGO19':'Inhumas',
-  'EGO12':'Iporá',
-  'EGO20':'São Luís',
-  'EGO21':'Jussara',
-  'EGO6':'Goianésia',
-  'EGO8':'',
-  'EDF7':'',
-  'EGO2':'Itumbiara',
-  'EDF4':'',
-  'EDF8':'',
-  'EDF13':''
-};
+function toMin(h){var p=h.split(':');return parseInt(p[0],10)*60+parseInt(p[1],10);}
 
-var EGO_BY_DOCA=(function(){
-  var m={};
-  Object.keys(DOCA_COMPARTILHADAS).forEach(function(d){m[parseInt(d,10)]=DOCA_COMPARTILHADAS[d][0];});
-  Object.keys(DOCA_MAP).forEach(function(ego){var d=DOCA_MAP[ego];if(!m[d])m[d]=ego;});
-  Object.keys(DOCA_EXTRA).forEach(function(d){m[parseInt(d,10)]=DOCA_EXTRA[d];});
-  return m;
-}());
-
-var GRUPOS={},EGO_ORDER=[];
-var COL_ID='ID Otimizado',COL_SERVICO='Tipos de serviços',COL_PACOTES='Pacotes estimados';
-
-function processarDados(){
-  var rows=Array.isArray(DADOS_RAW.rows)?DADOS_RAW.rows:[];
-  GRUPOS={};
-  rows.forEach(function(row){
-    var ego=extrairEGO(row[COL_SERVICO]||'');
-    if(!ego)return;
-    if(!GRUPOS[ego])GRUPOS[ego]=[];
-    GRUPOS[ego].push(row);
-  });
-  EGO_ORDER=Object.keys(GRUPOS).sort(function(a,b){
-    var va=DOCA_MAP[a]!=null?DOCA_MAP[a]:-1;
-    var vb=DOCA_MAP[b]!=null?DOCA_MAP[b]:-1;
-    return vb-va;
-  });
-}
-
-var CAP={Toco:10,Truck:15,Carreta:28};
-var ICON={Toco:'🚚',Truck:'🚛',Carreta:'🚌'};
-
-function _chipColor(used,cap){
-  var pct=used/cap;
-  if(pct<=0.75)return'chip-green';
-  if(pct<1)return'chip-amber';
-  return'chip-red';
-}
-function _mkChip(type,used){
-  var cap=CAP[type];
-  var pct=Math.round(used/cap*100);
-  var cls=_chipColor(used,cap);
-  return'<span class="vv-chip '+cls+'">'+ICON[type]+' '+type+' · '+used+'/'+cap+' <span style="opacity:.75">('+pct+'%)</span></span>';
-}
-function sugerirVeiculo(ego,count){
-  if(!count||count===0)return null;
-  var carreta=(ego==='EGO3');
-  if(count<=10)return{cls:'',slots:[{t:'Toco',n:count}],n:1};
-  if(count<=15)return{cls:'',slots:[{t:'Truck',n:count}],n:1};
-  if(carreta){
-    if(count<=28)return{cls:'',slots:[{t:'Carreta',n:count}],n:1};
-    return{cls:'vv-danger',overflow:true,count:count};
-  }
-  if(count>30)return{cls:'vv-danger',overflow:true,count:count};
-  var a,b;
-  if(count<=20){a=Math.ceil(count/2);b=count-a;return{cls:'vv-warn',slots:[{t:'Toco',n:a},{t:'Toco',n:b}],n:2};}
-  if(count<=25)return{cls:'vv-warn',slots:[{t:'Truck',n:15},{t:'Toco',n:count-15}],n:2};
-  a=Math.ceil(count/2);b=count-a;
-  return{cls:'vv-warn',slots:[{t:'Truck',n:a},{t:'Truck',n:b}],n:2};
-}
-function htmlVeiculo(ego,count){
-  var s=sugerirVeiculo(ego,count);
-  if(!s)return'';
-  if(s.overflow)return'<div class="vcard-veiculo vv-danger"><span class="vv-chip chip-red">⚠️ Sobrecarga · '+s.count+' rotas</span><span class="vv-nbadge over" style="margin-left:auto">Verificar</span></div>';
-  var nbadge=s.n===1?'1 veículo':s.n+' veículos';
-  var nbadgeCls=s.n===1?'ok':'warn';
-  var chips=s.slots.map(function(sl){return _mkChip(sl.t,sl.n);});
-  return'<div class="vcard-veiculo '+s.cls+'">'+chips.join('<span class="vv-sep">＋</span>')+'<span class="vv-nbadge '+nbadgeCls+'">'+nbadge+'</span></div>';
-}
-function badgeRoutes(n){
-  var cls=n>20?'badge-red':n>15?'badge-amber':'badge-ok';
-  return'<span class="vcard-badge '+cls+'">'+n+' rota'+(n!==1?'s':'')+'</span>';
-}
-function badgePacotes(n){
-  if(!n)return'';
-  var fmt=n>=1000?(n/1000).toFixed(1).replace('.',',')+'k':String(n);
-  return'<span class="badge-pkg">📦 '+fmt+' pkg</span>';
-}
-
-function buildSharedDocaCard(docaNum,servicos){
-  var totalRotas=0;
-  var totalPkg=0;
-  var lanesHtml=servicos.map(function(ego){
-    var linhas=GRUPOS[ego]?GRUPOS[ego]:[];
-    totalRotas+=linhas.length;
-    var pkg=linhas.reduce(function(s,r){return s+(parseInt(r[COL_PACOTES],10)||0);},0);
-    totalPkg+=pkg;
-    var cidade=CIDADE_MAP[ego]||'';
-    var isEDF=ego.indexOf('EDF')===0;
-    var cards=linhas.map(function(row){
-      var id=row[COL_ID]||'—';
-      var ciclo=extrairCiclo(id);
-      return'<div class="c-'+esc(ciclo)+'"><div class="id-card" data-id="'+esc(id)+'"><span class="id-text">'+esc(id)+'</span><span class="ciclo-tag">'+esc(ciclo)+'</span></div></div>';
-    }).join('');
-    var body=linhas.length>0?'<div class="id-grid" style="grid-template-columns:1fr">'+cards+'</div>':'<div class="sem-rotas">Sem rotas</div>';
-    var hdrClass=isEDF?'lane-edf':'lane-ego';
-    var tagClass=isEDF?'tag-edf':'tag-ego';
-    return'<div class="shared-lane"><div class="shared-lane-hdr '+hdrClass+'"><div style="min-width:0"><div class="shared-lane-name">'+esc(ego)+'</div>'+(cidade?'<div class="shared-lane-sub">📍 '+esc(cidade)+'</div>':'')+'<span class="'+tagClass+'">'+esc(isEDF?'EDF':'EGO')+'</span></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">'+badgeRoutes(linhas.length)+badgePacotes(pkg)+'</div></div>'+htmlVeiculo(ego,linhas.length)+body+'</div>';
+function renderOndas(id){
+  var lista=ONDAS[id];
+  if(!lista||!lista.length)return '';
+  var agora=new Date(), minNow=agora.getHours()*60+agora.getMinutes();
+  var cards=lista.map(function(o){
+    var ini=toMin(o.ini),fim=toMin(o.fim),cls='onda-card',pill='';
+    if(minNow>=ini&&minNow<=fim){cls+=' ativa';pill='<span class="onda-pill pill-ao-vivo">● AO VIVO</span>';}
+    else if(minNow<ini&&ini-minNow<=30){cls+=' proxima';pill='<span class="onda-pill pill-em-breve">EM BREVE</span>';}
+    else if(minNow>fim){cls+=' passada';}
+    return '<div class="'+cls+'"><span class="onda-n">Onda '+o.n+'</span><span class="onda-h">'+esc(o.ini)+' – '+esc(o.fim)+'</span>'+pill+'</div>';
   }).join('');
-  return'<div class="vcard vcard-shared"><div class="shared-header"><div class="shared-header-left"><div class="vcard-name">Doca '+docaNum+'</div><div class="shared-sub">🔀 '+servicos.join(' &amp; ')+'</div></div><div class="shared-total"><span class="shared-badge">⚠️ Compartilhada</span><span style="font-size:10px;color:#92400e;font-weight:700;margin-top:3px;text-align:right">'+totalRotas+' rota'+(totalRotas!==1?'s':'')+'</span></div></div><div class="shared-alert">⚠️ Atenção: serviços compartilhando a doca — coordenar embarque</div><div class="shared-body">'+lanesHtml+'</div></div>';
+  return '<div class="ondas-bar"><span class="ondas-label">🕐 Horários:</span>'+cards+'</div>';
 }
 
-var carouselIdx=0;
-function isMobile(){return window.innerWidth<=680;}
-function atualizarCarrossel(){
-  if(!isMobile())return;
-  var cards=document.querySelectorAll('#grid > *');
-  var total=cards.length;
-  if(!total)return;
-  cards.forEach(function(c,i){c.classList.toggle('carousel-active',i===carouselIdx);});
-  var docaNum=DOCAS_ORDEM[carouselIdx];
-  var isBloq=DOCAS_BLOQUEADAS.indexOf(docaNum)>=0;
-  var isInativa=DOCAS_INATIVAS.indexOf(docaNum)>=0;
-  var isComp=!!DOCA_COMPARTILHADAS[docaNum];
-  var ego=EGO_BY_DOCA[docaNum];
-  var docaEl=document.getElementById('carousel-doca');
-  var egoEl=document.getElementById('carousel-ego');
-  if(docaEl)docaEl.textContent='Doca '+docaNum+' de '+total;
-  if(egoEl){
-    if(isBloq)egoEl.textContent='🚫 Bloqueada';
-    else if(isInativa)egoEl.textContent='⚠️ Prob. Operacional';
-    else if(isComp)egoEl.textContent='⚠️ Compartilhada · '+DOCA_COMPARTILHADAS[docaNum].join(' + ');
-    else{var cidade=ego?CIDADE_MAP[ego]:'';egoEl.textContent=(ego||'')+(cidade?' · '+cidade:'');}
-  }
-  var dotsEl=document.getElementById('carousel-dots');
-  if(dotsEl){
-    dotsEl.innerHTML=DOCAS_ORDEM.map(function(d,i){
-      var cls='cdot';
-      if(DOCAS_BLOQUEADAS.indexOf(d)>=0)cls+=' bloq';
-      else if(DOCA_COMPARTILHADAS[d])cls+=' comp';
-      if(i===carouselIdx)cls+=' active';
-      return'<span class="'+cls+'"></span>';
-    }).join('');
-  }
-  var prev=document.getElementById('nav-prev');
-  var next=document.getElementById('nav-next');
-  if(prev)prev.disabled=carouselIdx===0;
-  if(next)next.disabled=carouselIdx===total-1;
-}
-function navDoca(dir){
-  var total=document.querySelectorAll('#grid > *').length;
-  carouselIdx=Math.max(0,Math.min(total-1,carouselIdx+dir));
-  atualizarCarrossel();
+
+var filtros={},CONFIGS={},sortState={};
+
+function esc(s){return String(s===null||s===undefined?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function normalizarCiclo(raw){
+  if(!raw||!raw.dados)return null;
+  var cols=Array.isArray(raw.dados.columns)?raw.dados.columns:[];
+  var rawRows=Array.isArray(raw.dados.rows)?raw.dados.rows:[];
+  var rows=rawRows.map(function(obj){return cols.map(function(c){var v=obj[c];return(v!==undefined&&v!==null)?v:'';});});
+  return{cols:cols,rows:rows,publicadoEm:raw.publicadoEm||''};
 }
 
-var _touchX=0;
-document.addEventListener('touchstart',function(e){
-  _touchX=e.touches[0].clientX;
-  iniciarPress(e.target.closest('.id-card[data-id]'));
-},{passive:true});
-document.addEventListener('touchmove',function(){cancelarPress();},{passive:true});
-document.addEventListener('touchend',function(e){
-  cancelarPress();
-  if(!isMobile())return;
-  var dx=e.changedTouches[0].clientX-_touchX;
-  if(dx<-50)navDoca(1);
-  if(dx>50)navDoca(-1);
-},{passive:true});
+var MLP_NAME=CICLOS_RAW['_mlpName']||null;
+var D={};
+try{
+  Object.keys(CICLOS_RAW).forEach(function(k){
+    if(k==='_mlpName')return;
+    var n=normalizarCiclo(CICLOS_RAW[k]);
+    if(n)D[k]=n;
+  });
+}catch(e){console.error('normalizar:',e);}
+
+
+function findCol(cols,cands){for(var j=0;j<cands.length;j++){var i=cols.indexOf(cands[j]);if(i>=0)return i;}return -1;}
+
+function detectarConfig(cols){
+  var fi=findCol(cols,['Transportadora','Transportadoras']);
+  if(fi<0)fi=findCol(cols,['Tipos de serviços','Tipo de serviço']);
+  if(fi<0)fi=findCol(cols,['Tipo de Veículo','Tipo de veiculo','Tipo de Veiculo']);
+  return{fi:fi,fl:fi>=0?cols[fi]:''};
+}
+function detectarPktIdx(cols){return findCol(cols,['Pacotes','pacotes','Qtd Pacotes','QTD_PACOTES','QTDE_PACOTES','Qtde Pacotes']);}
+function detectarTranspIdx(cols){return findCol(cols,['Transportadora','Transportadoras','MLP']);}
+function detectarParadasIdx(cols){return findCol(cols,['Paradas','paradas','Qtd Paradas','QTD_PARADAS','Qtde Paradas']);}
+function detectarVeiculoIdx(cols){return findCol(cols,['Tipo de Veículo','Tipo de veículo','Tipo de Veiculo','Tipo de veiculo','Tipo veículo','Tipos de serviços']);}
+
+
+function renderKPIs(id){
+  if(!D[id]||!D[id].rows.length)return '';
+  var rows=D[id].rows, cols=D[id].cols;
+  var pi=detectarPktIdx(cols), ti=detectarTranspIdx(cols);
+  var totalPkt=0, transp={};
+  rows.forEach(function(r){
+    var pkt=pi>=0?parseFloat(String(r[pi]).replace(/[^\d.]/g,''))||0:0;
+    totalPkt+=pkt;
+    if(ti>=0&&r[ti]){var t=String(r[ti]).trim();if(!transp[t])transp[t]=0;transp[t]++;}
+  });
+  var qtdRotas=rows.length;
+  var media=qtdRotas>0?(totalPkt/qtdRotas).toFixed(1):'—';
+  var qtdTransp=Object.keys(transp).length;
+  function fmt(n){if(!n&&n!==0)return'—';return n>=1000?(n/1000).toFixed(1)+'k':String(Math.round(n));}
+  return '<div class="kpi-strip">'+
+    kpiCard('c-green','📦',fmt(totalPkt),'Total Pacotes',id+' · hoje')+
+    kpiCard('c-blue','🛣️',qtdRotas,'Total Rotas','programadas')+
+    kpiCard('c-amber','📊',media,'Média Pkt/Rota','pacotes por rota')+
+    kpiCard('c-violet','🚚',qtdTransp,'Transportadoras','ativas no ciclo')+
+  '</div>';
+}
+
+function kpiCard(cls,icon,val,lbl,sub){
+  return '<div class="kpi-card '+cls+'">'+
+    '<div class="kpi-top"></div>'+
+    '<div class="kpi-body">'+
+      '<div class="kpi-icon">'+icon+'</div>'+
+      '<div class="kpi-val">'+esc(String(val))+'</div>'+
+      '<div class="kpi-lbl">'+esc(lbl)+'</div>'+
+      '<div class="kpi-sub">'+esc(sub)+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+
+function renderShare(id){
+  if(!D[id]||!D[id].rows.length)return '';
+  var rows=D[id].rows, cols=D[id].cols;
+  var pi=detectarPktIdx(cols), ti=detectarTranspIdx(cols);
+  if(ti<0)return '';
+  var agg={}, totalPktGlobal=0, totalRotasGlobal=0;
+  rows.forEach(function(r){
+    var t=String(r[ti]||'').trim()||'(sem nome)';
+    var pkt=pi>=0?parseFloat(String(r[pi]).replace(/[^\d.]/g,''))||0:0;
+    if(!agg[t])agg[t]={pkts:0,rotas:0};
+    agg[t].pkts+=pkt; agg[t].rotas++; totalPktGlobal+=pkt; totalRotasGlobal++;
+  });
+  var sorted=Object.keys(agg).map(function(k){return{name:k,pkts:agg[k].pkts,rotas:agg[k].rotas};});
+  sorted.sort(function(a,b){return b.rotas-a.rotas;});
+  var maxRotas=sorted.length?sorted[0].rotas:1;
+  var rowsHtml=sorted.map(function(s){
+    var pct=totalRotasGlobal>0?Math.round(s.rotas/totalRotasGlobal*100):0;
+    var barW=maxRotas>0?Math.round(s.rotas/maxRotas*100):0;
+    return '<div class="share-row">'+
+      '<span class="share-name" title="'+esc(s.name)+'">'+esc(s.name)+'</span>'+
+      '<span class="share-pkts">'+s.pkts.toLocaleString('pt-BR')+' pkt</span>'+
+      '<span class="share-rotas">'+s.rotas+' rota'+(s.rotas!==1?'s':'')+'</span>'+
+      '<div class="share-bar-outer">'+
+        '<div class="share-bar-wrap"><div class="share-bar-fill" style="width:'+barW+'%"></div></div>'+
+        '<span class="share-pct">'+pct+'%</span>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  return '<div class="share-section">'+
+    '<div class="share-head" onclick="toggleShare(\''+id+'\')">'+
+      '<span class="share-title">📊 Share por Transportadora — '+id+
+        ' <span style="font-size:.7rem;color:#475569;font-weight:400">('+sorted.length+' transportadoras · '+totalRotasGlobal+' rotas)</span></span>'+
+      '<button class="share-toggle" id="share-btn-'+id+'">▼ Expandir</button>'+
+    '</div>'+
+    '<div class="share-body" id="share-body-'+id+'">'+
+      '<div class="share-header-row">'+
+        '<span class="share-hcol">Transportadora</span>'+
+        '<span class="share-hcol r">Pacotes</span>'+
+        '<span class="share-hcol r">Rotas</span>'+
+        '<span class="share-hcol">% Rotas</span>'+
+      '</div>'+
+      '<div>'+rowsHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function toggleShare(id){
+  var body=document.getElementById('share-body-'+id);
+  var btn=document.getElementById('share-btn-'+id);
+  if(!body)return;
+  var open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  if(btn)btn.textContent=open?'▼ Expandir':'▲ Recolher';
+}
+
+
+
+
+
+function renderVeiculos(id){
+  if(!D[id]||!D[id].rows.length)return '';
+  var rows=D[id].rows, cols=D[id].cols;
+  var pi=detectarPktIdx(cols), pari=detectarParadasIdx(cols), vi=detectarVeiculoIdx(cols);
+  if(vi<0||(pi<0&&pari<0))return '';
+  var agg={};
+  rows.forEach(function(r){
+    var v=String(r[vi]||'').trim()||'(sem tipo)';
+    var pkt = pi >=0 ? (parseFloat(String(r[pi]).replace(/[^\d.]/g,''))  || 0) : 0;
+    var par = pari>=0 ? (parseFloat(String(r[pari]).replace(/[^\d.]/g,'')) || 0) : 0;
+    if(!agg[v])agg[v]={pkts:0,paradas:0,rotas:0};
+    agg[v].pkts+=pkt; agg[v].paradas+=par; agg[v].rotas++;
+  });
+  var sorted=Object.keys(agg).map(function(k){
+    return {
+      name:k,
+      mediaPkt: agg[k].rotas>0 ? (agg[k].pkts   /agg[k].rotas) : 0,
+      mediaPar: agg[k].rotas>0 ? (agg[k].paradas/agg[k].rotas) : 0,
+      rotas: agg[k].rotas
+    };
+  });
+  sorted.sort(function(a,b){return b.rotas-a.rotas;});
+  var rowsHtml=sorted.map(function(s){
+    return '<div class="veic-row">'+
+      '<span class="veic-name" title="'+esc(s.name)+'">'+esc(s.name)+'</span>'+
+      '<span class="veic-val amber">'+esc(s.mediaPar.toFixed(1))+'</span>'+
+      '<span class="veic-val">'+esc(s.mediaPkt.toFixed(1))+'</span>'+
+      '<span class="veic-rotas">'+s.rotas+' rota'+(s.rotas!==1?'s':'')+'</span>'+
+    '</div>';
+  }).join('');
+  return '<div class="share-section">'+
+    '<div class="share-head" onclick="toggleVeic(\''+id+'\')">'+
+      '<span class="share-title">🚚 Médias por Tipo de Veículo — '+id+
+        ' <span style="font-size:.7rem;color:#475569;font-weight:400">('+sorted.length+' tipos)</span></span>'+
+      '<button class="share-toggle" id="veic-btn-'+id+'">▼ Expandir</button>'+
+    '</div>'+
+    '<div class="share-body" id="veic-body-'+id+'">'+
+      '<div class="veic-header-row">'+
+        '<span class="share-hcol">Tipo de Veículo</span>'+
+        '<span class="share-hcol r">Méd. Paradas</span>'+
+        '<span class="share-hcol r">Méd. Pacotes</span>'+
+        '<span class="share-hcol r">Rotas</span>'+
+      '</div>'+
+      '<div>'+rowsHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+function toggleVeic(id){
+  var body=document.getElementById('veic-body-'+id);
+  var btn =document.getElementById('veic-btn-'+id);
+  if(!body)return;
+  var open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  if(btn)btn.textContent=open?'▼ Expandir':'▲ Recolher';
+}
+
+
+function getRowsFiltradas(id){
+  if(!D[id]||!CONFIGS[id])return[];
+  var fi=CONFIGS[id].fi,val=filtros[id]||'';
+  return(!val||fi<0)?D[id].rows:D[id].rows.filter(function(r){return r[fi]===val;});
+}
+function getRowsOrdenadas(rows,id){
+  var st=sortState[id];
+  if(!st||st.col<0)return rows;
+  var col=st.col,dir=st.dir;
+  return rows.slice().sort(function(a,b){
+    var va=a[col],vb=b[col],na=parseFloat(va),nb=parseFloat(vb);
+    if(!isNaN(na)&&!isNaN(nb))return(na-nb)*dir;
+    return String(va).localeCompare(String(vb),'pt-BR',{sensitivity:'base'})*dir;
+  });
+}
+function getRowsVisiveis(id){
+  var rows=getRowsFiltradas(id);
+  var el=document.getElementById('busca-'+id);
+  var q=el?el.value.toLowerCase():'';
+  if(q)rows=rows.filter(function(r){return r.some(function(c){return String(c).toLowerCase().indexOf(q)>=0;});});
+  return getRowsOrdenadas(rows,id);
+}
+
+
+function renderTabela(id,rows){
+  var tbl=document.getElementById('tbl-'+id);
+  if(!tbl)return;
+  var tbody=tbl.querySelector('tbody');
+  if(!tbody)return;
+  tbody.innerHTML=rows.map(function(r){return'<tr>'+r.map(function(c){return'<td>'+esc(c)+'</td>';}).join('')+'</tr>';}).join('');
+  var cnt=document.getElementById('cnt-'+id);
+  var total=D[id]?D[id].rows.length:0;
+  if(cnt)cnt.textContent=rows.length===total?total+' rotas':'Exibindo '+rows.length+' de '+total+' rotas';
+}
+function atualizarHeadersSort(id){
+  var tbl=document.getElementById('tbl-'+id);if(!tbl)return;
+  var st=sortState[id];
+  tbl.querySelectorAll('thead th').forEach(function(th,i){
+    th.removeAttribute('data-sort');
+    if(st&&st.col===i)th.setAttribute('data-sort',st.dir===1?'asc':'desc');
+  });
+}
+function sortTable(id,colIdx){
+  if(!sortState[id])sortState[id]={col:-1,dir:1};
+  if(sortState[id].col===colIdx){sortState[id].dir*=-1;}else{sortState[id].col=colIdx;sortState[id].dir=1;}
+  renderTabela(id,getRowsVisiveis(id));atualizarHeadersSort(id);
+}
+function atualizarBadge(id){
+  var badge=document.getElementById('fbadge-'+id);if(!badge)return;
+  var rows=getRowsFiltradas(id),val=filtros[id]||'';
+  badge.textContent=val?rows.length+' rotas · '+val:(D[id]?D[id].rows.length:0)+' rotas (todas)';
+}
+function aplicarFiltro(id){
+  var sel=document.getElementById('fsel-'+id);filtros[id]=sel?sel.value:'';
+  var busca=document.getElementById('busca-'+id);if(busca)busca.value='';
+  if(sortState[id])sortState[id].col=-1;
+  renderTabela(id,getRowsVisiveis(id));atualizarHeadersSort(id);atualizarBadge(id);
+}
+function filtrar(id){renderTabela(id,getRowsVisiveis(id));}
+function csvDownload(id){
+  if(!D[id])return;
+  var rows=getRowsFiltradas(id),val=filtros[id]||'';
+  var suf=val?'_'+val.replace(/[^a-zA-Z0-9À-ú]/g,'_').replace(/_+/g,'_'):'';
+  var linhas=[D[id].cols.join(',')].concat(rows.map(function(r){return r.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(',');}));
+  var blob=new Blob(['﻿'+linhas.join('\n')],{type:'text/csv;charset=utf-8;'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='SGO3_'+id+suf+'_'+GERADO_EM.replace(/[\/:\s]/g,'')+'.csv';a.click();
+}
+function mostrarTab(id,btn){
+  document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  var pane=document.getElementById('pane-'+id);if(pane)pane.classList.add('active');if(btn)btn.classList.add('active');
+}
+
 
 function buildUI(){
-  var rows=Array.isArray(DADOS_RAW.rows)?DADOS_RAW.rows:[];
-  var pubEm=DADOS_RAW.publicadoEm||GERADO_EM;
-  document.getElementById('badge-data').textContent=pubEm||GERADO_EM;
-  var atTxt=document.getElementById('badge-at-txt');
-  if(atTxt)atTxt.textContent='Publicado em '+pubEm;
-  processarDados();
-  var totalPacotes=rows.reduce(function(s,r){return s+(parseInt(r[COL_PACOTES],10)||0);},0);
-  document.getElementById('kpis').innerHTML=kpi('Total de rotas',rows.length)+kpi('Docas ativas',EGO_ORDER.length+' de 8')+kpi('Pacotes estimados',totalPacotes.toLocaleString('pt-BR'))+kpi('Docas compartilhadas',Object.keys(DOCA_COMPARTILHADAS).length+' ⚠️');
-  document.getElementById('grid').innerHTML=DOCAS_ORDEM.map(function(docaNum){
-    var isBloqueada=DOCAS_BLOQUEADAS.indexOf(docaNum)>=0;
-    var isInativa=DOCAS_INATIVAS.indexOf(docaNum)>=0;
-    if(isBloqueada)return'<div class="vcard-bloqueada"><div class="bloq-icon">🚫</div><div class="bloq-num">D'+docaNum+'</div><div class="bloq-label">Bloq</div></div>';
-    if(isInativa)return'<div class="vcard-inativa" title="Doca '+docaNum+' — Problema Operacional"><div class="inativa-icon">⚠️</div><div class="inativa-num">D'+docaNum+'</div><div class="inativa-badge">Prob.&#10;Oper.</div></div>';
-    if(DOCA_COMPARTILHADAS[docaNum])return buildSharedDocaCard(docaNum,DOCA_COMPARTILHADAS[docaNum]);
-    var ego=EGO_BY_DOCA[docaNum];
-    var cidade=ego?CIDADE_MAP[ego]:'';
-    var cicloFiltro=DOCA_CICLO[docaNum]||null;
-    var linhas=(ego&&GRUPOS[ego])?GRUPOS[ego]:[];
-    if(cicloFiltro)linhas=linhas.filter(function(row){return extrairCiclo(row[COL_ID]||'')===cicloFiltro;});
-    var egoIdx=EGO_ORDER.indexOf(ego);
-    var cc='vc'+(egoIdx>=0?Math.min(egoIdx,6):0);
-    var cards=linhas.map(function(row){
-      var id=row[COL_ID]||'—';
-      var ciclo=extrairCiclo(id);
-      return'<div class="c-'+esc(ciclo)+'"><div class="id-card" data-id="'+esc(id)+'"><span class="id-text">'+esc(id)+'</span><span class="ciclo-tag">'+esc(ciclo)+'</span></div></div>';
-    }).join('');
-    var pkgDoca=linhas.reduce(function(s,r){return s+(parseInt(r[COL_PACOTES],10)||0);},0);
-    var body=linhas.length>0?'<div class="id-grid">'+cards+'</div>':'<div class="sem-rotas">Sem rotas</div>';
-    var cidadeHtml=cidade?'<div class="vcard-cidade">📍 '+esc(cidade)+'</div>':'';
-    return'<div class="vcard '+cc+'"><div class="vcard-hdr"><div style="min-width:0;overflow:hidden"><div class="vcard-name">Doca '+docaNum+'</div><div class="vcard-sub">'+esc(ego||'')+(cicloFiltro?' · <span style="font-weight:800;color:'+(cicloFiltro==='AM'?'#92400e':'#1e40af')+'">'+cicloFiltro+'</span>':'')+'</div>'+cidadeHtml+'</div><div class="vcard-badges">'+badgeRoutes(linhas.length)+badgePacotes(pkgDoca)+'</div></div>'+htmlVeiculo(ego||'',linhas.length)+body+'</div>';
-  }).join('');
-  document.getElementById('pub-footer').innerHTML='<div class="pub-item"><span class="pub-dot"></span><strong>SGO3</strong> · XPT Docas · '+esc(pubEm)+'</div>'+EGO_ORDER.map(function(ego){
-    var d=DOCA_MAP[ego];
-    var cidade=CIDADE_MAP[ego]?(' · '+CIDADE_MAP[ego]):'';
-    var isEDF=ego.indexOf('EDF')===0;
-    var isComp=d&&DOCA_COMPARTILHADAS[d];
-    var dotColor=isComp?'#e67e22':(isEDF?'#7e22ce':'#64748b');
-    return'<div class="pub-item"><span class="pub-dot" style="background:'+dotColor+'"></span><strong>'+esc(ego)+'</strong> · Doca '+esc(String(d||'?'))+esc(cidade)+(isComp?' <span style="font-size:10px;color:#e67e22;font-weight:700">(Comp.)</span>':'')+'</div>';
-  }).join('');
-  if(isMobile())atualizarCarrossel();
-}
-function kpi(label,value){
-  return'<div class="kpi"><div class="kpi-l">'+esc(label)+'</div><div class="kpi-v">'+esc(String(value))+'</div></div>';
-}
-function buildStandby(){
-  var txt=GERADO_EM?String(GERADO_EM).split(' ')[0]:'—';
-  document.getElementById('badge-data').textContent=txt;
-  var atTxt=document.getElementById('badge-at-txt');
-  if(atTxt)atTxt.textContent='Aguardando publicação';
-  document.getElementById('kpis').innerHTML='';
-  document.getElementById('legenda').style.display='none';
-  document.getElementById('mobile-nav').style.display='none';
-  document.getElementById('pub-footer').innerHTML='';
-  document.getElementById('grid').innerHTML='<div class="standby"><div class="standby-icon">⏳</div><h2>Aguardando publicação</h2><p>Nenhuma rota XPT encontrada.<br>Na planilha, use o menu 📋 <strong style="color:#e67e22">Publicar XPT por docas</strong>.</p><div style="font-size:11px;color:#94a3b8;margin-top:8px">SGO3 · '+esc(String(GERADO_EM||''))+'</div></div>';
-}
-
-var auditMode=false,confirmed={},AUDIT_KEY='';
-function initAuditKey(){
-  var pub=(DADOS_RAW&&DADOS_RAW.publicadoEm)?DADOS_RAW.publicadoEm:GERADO_EM;
-  AUDIT_KEY='audit_SGO3_'+String(pub||'').replace(/[^0-9]/g,'');
-}
-function salvarAuditoria(){try{localStorage.setItem(AUDIT_KEY,JSON.stringify(confirmed));}catch(e){}}
-function carregarAuditoria(){
-  try{var r=localStorage.getItem(AUDIT_KEY);if(r)confirmed=JSON.parse(r);}catch(e){confirmed={};}
-  document.querySelectorAll('.id-card[data-id]').forEach(function(el){el.classList.toggle('auditado',!!confirmed[el.getAttribute('data-id')]);});
-  atualizarProgresso();
-}
-function atualizarProgresso(){
-  var total=document.querySelectorAll('.id-card[data-id]').length;
-  var ok=Object.keys(confirmed).filter(function(k){return confirmed[k];}).length;
-  var p=document.getElementById('audit-prog');
-  if(p){p.textContent=ok+' / '+total+' confirmadas';p.style.color=(ok===total&&total>0)?'#059669':'#d97706';}
-}
-function marcarRota(id){
-  if(!auditMode||!id)return;
-  confirmed[id]=!confirmed[id];
-  salvarAuditoria();
-  document.querySelectorAll('.id-card[data-id="'+id.replace(/"/g,'&quot;')+'"]').forEach(function(el){el.classList.toggle('auditado',!!confirmed[id]);});
-  atualizarProgresso();
-}
-function toggleAuditoria(){
-  auditMode=!auditMode;
-  document.body.classList.toggle('audit-mode',auditMode);
-  var btn=document.getElementById('btn-audit');
-  var banner=document.getElementById('audit-banner');
-  if(auditMode){
-    if(btn){btn.textContent='✅ Auditoria ON';btn.classList.add('ativo');}
-    if(banner)banner.classList.add('visivel');
-    carregarAuditoria();
-  }else{
-    if(btn){btn.textContent='🔍 Auditar';btn.classList.remove('ativo');}
-    if(banner)banner.classList.remove('visivel');
+  var bdEl=document.getElementById('badge-data'),baEl=document.getElementById('badge-at');
+  if(bdEl)bdEl.textContent=GERADO_EM.split(' ')[0]||GERADO_EM;
+  if(baEl)baEl.textContent='Gerado em '+GERADO_EM;
+  if(MLP_NAME){
+    document.title='Programação SGO3 — '+MLP_NAME;
+    var h1=document.querySelector('#header h1');
+    if(h1)h1.innerHTML='📦 Programação <span>SGO3</span> <span style="color:#94a3b8;font-weight:400;font-size:1rem">— '+esc(MLP_NAME)+'</span>';
   }
-}
-function reiniciarAuditoria(){
-  confirmed={};salvarAuditoria();
-  document.querySelectorAll('.id-card.auditado').forEach(function(el){el.classList.remove('auditado');});
-  atualizarProgresso();
+  var primeira=null;
+  for(var pi=0;pi<ABAS_ORDEM.length;pi++){if(D[ABAS_ORDEM[pi]]){primeira=ABAS_ORDEM[pi];break;}}
+  var tabs='',content='',pub='';
+  ABAS_ORDEM.forEach(function(id,idx){
+    var ciclo=D[id],tem=!!ciclo,temDados=tem&&ciclo.rows.length>0;
+    var isFirst=primeira!==null?id===primeira:idx===0;
+    var badge=temDados
+      ?'<span class="tab-badge ok">✓ '+ciclo.rows.length+' rotas</span>'
+      :tem?'<span class="tab-badge sem">— Sem rotas</span>'
+          :'<span class="tab-badge wait">⏳ aguardando</span>';
+    tabs+='<button class="tab-btn'+(isFirst?' active':'')+'" onclick="mostrarTab(\''+id+'\',this)">'+id+' '+badge+'</button>';
+    if(temDados){
+      var cfg=detectarConfig(ciclo.cols);
+      CONFIGS[id]=cfg;filtros[id]='';sortState[id]={col:-1,dir:1};
+      var opts='<option value="">Todas</option>';
+      if(cfg.fi>=0){
+        var seen={},uniq=[];
+        ciclo.rows.forEach(function(r){var v=r[cfg.fi];if(v&&!seen[v]){seen[v]=1;uniq.push(v);}});
+        uniq.sort().forEach(function(v){opts+='<option value="'+esc(v)+'">'+esc(v)+'</option>';});
+      }
+      var filterBar=cfg.fi>=0
+        ?'<div class="filter-bar">'+
+            '<span class="filter-label">🔍 '+esc(cfg.fl)+':</span>'+
+            '<select class="filter-sel" id="fsel-'+id+'" onchange="aplicarFiltro(\''+id+'\')">'+opts+'</select>'+
+            '<span class="filter-badge" id="fbadge-'+id+'">'+ciclo.rows.length+' rotas (todas)</span>'+
+          '</div>'
+        :'';
+      var colHeaders=ciclo.cols.map(function(c,ci){
+        return'<th onclick="sortTable(\''+id+'\','+ci+')" title="Ordenar por '+esc(c)+'">'+esc(c)+'</th>';
+      }).join('');
+      content+=
+        '<div id="pane-'+id+'" class="tab-pane'+(isFirst?' active':'')+'">'+
+          renderOndas(id)+
+          renderKPIs(id)+
+          renderShare(id)+
+          renderVeiculos(id)+
+          filterBar+
+          '<div class="tbl-card">'+
+            '<div class="tbl-header">'+
+              '<span class="tbl-title">Rotas — '+id+'<span class="tbl-hint">clique no cabeçalho para ordenar</span></span>'+
+              '<div class="tbl-actions">'+
+                '<input type="search" id="busca-'+id+'" placeholder="Buscar…" oninput="filtrar(\''+id+'\')">'+
+                '<button class="btn-csv" onclick="csvDownload(\''+id+'\')">⬇ CSV</button>'+
+              '</div>'+
+            '</div>'+
+            '<div class="tbl-wrap"><table id="tbl-'+id+'"><thead><tr>'+colHeaders+'</tr></thead><tbody></tbody></table></div>'+
+            '<div class="tbl-count" id="cnt-'+id+'"></div>'+
+          '</div>'+
+        '</div>';
+    }else if(tem){
+      content+='<div id="pane-'+id+'" class="tab-pane'+(isFirst?' active':'')+'">'+renderOndas(id)+
+        '<div class="wait-pane"><div class="wait-icon">📭</div><h3>Sem rotas programadas — '+id+'</h3><p>Nenhuma rota foi alocada para esta transportadora neste ciclo hoje.</p></div></div>';
+    }else{
+      content+='<div id="pane-'+id+'" class="tab-pane'+(isFirst?' active':'')+'">'+renderOndas(id)+
+        '<div class="wait-pane"><div class="wait-icon">⏳</div><h3>Ciclo '+id+' ainda não publicado</h3><p>Aguardando a finalização da distribuição.</p></div></div>';
+    }
+    var dot=temDados?'<span class="pub-dot"></span>':tem?'<span class="pub-dot" style="background:#475569"></span>':'<span class="pub-dot wait"></span>';
+    pub+='<div class="pub-item">'+dot+'<strong>'+id+'</strong> · '+esc(tem?ciclo.publicadoEm:'Aguardando publicação')+'</div>';
+  });
+  document.getElementById('tabs-bar').innerHTML=tabs;
+  document.getElementById('content').innerHTML=content;
+  document.getElementById('pub-bar').innerHTML=pub;
+  ABAS_ORDEM.forEach(function(id){if(D[id]&&CONFIGS[id]){try{renderTabela(id,getRowsVisiveis(id));}catch(e){console.error('TBL '+id,e);}}});
 }
 
-var PRESS_DELAY=550,_pressTimer=null,_pressEl=null;
-function iniciarPress(card){
-  if(!auditMode||!card)return;
-  cancelarPress();
-  _pressEl=card;card.classList.add('pressing');
-  _pressTimer=setTimeout(function(){
-    _pressTimer=null;_pressEl=null;
-    card.classList.remove('pressing');
-    marcarRota(card.getAttribute('data-id'));
-  },PRESS_DELAY);
+function buildStandby(){
+  document.getElementById('tabs-bar').innerHTML='';
+  document.getElementById('content').innerHTML=
+    '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:18px;text-align:center;padding:40px">'+
+    '<div style="font-size:3.5rem;animation:pulse 2s ease-in-out infinite">⏳</div>'+
+    '<div style="font-size:1.4rem;font-weight:800;color:#e2e8f0">Aguardando Programação</div>'+
+    '<div style="font-size:.9rem;color:#64748b;max-width:380px;line-height:1.6">Nenhuma aba com dados foi encontrada.<br>Preencha as abas da planilha e clique em <strong style="color:#00b894">📤 Publicar</strong>.</div>'+
+    '<div style="font-size:.75rem;color:#334155;margin-top:8px">SGO3 · '+GERADO_EM+'</div></div>';
+  document.getElementById('pub-bar').innerHTML='';
 }
-function cancelarPress(){
-  if(_pressTimer){clearTimeout(_pressTimer);_pressTimer=null;}
-  if(_pressEl){_pressEl.classList.remove('pressing');_pressEl=null;}
-}
-document.addEventListener('mousedown',function(e){iniciarPress(e.target.closest('.id-card[data-id]'));});
-document.addEventListener('mouseup',cancelarPress);
-document.addEventListener('mouseleave',cancelarPress,true);
 
-function imprimirPDF(){
-  var t=document.title;
-  var p=(DADOS_RAW&&DADOS_RAW.publicadoEm)?DADOS_RAW.publicadoEm:GERADO_EM;
-  document.title='XPT_Docas_SGO3_'+String(p||'').replace(/[/:]/g,'-').replace(/ /g,'_');
-  window.print();document.title=t;
-}
-window.addEventListener('resize',function(){
-  var cards=document.querySelectorAll('#grid > *');
-  if(isMobile())atualizarCarrossel();
-  else cards.forEach(function(c){c.classList.remove('carousel-active');});
-});
-window.addEventListener('load',function(){
-  var rows=(DADOS_RAW&&Array.isArray(DADOS_RAW.rows))?DADOS_RAW.rows:[];
-  if(rows.length===0)buildStandby();
-  else{buildUI();initAuditKey();}
-});
+window.addEventListener('load',function(){if(Object.keys(D).length===0&&!MLP_NAME){buildStandby();}else{buildUI();}});
 </script>
 </body>
 </html>
